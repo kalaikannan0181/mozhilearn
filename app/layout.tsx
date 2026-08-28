@@ -1,25 +1,39 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Baloo_2, Nunito } from 'next/font/google'
+import { Inter, Noto_Sans_Tamil, Poppins } from 'next/font/google'
 import './globals.css'
 
-const baloo = Baloo_2({
+const _inter = Inter({ subsets: ['latin'], display: 'swap' })
+const _poppins = Poppins({
   subsets: ['latin'],
-  variable: '--font-baloo',
   weight: ['500', '600', '700', '800'],
+  display: 'swap',
 })
-
-const nunito = Nunito({
-  subsets: ['latin'],
-  variable: '--font-nunito',
-  weight: ['400', '500', '600', '700', '800'],
+const _notoTamil = Noto_Sans_Tamil({
+  subsets: ['tamil'],
+  weight: ['400', '500', '600'],
+  display: 'swap',
 })
 
 export const metadata: Metadata = {
-  title: 'MozhiLearn — AI-Powered Mother Tongue Learning',
+  title: 'MozhiLearn — Every Child Deserves to Learn in Their Mother Tongue',
   description:
-    'MozhiLearn helps primary students learn their mother tongue in Tamil with AI-powered lessons, playful practice, and progress tracking for teachers and students.',
+    'MozhiLearn is an AI-powered mother tongue learning platform for Indian primary schools. Instant English to Tamil lesson translation, pedagogy adaptation for Grades 1-5, natural Tamil audio narration and real-time progress analytics for teachers.',
+  keywords: [
+    'mother tongue learning',
+    'Tamil education',
+    'NEP 2020',
+    'AI translation for schools',
+    'primary education India',
+    'SIH 2026',
+  ],
   generator: 'v0.app',
+  openGraph: {
+    title: 'MozhiLearn — Learning in Mother Tongue',
+    description:
+      'AI-powered translation and pedagogy adaptation for Indian primary education. Free for government schools.',
+    type: 'website',
+  },
   icons: {
     icon: [
       {
@@ -41,7 +55,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   colorScheme: 'light',
-  themeColor: '#fef6e9',
+  themeColor: '#2563EB',
 }
 
 export default function RootLayout({
@@ -50,7 +64,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`light bg-background ${baloo.variable} ${nunito.variable}`}>
+    <html lang="en" className="light bg-background">
       <body className="font-sans antialiased">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
