@@ -47,11 +47,16 @@ export default function StudentLessonViewer({ params: paramsPromise }: { params:
   const [error, setError] = useState<string | null>(null)
   const [showEnglish, setShowEnglish] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
+  const [isPaused, setIsPaused] = useState(false)
+  const [isSpeechSupported, setIsSpeechSupported] = useState(false)
   const [marking, setMarking] = useState(false)
   const [progressStatus, setProgressStatus] = useState<'not_started' | 'in_progress' | 'completed'>('not_started')
 
   useEffect(() => {
     if (!user || !lessonId) return
+
+    // Verify browser support for SpeechSynthesis
+    setIsSpeechSupported(typeof window !== 'undefined' && 'speechSynthesis' in window)
 
     const fetchLesson = async () => {
       try {
@@ -65,12 +70,36 @@ export default function StudentLessonViewer({ params: paramsPromise }: { params:
           .single()
 
         if (lessonError) throw lessonError
+
+        // Verify published status
+        if (lessonData.status !== 'published') {
+          setError("You don't have access to this lesson.")
+          setLoading(false)
+          return
+        }
+
+        // Verify assignment (only if created_by is NOT null, i.e. it is a teacher-assigned lesson)
+        if (lessonData.created_by !== null) {
+          const { data: assignment, error: assignmentError } = await supabase
+            .from('lesson_assignments')
+            .select('id')
+            .eq('lesson_id', lessonId)
+            .eq('student_id', user.id)
+            .maybeSingle()
+
+          if (assignmentError || !assignment) {
+            setError("You don't have access to this lesson.")
+            setLoading(false)
+            return
+          }
+        }
+
         setLesson(lessonData as Lesson)
 
         // 2. Fetch/Insert progress
         const { data: prog, error: progError } = await supabase
           .from('lesson_progress')
-          .select('status')
+          .select('status, progress_percent')
           .eq('lesson_id', lessonId)
           .eq('student_id', user.id)
           .maybeSingle()
@@ -78,18 +107,43 @@ export default function StudentLessonViewer({ params: paramsPromise }: { params:
         if (prog) {
           setProgressStatus(prog.status as any)
         } else {
-          // Initialize progress as 'in_progress' once they open the lesson
+          // Initialize progress as 'in_progress' at 10%
           await supabase
             .from('lesson_progress')
             .insert({
               lesson_id: lessonId,
               student_id: user.id,
               status: 'in_progress',
-              progress_percent: 50,
+              progress_percent: 10,
               last_accessed_at: new Date().toISOString()
             })
           setProgressStatus('in_progress')
         }
+
+        // 3. Mark progress as 50% viewed after 2.5 seconds (interaction proof)
+        setTimeout(async () => {
+          try {
+            const { data: currentProg } = await supabase
+              .from('lesson_progress')
+              .select('progress_percent, status')
+              .eq('lesson_id', lessonId)
+              .eq('student_id', user.id)
+              .maybeSingle()
+
+            if (currentProg && currentProg.status === 'in_progress' && currentProg.progress_percent < 50) {
+              await supabase
+                .from('lesson_progress')
+                .update({
+                  progress_percent: 50,
+                  last_accessed_at: new Date().toISOString()
+                })
+                .eq('lesson_id', lessonId)
+                .eq('student_id', user.id)
+            }
+          } catch (err) {
+            console.error('Failed to update progress to 50%:', err)
+          }
+        }, 2500)
 
       } catch (err: any) {
         console.error('Error fetching lesson:', err)
@@ -103,35 +157,52 @@ export default function StudentLessonViewer({ params: paramsPromise }: { params:
 
     // Stop speaking when leaving page
     return () => {
-      window.speechSynthesis.cancel()
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        window.speechSynthesis.cancel()
+      }
     }
   }, [user, lessonId])
 
-  // TTS Narration
-  const handleToggleNarration = () => {
-    if (!lesson) return
-
-    if (isPlaying) {
-      window.speechSynthesis.cancel()
+  // TTS Actions
+  const handlePlay = () => {
+    if (!lesson || !isSpeechSupported) return
+    window.speechSynthesis.cancel()
+    
+    const textToSpeak = lesson.simplified_content_ta || lesson.translated_content
+    const utterance = new SpeechSynthesisUtterance(textToSpeak)
+    utterance.lang = 'ta-IN'
+    
+    utterance.onend = () => {
       setIsPlaying(false)
-    } else {
-      window.speechSynthesis.cancel()
-      
-      // Use simplified content if available, fallback to translation
-      const textToSpeak = lesson.simplified_content_ta || lesson.translated_content
-      const utterance = new SpeechSynthesisUtterance(textToSpeak)
-      utterance.lang = 'ta-IN'
-      
-      utterance.onend = () => {
-        setIsPlaying(false)
-      }
-      utterance.onerror = () => {
-        setIsPlaying(false)
-      }
-
-      setIsPlaying(true)
-      window.speechSynthesis.speak(utterance)
+      setIsPaused(false)
     }
+    utterance.onerror = () => {
+      setIsPlaying(false)
+      setIsPaused(false)
+    }
+
+    setIsPlaying(true)
+    setIsPaused(false)
+    window.speechSynthesis.speak(utterance)
+  }
+
+  const handlePause = () => {
+    if (!isSpeechSupported) return
+    window.speechSynthesis.pause()
+    setIsPaused(true)
+  }
+
+  const handleResume = () => {
+    if (!isSpeechSupported) return
+    window.speechSynthesis.resume()
+    setIsPaused(false)
+  }
+
+  const handleStop = () => {
+    if (!isSpeechSupported) return
+    window.speechSynthesis.cancel()
+    setIsPlaying(false)
+    setIsPaused(false)
   }
 
   // Mark lesson as completed
@@ -171,10 +242,10 @@ export default function StudentLessonViewer({ params: paramsPromise }: { params:
 
   if (error || !lesson) {
     return (
-      <div className="bg-white rounded-3xl border border-gray-100 p-8 text-center max-w-lg mx-auto mt-12">
+      <div className="bg-white rounded-3xl border border-gray-100 p-8 text-center max-w-lg mx-auto mt-12 shadow-sm">
         <h3 className="text-lg font-bold text-red-600">Error Loading Lesson</h3>
         <p className="text-gray-500 mt-2">{error || 'Lesson not found.'}</p>
-        <Link href="/student/dashboard" className="mt-4 inline-flex items-center justify-center rounded-2xl bg-green-500 text-white px-5 py-2.5 font-bold shadow-sm">
+        <Link href="/student/dashboard" className="mt-6 inline-flex items-center justify-center rounded-2xl bg-green-500 text-white px-5 py-2.5 font-bold shadow-sm hover:bg-green-600 transition">
           Return to Dashboard
         </Link>
       </div>
@@ -206,26 +277,54 @@ export default function StudentLessonViewer({ params: paramsPromise }: { params:
               Grade {lesson.grade_level} Lesson
             </p>
           </div>
-          <button
-            onClick={handleToggleNarration}
-            className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl px-6 font-extrabold shadow-sm transition-all shrink-0 ${
-              isPlaying
-                ? 'bg-red-500 text-white hover:bg-red-600'
-                : 'bg-green-500 text-white hover:bg-green-600 shadow-green-100'
-            }`}
-          >
-            {isPlaying ? (
-              <>
-                <VolumeX className="size-5" />
-                Stop Listening (நிறுத்து)
-              </>
+
+          {/* Speech Controls */}
+          <div className="flex items-center gap-2">
+            {!isSpeechSupported ? (
+              <p className="text-xs text-red-500 font-semibold bg-red-50 px-3 py-1.5 rounded-xl border border-red-100">
+                Text-to-speech is not supported in this browser.
+              </p>
             ) : (
-              <>
-                <Volume2 className="size-5" />
-                Listen Lesson (ஒலி வடிவில் கேள்)
-              </>
+              <div className="flex flex-wrap items-center gap-2">
+                {!isPlaying ? (
+                  <button
+                    onClick={handlePlay}
+                    className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-xl bg-green-500 text-white px-4 text-xs font-bold shadow-sm hover:bg-green-600 transition"
+                  >
+                    <Play className="size-4 fill-current" />
+                    Listen (கேள்)
+                  </button>
+                ) : (
+                  <>
+                    {isPaused ? (
+                      <button
+                        onClick={handleResume}
+                        className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-xl bg-green-500 text-white px-4 text-xs font-bold shadow-sm hover:bg-green-600 transition"
+                      >
+                        <Play className="size-4 fill-current" />
+                        Resume (தொடர்)
+                      </button>
+                    ) : (
+                      <button
+                        onClick={handlePause}
+                        className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-xl bg-yellow-500 text-yellow-950 px-4 text-xs font-bold shadow-sm hover:bg-yellow-600 transition"
+                      >
+                        <Pause className="size-4 fill-current" />
+                        Pause (நிறுத்து)
+                      </button>
+                    )}
+                    <button
+                      onClick={handleStop}
+                      className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-xl bg-red-500 text-white px-4 text-xs font-bold shadow-sm hover:bg-red-600 transition"
+                    >
+                      <Square className="size-4 fill-current" />
+                      Stop (முடி)
+                    </button>
+                  </>
+                )}
+              </div>
             )}
-          </button>
+          </div>
         </div>
 
         {/* Content Body */}
@@ -303,7 +402,7 @@ export default function StudentLessonViewer({ params: paramsPromise }: { params:
           </div>
           <div>
             <h4 className="font-bold text-gray-900 text-sm sm:text-base">
-              {progressStatus === 'completed' ? 'You completed this lesson!' : 'Read this lesson to take the quiz.'}
+              {progressStatus === 'completed' ? 'Lesson Completed! 🎉' : 'Read this lesson to take the quiz.'}
             </h4>
             <p className="text-xs text-gray-400 mt-0.5">
               {progressStatus === 'completed' ? 'வெற்றிகரமாக முடித்துவிட்டீர்கள்!' : 'பாடத்தைப் படித்து முடித்து தேர்வை எழுதுங்கள்.'}
@@ -316,7 +415,7 @@ export default function StudentLessonViewer({ params: paramsPromise }: { params:
             <button
               onClick={handleMarkCompleted}
               disabled={marking}
-              className="flex-1 sm:flex-none inline-flex h-11 items-center justify-center gap-1.5 rounded-2xl bg-green-500 text-white px-5 text-sm font-extrabold shadow-sm hover:bg-green-600 disabled:opacity-50"
+              className="flex-1 sm:flex-none inline-flex h-11 items-center justify-center gap-1.5 rounded-2xl bg-green-500 text-white px-5 text-sm font-extrabold shadow-sm hover:bg-green-600 disabled:opacity-50 transition"
             >
               {marking ? (
                 <Loader2 className="size-4 animate-spin" />
@@ -328,7 +427,7 @@ export default function StudentLessonViewer({ params: paramsPromise }: { params:
 
           <Link
             href={`/student/quiz/${lesson.id}`}
-            className="flex-1 sm:flex-none inline-flex h-11 items-center justify-center gap-1.5 rounded-2xl bg-yellow-500 text-yellow-950 px-5 text-sm font-extrabold shadow-sm shadow-yellow-100 hover:bg-yellow-600"
+            className="flex-1 sm:flex-none inline-flex h-11 items-center justify-center gap-1.5 rounded-2xl bg-yellow-500 text-yellow-950 px-5 text-sm font-extrabold shadow-sm shadow-yellow-100 hover:bg-yellow-600 transition"
           >
             <HelpCircle className="size-4.5" />
             Start Quiz (தேர்வு எழுது)
