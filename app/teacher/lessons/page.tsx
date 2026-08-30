@@ -68,7 +68,7 @@ export default function TeacherLessons() {
           <p className="text-gray-500 mt-1">Manage and adapt mother-tongue lessons for your classes.</p>
         </div>
         <Link
-          href="/teacher/lessons/new"
+          href="/teacher/lessons/create"
           className="inline-flex items-center justify-center gap-2 rounded-2xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-md transition-transform hover:-translate-y-0.5 hover:shadow-lg shrink-0"
         >
           <Plus className="size-4" />
@@ -133,7 +133,7 @@ export default function TeacherLessons() {
           <h3 className="mt-4 text-lg font-bold text-gray-900">No lessons found</h3>
           <p className="text-gray-500 mt-1">Try adjusting your filters, or create a new lesson.</p>
           <Link
-            href="/teacher/lessons/new"
+            href="/teacher/lessons/create"
             className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
           >
             Create New Lesson

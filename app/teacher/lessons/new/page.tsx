@@ -242,6 +242,13 @@ export default function NewLesson() {
     e.preventDefault()
     if (!user) return
     setError(null)
+
+    if (status === 'published') {
+      if (!titleTa.trim()) return setError('Tamil Lesson Title is required when publishing.')
+      if (!translatedContent.trim()) return setError('Tamil Lesson Content is required when publishing.')
+      if (!simplifiedContentTa.trim()) return setError('Simplified Explanation for Kids is required when publishing.')
+    }
+
     setSaving(true)
 
     try {

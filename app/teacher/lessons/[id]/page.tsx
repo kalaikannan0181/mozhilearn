@@ -88,6 +88,12 @@ export default function EditLesson({ params: paramsPromise }: { params: Promise<
 
         if (lessonError) throw lessonError
 
+        if (lesson.created_by !== user.id) {
+          setError('Access denied. You do not have permission to manage this lesson.')
+          setLoading(false)
+          return
+        }
+
         setTitleEn(lesson.title_en)
         setTitleTa(lesson.title_ta || '')
         setSubject(lesson.subject)
@@ -149,8 +155,15 @@ export default function EditLesson({ params: paramsPromise }: { params: Promise<
     e.preventDefault()
     if (!user) return
     setError(null)
-    setSaving(true)
     setSuccessMsg(null)
+
+    if (status === 'published') {
+      if (!titleTa.trim()) return setError('Tamil Lesson Title is required when publishing.')
+      if (!translatedContent.trim()) return setError('Tamil Lesson Content is required when publishing.')
+      if (!simplifiedContentTa.trim()) return setError('Simplified Explanation for Kids is required when publishing.')
+    }
+
+    setSaving(true)
 
     try {
       // 1. Update Lesson
@@ -207,6 +220,26 @@ export default function EditLesson({ params: paramsPromise }: { params: Promise<
     } catch (err: any) {
       setError(err.message || 'Error updating lesson.')
     } finally {
+      setSaving(false)
+    }
+  }
+
+  // Delete Lesson
+  const handleDelete = async () => {
+    if (!user) return
+    if (!window.confirm("Are you sure you want to delete this lesson?")) return
+    setError(null)
+    setSaving(true)
+    try {
+      const { error: deleteError } = await supabase
+        .from('lessons')
+        .delete()
+        .eq('id', lessonId)
+
+      if (deleteError) throw deleteError
+      router.push('/teacher/lessons')
+    } catch (err: any) {
+      setError(err.message || 'Error deleting lesson.')
       setSaving(false)
     }
   }
@@ -701,6 +734,21 @@ export default function EditLesson({ params: paramsPromise }: { params: Promise<
             </select>
           </div>
 
+          <button
+            type="button"
+            disabled={saving}
+            onClick={handleDelete}
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-red-200 text-red-600 hover:bg-red-50 px-5 text-sm font-semibold transition-colors disabled:opacity-50"
+          >
+            {saving ? (
+              <Loader2 className="size-4 animate-spin" />
+            ) : (
+              <>
+                <Trash className="size-4" />
+                Delete Lesson
+              </>
+            )}
+          </button>
           <Link
             href="/teacher/lessons"
             className="inline-flex min-h-11 items-center justify-center rounded-2xl border border-border px-5 text-sm font-semibold text-foreground hover:bg-secondary transition-colors"
