@@ -274,8 +274,7 @@ export default function NewLesson() {
           vocabulary: vocabulary.filter(v => v.en && v.ta),
           status,
           created_by: user.id,
-          school_id: teacherSchool?.school_id || null,
-          published_at: status === 'published' ? new Date().toISOString() : null
+          school_id: teacherSchool?.school_id || null
         })
         .select('id')
         .single()
@@ -291,7 +290,6 @@ export default function NewLesson() {
         .filter(q => q.question_ta && q.correct_answer)
         .map(q => ({
           lesson_id: newLesson.id,
-          question_en: q.question_en,
           question_ta: q.question_ta,
           options: q.options,
           correct_answer: q.correct_answer,

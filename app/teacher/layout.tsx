@@ -25,7 +25,10 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [profileError, setProfileError] = useState<string | null>(null)
 
+  const isAuthPage = pathname === '/teacher/login' || pathname === '/teacher/signup'
+
   useEffect(() => {
+    if (isAuthPage) return
     if (!loading) {
       if (!user) {
         router.push('/login')
@@ -41,7 +44,7 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
         }
       }
     }
-  }, [user, profile, loading, router])
+  }, [user, profile, loading, router, isAuthPage])
 
   if (profileError) {
     return (
@@ -58,6 +61,10 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
         </div>
       </div>
     )
+  }
+
+  if (isAuthPage) {
+    return <>{children}</>
   }
 
   if (loading || !user || !profile || profile.role !== 'teacher') {

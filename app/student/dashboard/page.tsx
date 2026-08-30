@@ -53,7 +53,7 @@ export default function StudentDashboard() {
         // Fetch lessons (assigned + public demo lessons where created_by is null)
         let query = supabase
           .from('lessons')
-          .select('id, title_en, title_ta, subject, grade_level, status')
+          .select('id, title_en, title_ta, subject, grade_level, status, created_by')
           .eq('status', 'published')
 
         const { data: allLessons } = await query

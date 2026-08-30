@@ -172,7 +172,6 @@ export default function TeacherQuizEditor({ params: paramsPromise }: { params: P
       // Insert new questions
       const formattedQuestions = questions.map(q => ({
         lesson_id: lessonId,
-        question_en: q.question_en,
         question_ta: q.question_ta,
         options: q.options,
         correct_answer: q.correct_answer,

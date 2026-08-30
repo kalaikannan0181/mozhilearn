@@ -180,7 +180,6 @@ export default function EditLesson({ params: paramsPromise }: { params: Promise<
           learning_objectives: learningObjectives.filter(Boolean),
           vocabulary: vocabulary.filter(v => v.en && v.ta),
           status,
-          published_at: status === 'published' ? new Date().toISOString() : null,
           updated_at: new Date().toISOString()
         })
         .eq('id', lessonId)
@@ -198,7 +197,6 @@ export default function EditLesson({ params: paramsPromise }: { params: Promise<
         .filter(q => q.question_ta && q.correct_answer)
         .map(q => ({
           lesson_id: lessonId,
-          question_en: q.question_en,
           question_ta: q.question_ta,
           options: q.options,
           correct_answer: q.correct_answer,
@@ -519,6 +517,7 @@ export default function EditLesson({ params: paramsPromise }: { params: Promise<
           <div>
             <label className="block text-sm font-semibold text-gray-700">Lesson Title (Tamil)</label>
             <input
+              id="title_ta"
               type="text"
               required
               value={titleTa}
@@ -530,6 +529,7 @@ export default function EditLesson({ params: paramsPromise }: { params: Promise<
           <div>
             <label className="block text-sm font-semibold text-gray-700">Translated Content (Tamil)</label>
             <textarea
+              id="translated"
               required
               rows={5}
               value={translatedContent}
@@ -541,6 +541,7 @@ export default function EditLesson({ params: paramsPromise }: { params: Promise<
           <div>
             <label className="block text-sm font-semibold text-gray-700">Simplified Explanation for Kids (Tamil)</label>
             <textarea
+              id="simplified"
               required
               rows={5}
               value={simplifiedContentTa}

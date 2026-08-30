@@ -30,19 +30,29 @@ interface AuthContextType {
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-async function fetchUserProfile(userId: string) {
-  const { data, error } = await supabase
-    .from('profiles')
-    .select('id, full_name, role, school_name, grade_level, preferred_language')
-    .eq('id', userId)
-    .maybeSingle()
+async function fetchUserProfile(userId: string, retries = 3, delay = 500): Promise<any> {
+  for (let i = 0; i < retries; i++) {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('id, full_name, role, school_name, grade_level, preferred_language')
+      .eq('id', userId)
+      .maybeSingle()
 
-  if (error) {
-    console.error('Failed to load user profile:', error.message)
-    return null
+    if (!error && data) {
+      return data
+    }
+
+    if (error) {
+      console.warn(`Attempt ${i + 1} to load profile failed: ${error.message}`)
+    }
+
+    if (i < retries - 1) {
+      await new Promise(resolve => setTimeout(resolve, delay))
+    }
   }
 
-  return data
+  console.error('Failed to load user profile after all attempts.')
+  return null
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
