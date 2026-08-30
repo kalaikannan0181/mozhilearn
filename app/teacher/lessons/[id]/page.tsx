@@ -620,10 +620,18 @@ export default function EditLesson({ params: paramsPromise }: { params: Promise<
 
         {/* Step 3: Quizzes */}
         <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 space-y-6">
-          <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-            <HelpCircle className="size-5 text-gray-400" />
-            3. Quiz Questions Editor
-          </h3>
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+              <HelpCircle className="size-5 text-gray-400" />
+              3. Quiz Questions Editor
+            </h3>
+            <Link
+              href={`/teacher/lessons/${lessonId}/quiz`}
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-primary bg-primary/10 px-3 py-1.5 rounded-xl hover:bg-primary/15 transition-all"
+            >
+              Manage Separately (தனியாக நிர்வகி)
+            </Link>
+          </div>
 
           <div className="space-y-8 divider-y divide-gray-100">
             {questions.map((q, qIndex) => (

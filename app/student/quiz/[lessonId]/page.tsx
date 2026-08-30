@@ -38,7 +38,7 @@ interface Params {
 export default function StudentQuiz({ params: paramsPromise }: { params: Promise<Params> }) {
   const params = use(paramsPromise)
   const router = useRouter()
-  const { user } = useAuth()
+  const { user, profile } = useAuth()
   const lessonId = params.lessonId
 
   // Loading states
@@ -65,20 +65,49 @@ export default function StudentQuiz({ params: paramsPromise }: { params: Promise
   useEffect(() => {
     if (!user || !lessonId) return
 
+    // Verify role = student
+    if (profile && profile.role !== 'student') {
+      router.push('/teacher/dashboard')
+      return
+    }
+
     const fetchQuiz = async () => {
       try {
         setLoading(true)
 
-        // 1. Fetch lesson title
-        const { data: lesson } = await supabase
+        // 1. Fetch lesson title and validation fields
+        const { data: lesson, error: lessonError } = await supabase
           .from('lessons')
-          .select('title_en, title_ta')
+          .select('title_en, title_ta, status, created_by')
           .eq('id', lessonId)
           .single()
         
-        if (lesson) {
-          setLessonTitle(lesson.title_ta || lesson.title_en)
+        if (lessonError) throw lessonError
+
+        // Verify published status
+        if (lesson.status !== 'published') {
+          setError("You don't have access to this quiz.")
+          setLoading(false)
+          return
         }
+
+        // Verify assignment (only if created_by is NOT null, i.e. it is a teacher-assigned lesson)
+        if (lesson.created_by !== null) {
+          const { data: assignment, error: assignmentError } = await supabase
+            .from('lesson_assignments')
+            .select('id')
+            .eq('lesson_id', lessonId)
+            .eq('student_id', user.id)
+            .maybeSingle()
+
+          if (assignmentError || !assignment) {
+            setError("You don't have access to this quiz.")
+            setLoading(false)
+            return
+          }
+        }
+
+        setLessonTitle(lesson.title_ta || lesson.title_en)
 
         // 2. Fetch quiz questions (omitting correct_answer column for cheating prevention)
         const { data: qData, error: qError } = await supabase
@@ -99,7 +128,7 @@ export default function StudentQuiz({ params: paramsPromise }: { params: Promise
     }
 
     fetchQuiz()
-  }, [user, lessonId])
+  }, [user, profile, lessonId, router])
 
   const handleSelectOption = (opt: string) => {
     setSelectedOption(opt)
