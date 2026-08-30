@@ -1,21 +1,24 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/context/AuthContext'
-import { BookOpenText, Sparkles, LogOut, Home, Award, Layout } from 'lucide-react'
+import { BookOpenText, Sparkles, LogOut, Home, Award, Layout, X } from 'lucide-react'
 
 export default function StudentLayout({ children }: { children: React.ReactNode }) {
   const { user, profile, loading, logout } = useAuth()
   const router = useRouter()
   const pathname = usePathname()
+  const [profileError, setProfileError] = useState<string | null>(null)
 
   useEffect(() => {
     if (!loading) {
       if (!user) {
         router.push('/student/login')
-      } else if (profile && profile.role !== 'student') {
+      } else if (!profile) {
+        setProfileError('Your account profile could not be found. Please contact the administrator.')
+      } else if (profile.role !== 'student') {
         if (profile.role === 'teacher') {
           router.push('/teacher/dashboard')
         } else if (profile.role === 'admin') {
@@ -26,6 +29,23 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
       }
     }
   }, [user, profile, loading, router])
+
+  if (profileError) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-50 p-6">
+        <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm max-w-md w-full text-center">
+          <div className="h-12 w-12 rounded-full bg-red-50 text-red-600 flex items-center justify-center mx-auto mb-4">
+            <X className="size-6" />
+          </div>
+          <h3 className="font-bold text-gray-900 text-lg">Profile Load Error</h3>
+          <p className="mt-2 text-sm text-gray-500">{profileError}</p>
+          <button onClick={() => logout()} className="mt-6 w-full py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl font-semibold transition">
+            Sign Out
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   if (loading || !user || !profile || profile.role !== 'student') {
     return (
