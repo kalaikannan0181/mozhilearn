@@ -2,7 +2,7 @@
 
 import { Eye, EyeOff, Loader2, Mail, Lock } from 'lucide-react'
 import Link from 'next/link'
-import { FormEvent, useState } from 'react'
+import { FormEvent, useState, useEffect } from 'react'
 import { AuthShell, Message, inputClass } from '@/components/auth/AuthShell'
 import { useAuth } from '@/hooks/useAuth'
 import { useRouter } from 'next/navigation'
@@ -35,6 +35,18 @@ export default function TeacherLoginPage() {
 
     return 'Unable to sign in right now. Please try again.'
   }
+
+  const { user, profile, loading: authLoading } = useAuth()
+
+  useEffect(() => {
+    if (!authLoading && user && profile) {
+      if (profile.role === 'student') {
+        router.replace('/student/dashboard')
+      } else if (profile.role === 'teacher') {
+        router.replace('/teacher/dashboard')
+      }
+    }
+  }, [user, profile, authLoading, router])
 
   const handleLogin = async (event: FormEvent) => {
     event.preventDefault()
@@ -85,7 +97,7 @@ export default function TeacherLoginPage() {
       if (role !== 'teacher') {
         setLoading(false)
         if (role === 'student') {
-          setError('This account is registered as a Student. Please use Student Login.')
+          setError('This is a student account. Please use Student Login.')
         } else {
           setError('These credentials are not registered as a teacher account.')
         }
