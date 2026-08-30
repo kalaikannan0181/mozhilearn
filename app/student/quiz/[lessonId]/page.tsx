@@ -179,6 +179,14 @@ export default function StudentQuiz({ params: paramsPromise }: { params: Promise
     }
   }
 
+  const handleRetake = () => {
+    setCompleted(false)
+    setResults(null)
+    setCurrentIdx(0)
+    setSelectedOption(null)
+    setAnswers([])
+  }
+
   if (loading) {
     return (
       <div className="flex h-96 items-center justify-center">
@@ -189,11 +197,11 @@ export default function StudentQuiz({ params: paramsPromise }: { params: Promise
 
   if (error || questions.length === 0) {
     return (
-      <div className="bg-white rounded-3xl border border-gray-100 p-8 text-center max-w-lg mx-auto mt-12">
+      <div className="bg-white rounded-3xl border border-gray-100 p-8 text-center max-w-lg mx-auto mt-12 shadow-sm">
         <HelpCircle className="mx-auto size-12 text-gray-300" />
         <h3 className="text-lg font-bold text-gray-900 mt-4">No Quiz Available</h3>
         <p className="text-gray-500 mt-2">{error || 'This lesson does not have any quiz questions configured.'}</p>
-        <Link href={`/student/lessons/${lessonId}`} className="mt-4 inline-flex items-center justify-center rounded-2xl bg-green-500 text-white px-5 py-2.5 font-bold shadow-sm">
+        <Link href={`/student/lessons/${lessonId}`} className="mt-6 inline-flex items-center justify-center rounded-2xl bg-green-500 text-white px-5 py-2.5 font-bold shadow-sm hover:bg-green-600 transition">
           Return to Lesson
         </Link>
       </div>
@@ -326,7 +334,15 @@ export default function StudentQuiz({ params: paramsPromise }: { params: Promise
             )}
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
+          <div className="flex flex-wrap gap-3 justify-center pt-4">
+            <button
+              type="button"
+              onClick={handleRetake}
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-yellow-500 text-yellow-950 px-6 font-extrabold shadow-md hover:bg-yellow-600 transition-all"
+            >
+              Retake Quiz (மீண்டும் எழுது)
+            </button>
+
             <Link
               href={`/student/lessons/${lessonId}`}
               className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl border-2 border-green-200 text-green-600 px-6 font-extrabold hover:bg-green-50 transition-all"
