@@ -15,7 +15,7 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
   useEffect(() => {
     if (!loading) {
       if (!user) {
-        router.push('/student/login')
+        router.push('/login')
       } else if (!profile) {
         setProfileError('Your account profile could not be found. Please contact the administrator.')
       } else if (profile.role !== 'student') {

@@ -2,7 +2,7 @@
 
 import { Eye, EyeOff, Loader2, Mail, Lock } from 'lucide-react'
 import Link from 'next/link'
-import { FormEvent, useState } from 'react'
+import { FormEvent, useState, useEffect } from 'react'
 import { AuthShell, Message, inputClass } from '@/components/auth/AuthShell'
 import { useAuth } from '@/hooks/useAuth'
 import { useRouter } from 'next/navigation'
@@ -36,8 +36,23 @@ export default function LoginPage() {
     return 'Unable to sign in right now. Please try again.'
   }
 
+  const { user, profile, loading: authLoading } = useAuth()
+
+  useEffect(() => {
+    if (!authLoading && user && profile) {
+      if (profile.role === 'teacher') {
+        router.replace('/teacher/dashboard')
+      } else if (profile.role === 'student') {
+        router.replace('/student/dashboard')
+      } else if (profile.role === 'admin') {
+        router.replace('/admin/dashboard')
+      }
+    }
+  }, [user, profile, authLoading, router])
+
   const handleLogin = async (event: FormEvent) => {
     event.preventDefault()
+    if (loading) return
     setError('')
 
     if (!email.trim()) return setError('Please enter your email address.')
