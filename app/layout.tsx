@@ -1,6 +1,7 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { Inter, Noto_Sans_Tamil, Poppins } from 'next/font/google'
+import { AuthProvider } from '@/context/AuthContext'
 import './globals.css'
 
 const _inter = Inter({ subsets: ['latin'], display: 'swap' })
@@ -66,7 +67,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="light bg-background">
       <body className="font-sans antialiased">
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

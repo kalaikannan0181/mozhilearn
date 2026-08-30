@@ -71,13 +71,19 @@ export function SiteNav() {
 
         <div className="hidden items-center gap-3 lg:flex">
           <a
-            href="#cta"
-            className="inline-flex h-11 items-center justify-center rounded-xl border border-border px-5 text-sm font-semibold text-foreground transition-colors hover:border-primary hover:bg-secondary hover:text-primary focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+            href="/teacher/login"
+            className="inline-flex h-11 items-center justify-center rounded-xl border border-border px-4 text-sm font-semibold text-foreground transition-colors hover:border-primary hover:bg-secondary hover:text-primary focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
           >
-            Login
+            Teacher Login
           </a>
           <a
-            href="#cta"
+            href="/student/login"
+            className="inline-flex h-11 items-center justify-center rounded-xl border border-border px-4 text-sm font-semibold text-foreground transition-colors hover:border-primary hover:bg-secondary hover:text-primary focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+          >
+            Student Login
+          </a>
+          <a
+            href="/signup"
             className="inline-flex h-11 items-center justify-center rounded-xl bg-accent px-5 text-sm font-semibold text-accent-foreground shadow-sm transition-transform hover:-translate-y-0.5 hover:shadow-md focus-visible:ring-3 focus-visible:ring-accent/40 focus-visible:outline-none"
           >
             Get Started
@@ -120,14 +126,21 @@ export function SiteNav() {
           </ul>
           <div className="mt-4 flex flex-col gap-3">
             <a
-              href="#cta"
+              href="/teacher/login"
               onClick={() => setOpen(false)}
               className="inline-flex min-h-12 items-center justify-center rounded-xl border border-border px-5 text-base font-semibold text-foreground"
             >
-              Login
+              Teacher Login
             </a>
             <a
-              href="#cta"
+              href="/student/login"
+              onClick={() => setOpen(false)}
+              className="inline-flex min-h-12 items-center justify-center rounded-xl border border-border px-5 text-base font-semibold text-foreground"
+            >
+              Student Login
+            </a>
+            <a
+              href="/signup"
               onClick={() => setOpen(false)}
               className="inline-flex min-h-12 items-center justify-center rounded-xl bg-accent px-5 text-base font-semibold text-accent-foreground shadow-sm"
             >

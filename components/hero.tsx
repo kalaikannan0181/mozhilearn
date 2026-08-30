@@ -35,7 +35,7 @@ export function Hero() {
 
           <div className="mt-8 flex w-full flex-col gap-3 sm:flex-row">
             <a
-              href="#cta"
+              href="/teacher/signup"
               className="group inline-flex min-h-13 items-center justify-center gap-2 rounded-2xl bg-accent px-7 text-base font-semibold text-accent-foreground shadow-md transition-transform hover:-translate-y-0.5 hover:shadow-lg focus-visible:ring-3 focus-visible:ring-accent/40 focus-visible:outline-none"
             >
               I&apos;m a Teacher
@@ -45,7 +45,7 @@ export function Hero() {
               />
             </a>
             <a
-              href="#demo"
+              href="/student/signup"
               className="inline-flex min-h-13 items-center justify-center gap-2 rounded-2xl border-2 border-primary bg-background px-7 text-base font-semibold text-primary transition-colors hover:bg-primary/5 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
             >
               I&apos;m a Student

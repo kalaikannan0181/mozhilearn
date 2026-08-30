@@ -21,7 +21,7 @@ export function CtaSection() {
 
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <a
-              href="#contact"
+              href="/teacher/signup"
               className="group inline-flex min-h-13 w-full items-center justify-center gap-2 rounded-2xl bg-primary px-8 text-base font-semibold text-primary-foreground shadow-md transition-transform hover:-translate-y-0.5 hover:shadow-lg focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none sm:w-auto"
             >
               Sign Up as Teacher
@@ -31,7 +31,7 @@ export function CtaSection() {
               />
             </a>
             <a
-              href="#contact"
+              href="/student/signup"
               className="inline-flex min-h-13 w-full items-center justify-center rounded-2xl border-2 border-foreground/15 bg-card px-8 text-base font-semibold text-foreground transition-colors hover:border-primary hover:text-primary focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none sm:w-auto"
             >
               Sign Up as Student

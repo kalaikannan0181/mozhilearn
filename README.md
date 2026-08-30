@@ -1,6 +1,10 @@
 # 🌐 MozhiLearn — AI-Powered Mother Tongue Learning Platform
 
 > Built for **Smart India Hackathon 2026** | Problem Statement **SIH26042**
+>
+> **Team Name**: MozhiTech
+>
+> **College**: Nandha Engineering College, Erode
 
 MozhiLearn is an AI-powered vernacular pedagogy platform that helps primary school students (Grades 1–5) learn in their mother tongue. It gives teachers real-time translation tools to convert English lesson content into regional languages, and lets students learn, listen, and take quizzes in the language they understand best.
 
@@ -19,9 +23,9 @@ Most digital learning content in Indian primary schools is available only in Eng
 MozhiLearn bridges this gap by combining a lesson-authoring workflow with real-time AI translation:
 
 1. **Teachers** write or upload lesson content in English through a simple dashboard.
-2. The platform **auto-translates** the content into Tamil (and other regional languages) using the Google Translate API, with audio narration generated for early readers.
+2. The platform **auto-translates** the content into Tamil (and other regional languages), with audio narration generated for early readers.
 3. **Students** access lessons in their mother tongue — reading, listening, and interacting with the material at their own pace.
-4. Students take **quizzes** in their native language, and results are logged automatically.
+4. Students take **quizzes** in their native language, graded securely on the server.
 5. **Teachers** view an analytics dashboard showing lesson engagement, quiz performance, and areas where students are struggling.
 
 ---
@@ -30,22 +34,19 @@ MozhiLearn bridges this gap by combining a lesson-authoring workflow with real-t
 
 | Layer | Technology |
 |---|---|
-| Frontend | React (Vite) |
+| Frontend Framework | Next.js (App Router, Tailwind CSS) |
 | Backend & Database | Supabase (PostgreSQL, Auth, Storage) |
-| Translation | Google Translate API |
-| Text-to-Speech | Web Speech API / Google Cloud TTS |
-| Hosting | Cloudflare Pages |
-| Version Control | Git & GitHub |
-| Design | Figma |
+| Text-to-Speech | Web Speech API (Tamil `ta-IN` locale) |
+| Package Manager | pnpm |
 
 ---
 
 ## ✨ Features
 
-- 🔤 Real-time English ⇄ Tamil translation for lesson content
+- 🔤 Real-time English ⇄ Tamil translation for lesson content (AI simulation model for prototype)
 - 📚 Curriculum-aligned vernacular lesson library with audio narration
-- 📝 Interactive quizzes in the student's mother tongue with instant scoring
-- 👩‍🏫 Teacher content-authoring tool for quick lesson creation
+- 📝 Interactive quizzes in the student's mother tongue with secure server-side scoring
+- 👩‍🏫 Teacher content-authoring tool for quick lesson creation and quiz building
 - 📊 Student progress dashboard for both students and teachers
 - 🔐 Role-based authentication (Student / Teacher / Admin)
 - 📈 Teacher analytics view — lesson-wise and student-wise performance
@@ -56,65 +57,63 @@ MozhiLearn bridges this gap by combining a lesson-authoring workflow with real-t
 
 ### Prerequisites
 - Node.js (v18 or higher)
-- npm or yarn
+- pnpm (v11 or higher)
 - A [Supabase](https://supabase.com) project (free tier works)
-- A Google Cloud project with the Translate API enabled
 
-### Steps
+### Setup Steps
 
-```bash
-# 1. Clone the repository
-git clone https://github.com/<your-org>/mozhilearn.git
-cd mozhilearn
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/kalaikannan0181/mozhilearn.git
+   cd mozhilearn
+   ```
 
-# 2. Install dependencies
-npm install
+2. **Install dependencies**
+   ```bash
+   npx pnpm install
+   ```
 
-# 3. Set up environment variables
-cp .env.example .env
-```
+3. **Set up database schema (SQL Migration)**
+   - Open your Supabase Dashboard.
+   - Go to **SQL Editor** → **New Query**.
+   - Copy the contents of [`supabase/migrations/001_mozhilearn_schema.sql`](file:///c:/Users/kalai/Downloads/mozhilearn/supabase/migrations/001_mozhilearn_schema.sql) and paste them into the SQL Editor.
+   - Click **Run** to execute the migration. This will automatically create all tables, triggers, secure RPC grading functions, storage buckets, and seed the demo lessons.
 
-Fill in `.env` with your credentials:
+4. **Configure environment variables**
+   Create a `.env.local` file in the project root:
+   ```env
+   VITE_SUPABASE_URL=https://ojikhuxjdswfwjfuxnob.supabase.co
+   VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_1plQ3upmO5mALvpBUJPwZQ_DwxqWeJA
+   ```
+   *(Ensure `.env.local` is listed in your `.gitignore` to prevent credentials exposure).*
 
-```env
-VITE_SUPABASE_URL=your_supabase_project_url
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-VITE_GOOGLE_TRANSLATE_API_KEY=your_google_translate_api_key
-```
+5. **Start the development server**
+   ```bash
+   npx pnpm dev
+   ```
+   The app will be available at `http://localhost:3000`.
 
-```bash
-# 4. Run the database schema
-# Open the Supabase SQL Editor and run schema.sql from the /database folder
+## Authentication Setup and Testing
 
-# 5. Start the development server
-npm run dev
-```
+Authentication uses Supabase Auth with the public browser key. Copy `.env.example` to `.env.local` and set `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY`. Never add a service-role key to the frontend.
 
-The app will be available at `http://localhost:5173`.
-
----
-
-## 🚀 Deployment
-
-MozhiLearn is deployed on **Cloudflare Pages** with continuous deployment from the `main` branch.
-
-- **Live Demo:** `https://mozhilearn.pages.dev` *(update with actual URL)*
-- **Backend:** Supabase (hosted PostgreSQL + Auth + Storage)
+Role information is stored in Supabase user metadata. Test `/signup?role=teacher` and `/signup?role=student`, confirm email when required, and verify each role reaches its matching dashboard. Also verify wrong passwords show an error, logged-out dashboard visits redirect to `/login`, students cannot open the teacher dashboard, logout returns to `/`, and the existing homepage still works.
 
 ---
 
-## 👥 Team Members
+## 🔒 Security Notes
+- **Row Level Security (RLS)** is enabled on all tables in Supabase.
+- **Client safety**: The client-side queries for `quiz_questions` omit the `correct_answer` column, preventing students from inspecting network requests to find correct choices.
+- **Server grading**: Quizzes are graded securely in PostgreSQL database via the `submit_quiz_attempt` RPC function using `security definer`.
 
-| Name | Role |
-|---|---|
-| [Team Member 1] | Team Lead / Full-Stack Developer |
-| [Team Member 2] | Frontend Developer (React) |
-| [Team Member 3] | Backend Developer (Supabase) |
-| [Team Member 4] | AI/Translation Integration Engineer |
-| [Team Member 5] | UI/UX Designer |
-| [Team Member 6] | QA / Documentation & Presentation Lead |
+---
 
-**Team Name:** [Your Team Name]
+## 👥 Team Members (MozhiTech)
+
+**Nandha Engineering College, Erode**
+
+- **Kalaikannan** - Team Lead / Full-Stack Developer
+- *And other contributors of Team MozhiTech.*
 
 ---
 
