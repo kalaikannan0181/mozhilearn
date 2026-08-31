@@ -1,5 +1,4 @@
 import { ArrowRight, BookOpenCheck, Headphones, Users } from 'lucide-react'
-import GridBackground from '@/components/ui/GridBackground'
 
 /* ─── Inline SVG illustration: language bridge / book motif ─── */
 function HeroIllustration() {
@@ -81,7 +80,7 @@ const badges = [
 
 export function Hero() {
   return (
-    <GridBackground id="home" className="bg-[#FFFBEB]">
+    <section id="home" className="relative overflow-hidden">
       <div className="mx-auto grid w-full max-w-7xl items-center gap-12 px-4 py-14 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-24">
         {/* Left: text */}
         <div className="reveal flex flex-col items-start">
@@ -167,6 +166,6 @@ export function Hero() {
           </div>
         </div>
       </div>
-    </GridBackground>
+    </section>
   )
 }
