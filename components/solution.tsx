@@ -1,4 +1,5 @@
-import { ChartColumnBig, Languages, Palette, Volume2 } from 'lucide-react'
+import { BarChart3, Languages, Sparkles, Volume2 } from 'lucide-react'
+import { GlowingEffect } from '@/components/ui/glowing-effect'
 
 const features = [
   {
@@ -6,15 +7,17 @@ const features = [
     step: '01',
     title: 'AI-Assisted Translation',
     tamil: 'மொழிபெயர்ப்பு',
-    body: 'English lessons are converted to Tamil accurately, preserving subject terminology.',
+    body: 'Converts teacher-created lesson content into clear Tamil learning material.',
+    glowColor: '#1D4ED8', // Primary Blue
     tone: 'primary' as const,
   },
   {
-    icon: Palette,
+    icon: Sparkles,
     step: '02',
     title: 'Grade-Level Simplification',
     tamil: 'கற்பித்தல் முறை',
-    body: 'Content is rewritten for Grades 1–5 with age-appropriate vocabulary and familiar examples.',
+    body: 'Adapts explanations into simple language suitable for Grades 1–5.',
+    glowColor: '#F97316', // Accent Orange
     tone: 'accent' as const,
   },
   {
@@ -22,15 +25,17 @@ const features = [
     step: '03',
     title: 'Tamil Audio Learning',
     tamil: 'ஒலி வாசிப்பு',
-    body: 'Natural-sounding Tamil narration lets early readers listen, follow, and build comprehension.',
+    body: 'Lets students listen to Tamil lesson content while they learn.',
+    glowColor: '#059669', // Learning Green
     tone: 'success' as const,
   },
   {
-    icon: ChartColumnBig,
+    icon: BarChart3,
     step: '04',
     title: 'Teacher Progress Insights',
     tamil: 'முன்னேற்றம்',
-    body: 'Dashboards show which lessons students engaged with and how they performed in quizzes.',
+    body: 'Helps teachers review lesson completion and quiz-based comprehension.',
+    glowColor: '#102A43', // Deep Navy
     tone: 'primary' as const,
   },
 ]
@@ -45,7 +50,7 @@ export function Solution() {
   return (
     <section
       id="features"
-      className="bg-gradient-to-b from-secondary/40 to-background py-16 lg:py-24"
+      className="bg-gradient-to-b from-secondary/40 to-background py-16 lg:py-24 scroll-mt-24"
     >
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section header */}
@@ -57,8 +62,7 @@ export function Solution() {
             More Than Translation
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-pretty text-muted-foreground">
-            Four interconnected capabilities that take a lesson from English
-            text to a full Tamil learning experience.
+            MozhiLearn brings lesson adaptation, teacher guidance, audio support, and comprehension checks into one learning workflow.
           </p>
         </div>
 
@@ -70,18 +74,25 @@ export function Solution() {
             className="absolute top-14 right-[6%] left-[6%] -z-10 hidden h-0.5 bg-[repeating-linear-gradient(to_right,oklch(0.918_0.014_252)_0_10px,transparent_10px_20px)] lg:block"
           />
 
-          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {features.map((feature, index) => {
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {features.map((feature) => {
               const styles = toneStyles[feature.tone]
               return (
-                <li
+                <article
                   key={feature.title}
-                  className="group relative flex flex-col rounded-3xl border border-border bg-card p-6 shadow-sm transition-all hover:-translate-y-1.5 hover:shadow-xl"
+                  className="group relative flex flex-col rounded-3xl border border-border bg-card p-6 shadow-sm transition-transform hover:-translate-y-1.5 duration-300"
                 >
+                  <GlowingEffect
+                    glowColor={feature.glowColor}
+                    disabled={false}
+                    glowSize={300}
+                    className="z-10"
+                  />
+
                   {/* Step number + icon */}
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between relative z-20">
                     <span
-                      className={`inline-flex size-13 items-center justify-center rounded-2xl transition-transform group-hover:scale-110 ${styles.icon}`}
+                      className={`inline-flex size-13 items-center justify-center rounded-2xl transition-transform group-hover:scale-110 duration-300 ${styles.icon}`}
                     >
                       <feature.icon className="size-6.5" aria-hidden="true" />
                     </span>
@@ -90,22 +101,22 @@ export function Solution() {
                     </span>
                   </div>
 
-                  <h3 className="mt-5 font-display text-base font-bold text-foreground leading-snug">
+                  <h3 className="mt-5 font-display text-base font-bold text-foreground leading-snug relative z-20">
                     {feature.title}
                   </h3>
-                  <p className="font-tamil mt-0.5 text-sm text-muted-foreground">
+                  <p className="font-tamil mt-0.5 text-sm text-muted-foreground relative z-20">
                     {feature.tamil}
                   </p>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground flex-1">
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground flex-1 relative z-20">
                     {feature.body}
                   </p>
 
                   {/* Subtle bottom accent bar */}
-                  <div className={`mt-5 h-1 rounded-full ${styles.connector}`} aria-hidden="true" />
-                </li>
+                  <div className={`mt-5 h-1 rounded-full relative z-20 ${styles.connector}`} aria-hidden="true" />
+                </article>
               )
             })}
-          </ul>
+          </div>
         </div>
       </div>
     </section>
