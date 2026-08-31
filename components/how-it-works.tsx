@@ -1,26 +1,75 @@
-import { GraduationCap, Upload, WandSparkles } from 'lucide-react'
-import Image from 'next/image'
+import { BookOpenCheck, GraduationCap, Search, Upload, WandSparkles } from 'lucide-react'
 
 const steps = [
   {
     icon: Upload,
-    step: 'Step 1',
-    title: 'Upload the lesson',
-    body: 'Drop in a PDF, worksheet or typed text in English. No formatting required.',
+    step: '01',
+    title: 'Teacher adds lesson content',
+    body: 'Paste or type an English lesson — no special formatting needed. Upload a PDF or worksheet.',
   },
   {
     icon: WandSparkles,
-    step: 'Step 2',
-    title: 'AI translates & adapts',
-    body: 'MozhiLearn converts it to Tamil, re-levels the language for the grade and generates audio.',
+    step: '02',
+    title: 'MozhiLearn prepares Tamil learning material',
+    body: 'The system translates, simplifies for the grade level, and generates a Tamil audio narration.',
+  },
+  {
+    icon: Search,
+    step: '03',
+    title: 'Teacher reviews and publishes',
+    body: 'The teacher checks the Tamil lesson for accuracy and publishes it to their class.',
   },
   {
     icon: GraduationCap,
-    step: 'Step 3',
-    title: 'Students learn & practise',
-    body: 'Children read, listen and answer quizzes — results reach the teacher instantly.',
+    step: '04',
+    title: 'Student learns, listens, and completes a quiz',
+    body: 'Children read in Tamil, listen to the audio, then take a short quiz — results reach the teacher instantly.',
   },
 ]
+
+/* Inline mock dashboard preview — no image dependency */
+function DashboardMock() {
+  return (
+    <div
+      className="overflow-hidden rounded-3xl border border-border bg-card shadow-lg"
+      aria-hidden="true"
+    >
+      {/* Fake titlebar */}
+      <div className="flex items-center gap-1.5 bg-secondary/60 px-4 py-3">
+        <span className="size-2.5 rounded-full bg-destructive/40" />
+        <span className="size-2.5 rounded-full bg-accent/40" />
+        <span className="size-2.5 rounded-full bg-success/40" />
+        <span className="ml-3 text-xs font-semibold text-muted-foreground">MozhiLearn — Teacher Dashboard</span>
+      </div>
+      {/* Mock content */}
+      <div className="p-5 space-y-3">
+        {/* Stat row */}
+        <div className="grid grid-cols-3 gap-2">
+          {[
+            { label: 'Lessons', val: '6', color: 'bg-primary/10 text-primary' },
+            { label: 'Students', val: '18', color: 'bg-success/10 text-success' },
+            { label: 'Pending', val: '2', color: 'bg-accent/10 text-accent' },
+          ].map((s) => (
+            <div key={s.label} className={`rounded-2xl p-3 ${s.color}`}>
+              <p className="text-xs font-semibold opacity-70">{s.label}</p>
+              <p className="text-xl font-extrabold">{s.val}</p>
+            </div>
+          ))}
+        </div>
+        {/* Fake lesson rows */}
+        {['Plants & Sunlight', 'The Water Cycle', 'Our Solar System'].map((title) => (
+          <div key={title} className="flex items-center justify-between rounded-2xl border border-border bg-background p-3">
+            <div>
+              <p className="text-xs font-bold text-foreground">{title}</p>
+              <p className="mt-0.5 font-tamil text-[10px] text-muted-foreground">தமிழில் கிடைக்கிறது</p>
+            </div>
+            <span className="rounded-full bg-success/15 px-2 py-0.5 text-[10px] font-bold text-success">Published</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 export function HowItWorks() {
   return (
@@ -31,19 +80,24 @@ export function HowItWorks() {
             How It Works
           </p>
           <h2 className="mt-3 font-display text-3xl leading-tight font-bold tracking-tight text-balance text-foreground sm:text-4xl">
-            Three steps from English worksheet to Tamil lesson
+            From Lesson to Understanding
           </h2>
+          <p className="mt-4 text-base leading-relaxed text-pretty text-muted-foreground">
+            Four steps connect an English worksheet to a confident Tamil-speaking student.
+          </p>
         </div>
 
-        <ol className="relative mt-14 grid gap-8 lg:grid-cols-3 lg:gap-6">
+        {/* 4-step timeline */}
+        <ol className="relative mt-14 grid gap-8 lg:grid-cols-4 lg:gap-6">
+          {/* Desktop connector */}
           <div
             aria-hidden="true"
-            className="absolute top-9 right-[12%] left-[12%] -z-10 hidden h-0.5 bg-[repeating-linear-gradient(to_right,var(--color-border)_0_10px,transparent_10px_20px)] lg:block"
+            className="absolute top-9 right-[12%] left-[12%] -z-10 hidden h-0.5 bg-[repeating-linear-gradient(to_right,oklch(0.918_0.014_252)_0_10px,transparent_10px_20px)] lg:block"
           />
           {steps.map((item, index) => (
             <li
               key={item.title}
-              className="flex flex-col items-center rounded-3xl border border-border bg-card px-7 py-9 text-center shadow-sm"
+              className="flex flex-col items-center rounded-3xl border border-border bg-card px-6 py-8 text-center shadow-sm"
             >
               <span className="relative flex size-18 items-center justify-center rounded-3xl bg-primary text-primary-foreground shadow-md">
                 <item.icon className="size-8" aria-hidden="true" />
@@ -52,9 +106,9 @@ export function HowItWorks() {
                 </span>
               </span>
               <p className="mt-6 text-xs font-bold tracking-widest text-accent uppercase">
-                {item.step}
+                Step {index + 1}
               </p>
-              <h3 className="mt-2 font-display text-xl font-bold text-balance text-foreground">
+              <h3 className="mt-2 font-display text-base font-bold text-balance text-foreground leading-snug">
                 {item.title}
               </h3>
               <p className="mt-3 text-sm leading-relaxed text-pretty text-muted-foreground">
@@ -64,27 +118,29 @@ export function HowItWorks() {
           ))}
         </ol>
 
-        <div className="mt-16 grid items-center gap-10 rounded-4xl border border-border bg-secondary/50 p-6 sm:p-10 lg:grid-cols-2">
+        {/* Dashboard spotlight */}
+        <div className="mt-16 grid items-center gap-10 rounded-4xl border border-border bg-secondary/30 p-6 sm:p-10 lg:grid-cols-2">
           <div>
-            <h3 className="font-display text-2xl font-bold text-balance text-foreground sm:text-3xl">
+            <p className="text-xs font-bold tracking-widest text-primary uppercase">Teacher View</p>
+            <h3 className="mt-2 font-display text-2xl font-bold text-balance text-foreground sm:text-3xl">
               One dashboard for the whole class
             </h3>
             <p className="mt-4 text-base leading-relaxed text-pretty text-muted-foreground">
-              Teachers see every lesson, every student and every weak concept in
-              one place — in English or Tamil, on a laptop or a phone.
+              Teachers see every lesson, every student, and every weak concept
+              in one place — in English or Tamil, on any device.
             </p>
             <ul className="mt-6 flex flex-col gap-3">
               {[
-                'Class-level comprehension scores after each quiz',
-                'Concept-wise weak areas flagged automatically',
-                'Works on low bandwidth school connections',
+                'Class-level comprehension after each quiz',
+                'Concept-wise weak areas flagged clearly',
+                'Works on low-bandwidth school connections',
               ].map((point) => (
                 <li
                   key={point}
                   className="flex items-start gap-3 text-sm leading-relaxed text-foreground"
                 >
-                  <span
-                    className="mt-1.5 size-2 shrink-0 rounded-full bg-success"
+                  <BookOpenCheck
+                    className="mt-0.5 size-4 shrink-0 text-success"
                     aria-hidden="true"
                   />
                   {point}
@@ -92,16 +148,7 @@ export function HowItWorks() {
               ))}
             </ul>
           </div>
-          <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-lg">
-            <Image
-              src="/images/teacher-dashboard.png"
-              alt="MozhiLearn teacher dashboard showing class progress charts and Tamil lesson list"
-              width={1200}
-              height={900}
-              sizes="(min-width: 1024px) 34rem, 100vw"
-              className="h-auto w-full"
-            />
-          </div>
+          <DashboardMock />
         </div>
       </div>
     </section>

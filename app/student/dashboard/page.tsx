@@ -116,7 +116,7 @@ export default function StudentDashboard() {
   if (loading) {
     return (
       <div className="flex h-96 items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-green-500 border-t-transparent"></div>
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
       </div>
     )
   }
@@ -124,17 +124,14 @@ export default function StudentDashboard() {
   return (
     <div className="space-y-8">
       {/* Welcome Banner */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-green-500 to-emerald-600 p-6 md:p-8 text-white shadow-lg shadow-green-100">
-        <div className="absolute top-0 right-0 translate-x-8 -translate-y-8 opacity-10">
-          <BookOpen className="size-48" />
-        </div>
+      <div className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-r from-secondary/70 via-secondary/30 to-background p-6 md:p-8 shadow-sm flex flex-col md:flex-row md:items-center gap-5">
         <div className="relative z-10 space-y-2">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-3 py-1 text-xs font-bold uppercase tracking-wider backdrop-blur-md">
-            <Sparkles className="size-3.5 text-yellow-300 fill-yellow-300" />
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">
+            <Sparkles className="size-3.5 text-accent" />
             Active Student
           </span>
-          <h1 className="text-3xl font-extrabold md:text-4xl">Hello, {profile?.full_name}!</h1>
-          <p className="text-green-50/90 text-sm md:text-base font-semibold max-w-xl font-tamil">
+          <h1 className="text-3xl font-extrabold md:text-4xl text-foreground">Hello, {profile?.full_name}!</h1>
+          <p className="text-muted-foreground text-sm md:text-base font-semibold max-w-xl font-tamil">
             இன்று நாம் என்ன படிக்கப் போகிறோம்? தாய்மொழியில் கற்போம்!
           </p>
         </div>
@@ -142,99 +139,99 @@ export default function StudentDashboard() {
 
       {/* Progress Cards */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
-        <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center gap-4">
-          <div className="p-3.5 rounded-2xl bg-green-100 text-green-600 shrink-0">
+        <div className="bg-card p-6 rounded-3xl border border-border shadow-sm flex items-center gap-4">
+          <div className="p-3.5 rounded-2xl bg-success/10 text-success shrink-0">
             <CheckCircle2 className="size-6" />
           </div>
           <div>
-            <p className="text-sm font-semibold text-gray-500">Completed (முடித்தவை)</p>
-            <h4 className="text-2xl font-extrabold text-gray-900 mt-0.5">{stats.completed} Lessons</h4>
+            <p className="text-sm font-semibold text-muted-foreground">Completed (முடித்தவை)</p>
+            <h4 className="text-2xl font-extrabold text-foreground mt-0.5">{stats.completed} Lessons</h4>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center gap-4">
-          <div className="p-3.5 rounded-2xl bg-blue-100 text-blue-600 shrink-0">
+        <div className="bg-card p-6 rounded-3xl border border-border shadow-sm flex items-center gap-4">
+          <div className="p-3.5 rounded-2xl bg-primary/10 text-primary shrink-0">
             <Clock className="size-6" />
           </div>
           <div>
-            <p className="text-sm font-semibold text-gray-500">In Progress (படிப்பவை)</p>
-            <h4 className="text-2xl font-extrabold text-gray-900 mt-0.5">{stats.inProgress} Lessons</h4>
+            <p className="text-sm font-semibold text-muted-foreground">In Progress (படிப்பவை)</p>
+            <h4 className="text-2xl font-extrabold text-foreground mt-0.5">{stats.inProgress} Lessons</h4>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex items-center gap-4">
-          <div className="p-3.5 rounded-2xl bg-yellow-100 text-yellow-600 shrink-0">
+        <div className="bg-card p-6 rounded-3xl border border-border shadow-sm flex items-center gap-4">
+          <div className="p-3.5 rounded-2xl bg-accent/10 text-accent shrink-0">
             <Award className="size-6" />
           </div>
           <div>
-            <p className="text-sm font-semibold text-gray-500">Badges Won (பதக்கங்கள்)</p>
-            <h4 className="text-2xl font-extrabold text-gray-900 mt-0.5">{stats.badges} Badges</h4>
+            <p className="text-sm font-semibold text-muted-foreground">Badges Won (பதக்கங்கள்)</p>
+            <h4 className="text-2xl font-extrabold text-foreground mt-0.5">{stats.badges} Badges</h4>
           </div>
         </div>
       </div>
 
       {/* Lessons List Section */}
       <div className="space-y-4">
-        <h2 className="text-2xl font-extrabold text-gray-900 flex items-center gap-2">
-          <BookOpenCheck className="size-6 text-green-500" />
+        <h2 className="text-2xl font-extrabold text-foreground flex items-center gap-2">
+          <BookOpenCheck className="size-6 text-success" />
           My Lessons (எனது பாடங்கள்)
         </h2>
 
         {lessons.length === 0 ? (
-          <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-12 text-center">
-            <BookOpen className="mx-auto size-16 text-gray-300" />
-            <h3 className="mt-4 text-lg font-bold text-gray-900">No lessons assigned yet</h3>
-            <p className="text-gray-500 mt-1">Once your teacher assigns lessons, they will show up here.</p>
+          <div className="bg-card rounded-3xl border border-border shadow-sm p-12 text-center">
+            <BookOpen className="mx-auto size-16 text-border" />
+            <h3 className="mt-4 text-lg font-bold text-foreground">No lessons assigned yet</h3>
+            <p className="text-muted-foreground mt-1">Once your teacher assigns lessons, they will show up here.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {lessons.map((lesson) => (
               <div 
                 key={lesson.id} 
-                className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 flex flex-col hover:border-green-200 hover:shadow-md transition-all group"
+                className="bg-card rounded-3xl border border-border shadow-sm p-6 flex flex-col hover:border-success/30 hover:shadow-md transition-all group"
               >
                 <div className="flex items-center justify-between gap-2 mb-4">
-                  <span className="text-xs font-bold text-green-700 bg-green-50 px-2.5 py-1 rounded-full">
+                  <span className="text-xs font-bold text-success bg-success/10 px-2.5 py-1 rounded-full">
                     {lesson.subject}
                   </span>
                   <span className={`px-2.5 py-1 rounded-full text-xs font-extrabold ${
                     lesson.progress_status === 'completed'
-                      ? 'bg-green-100 text-green-800'
+                      ? 'bg-success/10 text-success'
                       : lesson.progress_status === 'in_progress'
-                      ? 'bg-blue-100 text-blue-800'
-                      : 'bg-gray-100 text-gray-500'
+                      ? 'bg-primary/10 text-primary'
+                      : 'bg-muted text-muted-foreground'
                   }`}>
                     {lesson.progress_status === 'completed' ? 'Completed' : lesson.progress_status === 'in_progress' ? 'Reading' : 'Not Started'}
                   </span>
                 </div>
 
                 <div className="flex-1 space-y-1.5">
-                  <h4 className="text-lg font-extrabold text-gray-900 group-hover:text-green-600 transition-colors line-clamp-1">
+                  <h4 className="text-lg font-extrabold text-foreground group-hover:text-success transition-colors line-clamp-1">
                     {lesson.title_en}
                   </h4>
                   {lesson.title_ta && (
-                    <h5 className="font-tamil font-bold text-sm text-gray-600 line-clamp-1">
+                    <h5 className="font-tamil font-bold text-sm text-muted-foreground line-clamp-1">
                       {lesson.title_ta}
                     </h5>
                   )}
                 </div>
 
                 {lesson.quiz_percentage !== null && (
-                  <div className="mt-4 bg-yellow-50/50 rounded-2xl p-2.5 border border-yellow-100 flex items-center justify-between">
-                    <span className="text-xs font-semibold text-yellow-800 flex items-center gap-1">
-                      <Award className="size-4 text-yellow-600 fill-yellow-600" />
+                  <div className="mt-4 bg-accent/6 rounded-2xl p-2.5 border border-accent/15 flex items-center justify-between">
+                    <span className="text-xs font-semibold text-accent flex items-center gap-1">
+                      <Award className="size-4 text-accent" />
                       Best Score:
                     </span>
-                    <span className="text-sm font-extrabold text-yellow-900">
+                    <span className="text-sm font-extrabold text-foreground">
                       {lesson.quiz_percentage}%
                     </span>
                   </div>
                 )}
 
-                <div className="border-t border-gray-50 pt-4 mt-6 flex items-center justify-between gap-2">
+                <div className="border-t border-border pt-4 mt-6 flex items-center justify-between gap-2">
                   <Link
                     href={`/student/lessons/${lesson.id}`}
-                    className="flex-1 inline-flex h-10 items-center justify-center gap-1.5 rounded-2xl bg-green-500 text-white text-xs font-bold shadow-sm shadow-green-100 hover:bg-green-600 transition-colors"
+                    className="flex-1 inline-flex h-10 items-center justify-center gap-1.5 rounded-2xl bg-success text-success-foreground text-xs font-bold shadow-sm hover:bg-success/90 transition-colors"
                   >
                     <Play className="size-3.5 fill-current" />
                     Learn (படி)
@@ -242,7 +239,7 @@ export default function StudentDashboard() {
                   {lesson.progress_status !== 'not_started' && (
                     <Link
                       href={`/student/quiz/${lesson.id}`}
-                      className="flex-1 inline-flex h-10 items-center justify-center gap-1.5 rounded-2xl border border-green-200 text-green-600 text-xs font-bold hover:bg-green-50 transition-colors"
+                      className="flex-1 inline-flex h-10 items-center justify-center gap-1.5 rounded-2xl border border-success/25 text-success text-xs font-bold hover:bg-success/8 transition-colors"
                     >
                       <HelpCircle className="size-3.5" />
                       Quiz (தேர்வு)

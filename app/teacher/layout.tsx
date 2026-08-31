@@ -48,14 +48,14 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
 
   if (profileError) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50 p-6">
-        <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm max-w-md w-full text-center">
-          <div className="h-12 w-12 rounded-full bg-red-50 text-red-600 flex items-center justify-center mx-auto mb-4">
+      <div className="flex min-h-screen items-center justify-center bg-background p-6">
+        <div className="bg-card p-8 rounded-3xl border border-border shadow-sm max-w-md w-full text-center">
+          <div className="h-12 w-12 rounded-full bg-destructive/10 text-destructive flex items-center justify-center mx-auto mb-4">
             <X className="size-6" />
           </div>
-          <h3 className="font-bold text-gray-900 text-lg">Profile Load Error</h3>
-          <p className="mt-2 text-sm text-gray-500">{profileError}</p>
-          <button onClick={() => logout()} className="mt-6 w-full py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl font-semibold transition">
+          <h3 className="font-bold text-foreground text-lg">Profile Load Error</h3>
+          <p className="mt-2 text-sm text-muted-foreground">{profileError}</p>
+          <button onClick={() => logout()} className="mt-6 w-full py-2.5 bg-destructive hover:bg-destructive/90 text-white rounded-xl font-semibold transition">
             Sign Out
           </button>
         </div>
@@ -69,10 +69,10 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
 
   if (loading || !user || !profile || profile.role !== 'teacher') {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50">
+      <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="text-center">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent mx-auto"></div>
-          <p className="mt-2 text-sm text-gray-500">Checking authorization...</p>
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent mx-auto" />
+          <p className="mt-2 text-sm text-muted-foreground">Checking authorization...</p>
         </div>
       </div>
     )
@@ -87,11 +87,11 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
   ]
 
   return (
-    <div className="flex h-screen bg-gray-50 overflow-hidden">
+    <div className="flex h-screen bg-background overflow-hidden">
       {/* Desktop Sidebar */}
-      <aside className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 border-r border-gray-200 bg-white shadow-sm z-20">
+      <aside className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 border-r border-border bg-card shadow-sm z-20">
         <div className="flex flex-col flex-1 min-h-0">
-          <div className="flex items-center h-20 px-6 border-b border-gray-100 gap-2.5">
+          <div className="flex items-center h-20 px-6 border-b border-border gap-2.5">
             <span className="relative flex size-10 items-center justify-center rounded-2xl bg-primary text-primary-foreground shrink-0">
               <BookOpenText className="size-5" />
               <Sparkles className="absolute -top-1 -right-1 size-4 text-accent" />
@@ -116,38 +116,38 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
                     className={`flex items-center px-4 py-3 text-sm font-semibold rounded-2xl transition-all ${
                       isActive
                         ? 'bg-primary text-primary-foreground shadow-sm'
-                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                        : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
                     }`}
                   >
-                    <item.icon className={`mr-3 h-5 w-5 shrink-0 ${isActive ? 'text-primary-foreground' : 'text-gray-400'}`} />
+                    <item.icon className={`mr-3 h-5 w-5 shrink-0 ${isActive ? 'text-primary-foreground' : 'text-muted-foreground'}`} />
                     {item.label}
                   </Link>
                 )
               })}
             </nav>
           </div>
-          <div className="flex-shrink-0 flex flex-col p-4 border-t border-gray-100 gap-2">
+          <div className="flex-shrink-0 flex flex-col p-4 border-t border-border gap-2">
             <div className="flex items-center px-4 py-2 gap-3">
               <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
                 {profile.full_name ? profile.full_name[0].toUpperCase() : 'T'}
               </div>
               <div className="flex flex-col leading-tight min-w-0">
-                <span className="text-sm font-semibold text-gray-900 truncate">{profile.full_name}</span>
-                <span className="text-xs text-gray-500 capitalize">{profile.role}</span>
+                <span className="text-sm font-semibold text-foreground truncate">{profile.full_name}</span>
+                <span className="text-xs text-muted-foreground capitalize">{profile.role}</span>
               </div>
             </div>
             <Link
               href="/"
-              className="flex items-center px-4 py-2.5 text-sm font-semibold rounded-xl text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+              className="flex items-center px-4 py-2.5 text-sm font-semibold rounded-xl text-muted-foreground hover:bg-secondary hover:text-foreground"
             >
-              <Home className="mr-3 h-4 w-4 text-gray-400" />
+              <Home className="mr-3 h-4 w-4 text-muted-foreground" />
               Main Site
             </Link>
             <button
               onClick={() => logout()}
-              className="flex items-center w-full px-4 py-2.5 text-sm font-semibold rounded-xl text-red-600 hover:bg-red-50"
+              className="flex items-center w-full px-4 py-2.5 text-sm font-semibold rounded-xl text-destructive hover:bg-destructive/8"
             >
-              <LogOut className="mr-3 h-4 w-4 text-red-400" />
+              <LogOut className="mr-3 h-4 w-4 text-destructive/70" />
               Sign Out
             </button>
           </div>
@@ -157,7 +157,7 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
       {/* Main Content Area */}
       <div className="flex flex-col flex-1 w-full md:pl-64">
         {/* Mobile Header */}
-        <header className="flex items-center justify-between h-16 bg-white border-b border-gray-200 px-4 md:hidden">
+        <header className="flex items-center justify-between h-16 bg-card border-b border-border px-4 md:hidden">
           <Link href="/teacher/dashboard" className="flex items-center gap-2">
             <span className="relative flex size-8 items-center justify-center rounded-xl bg-primary text-primary-foreground">
               <BookOpenText className="size-4" />
@@ -168,7 +168,7 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
           </Link>
           <button
             onClick={() => setMobileMenuOpen(true)}
-            className="p-2 rounded-lg border border-gray-200 text-gray-600"
+            className="p-2 rounded-lg border border-border text-muted-foreground"
           >
             <Menu className="h-5 w-5" />
           </button>
@@ -177,13 +177,13 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
         {/* Mobile Menu Backdrop & Panel */}
         {mobileMenuOpen && (
           <div className="fixed inset-0 z-40 md:hidden">
-            <div className="fixed inset-0 bg-gray-600/50 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)}></div>
-            <nav className="fixed top-0 bottom-0 right-0 w-64 bg-white border-l border-gray-200 flex flex-col p-6 shadow-xl">
+            <div className="fixed inset-0 bg-foreground/30 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)} />
+            <nav className="fixed top-0 bottom-0 right-0 w-64 bg-card border-l border-border flex flex-col p-6 shadow-xl">
               <div className="flex items-center justify-between mb-8">
-                <span className="font-semibold text-gray-900">Navigation</span>
+                <span className="font-semibold text-foreground">Navigation</span>
                 <button
                   onClick={() => setMobileMenuOpen(false)}
-                  className="p-1.5 rounded-lg border border-gray-200 text-gray-600"
+                  className="p-1.5 rounded-lg border border-border text-muted-foreground"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -199,7 +199,7 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
                       className={`flex items-center px-4 py-3 text-sm font-semibold rounded-2xl transition-all ${
                         isActive
                           ? 'bg-primary text-primary-foreground shadow-sm'
-                          : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                          : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
                       }`}
                     >
                       <item.icon className="mr-3 h-5 w-5 shrink-0" />
@@ -208,26 +208,26 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
                   )
                 })}
               </div>
-              <div className="border-t border-gray-100 pt-4 mt-auto space-y-2">
+              <div className="border-t border-border pt-4 mt-auto space-y-2">
                 <div className="flex items-center px-2 py-2 gap-3 mb-2">
                   <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
                     {profile.full_name ? profile.full_name[0].toUpperCase() : 'T'}
                   </div>
                   <div className="flex flex-col leading-tight min-w-0">
-                    <span className="text-sm font-semibold text-gray-900 truncate">{profile.full_name}</span>
-                    <span className="text-xs text-gray-500 capitalize">{profile.role}</span>
+                    <span className="text-sm font-semibold text-foreground truncate">{profile.full_name}</span>
+                    <span className="text-xs text-muted-foreground capitalize">{profile.role}</span>
                   </div>
                 </div>
                 <Link
                   href="/"
-                  className="flex items-center px-4 py-2.5 text-sm font-semibold rounded-xl text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                  className="flex items-center px-4 py-2.5 text-sm font-semibold rounded-xl text-muted-foreground hover:bg-secondary hover:text-foreground"
                 >
                   <Home className="mr-3 h-4 w-4" />
                   Main Site
                 </Link>
                 <button
                   onClick={() => logout()}
-                  className="flex items-center w-full px-4 py-2.5 text-sm font-semibold rounded-xl text-red-600 hover:bg-red-50"
+                  className="flex items-center w-full px-4 py-2.5 text-sm font-semibold rounded-xl text-destructive hover:bg-destructive/8"
                 >
                   <LogOut className="mr-3 h-4 w-4" />
                   Sign Out

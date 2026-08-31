@@ -205,19 +205,19 @@ export default function TeacherDashboard() {
     return (
       <div className="flex min-h-[400px] flex-col items-center justify-center p-8">
         <Loader2 className="h-10 w-10 animate-spin text-primary" />
-        <p className="mt-4 text-sm text-gray-500 font-medium">Loading dashboard data...</p>
+        <p className="mt-4 text-sm text-muted-foreground font-medium">Loading dashboard data...</p>
       </div>
     )
   }
 
   if (error) {
     return (
-      <div className="bg-red-50 border border-red-200 rounded-3xl p-6 flex items-start gap-4 shadow-sm max-w-2xl mx-auto my-8">
-        <AlertCircle className="size-6 text-red-600 shrink-0 mt-0.5" />
+      <div className="bg-destructive/8 border border-destructive/20 rounded-3xl p-6 flex items-start gap-4 shadow-sm max-w-2xl mx-auto my-8">
+        <AlertCircle className="size-6 text-destructive shrink-0 mt-0.5" />
         <div>
-          <h3 className="font-bold text-red-800 text-lg">Failed to Load Dashboard</h3>
-          <p className="text-red-700 text-sm mt-1">{error}</p>
-          <button onClick={fetchDashboardData} className="mt-4 px-4 py-2 text-sm font-semibold bg-red-600 text-white rounded-xl hover:bg-red-700 transition">
+          <h3 className="font-bold text-destructive text-lg">Failed to Load Dashboard</h3>
+          <p className="text-destructive/80 text-sm mt-1">{error}</p>
+          <button onClick={fetchDashboardData} className="mt-4 px-4 py-2 text-sm font-semibold bg-destructive text-white rounded-xl hover:bg-destructive/90 transition">
             Try Again
           </button>
         </div>
@@ -226,25 +226,25 @@ export default function TeacherDashboard() {
   }
 
   const statCards = [
-    { label: 'Total Lessons', value: stats.totalLessons, icon: BookOpen, color: 'bg-blue-500 text-blue-500 bg-blue-50/50 border-blue-100' },
-    { label: 'Total Students', value: stats.totalStudents, icon: Users, color: 'bg-purple-500 text-purple-500 bg-purple-50/50 border-purple-100' },
-    { label: 'Assigned Lessons', value: stats.assignedLessons, icon: BookmarkCheck, color: 'bg-green-500 text-green-500 bg-green-50/50 border-green-100' },
-    { label: 'Pending Reviews', value: stats.pendingReviews, icon: Languages, color: 'bg-yellow-500 text-yellow-600 bg-yellow-50/50 border-yellow-100' },
+    { label: 'Total Lessons', value: stats.totalLessons, icon: BookOpen, iconBg: 'bg-primary/10 text-primary', border: 'border-border' },
+    { label: 'Total Students', value: stats.totalStudents, icon: Users, iconBg: 'bg-secondary text-primary', border: 'border-border' },
+    { label: 'Assigned Lessons', value: stats.assignedLessons, icon: BookmarkCheck, iconBg: 'bg-success/10 text-success', border: 'border-border' },
+    { label: 'Pending Reviews', value: stats.pendingReviews, icon: Languages, iconBg: 'bg-accent/10 text-accent', border: 'border-border' },
   ]
 
   return (
     <div className="space-y-8">
       {/* Welcome Card */}
-      <div className="relative overflow-hidden rounded-3xl border border-gray-100 bg-gradient-to-r from-blue-50 via-indigo-50/30 to-background p-6 sm:p-8 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
+      <div className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-r from-secondary/60 via-secondary/20 to-background p-6 sm:p-8 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
+          <h1 className="text-3xl font-extrabold tracking-tight text-foreground">
             Welcome, {profile?.full_name || 'Teacher'}!
           </h1>
-          <p className="text-gray-600 mt-2 text-base leading-relaxed">
+          <p className="text-muted-foreground mt-2 text-base leading-relaxed">
             Create lessons, manage students, and track learning progress.
           </p>
           {profile?.school_name && (
-            <div className="inline-flex items-center gap-2 mt-4 px-3 py-1.5 rounded-full bg-white border border-gray-100 text-xs font-bold text-gray-700 shadow-sm">
+            <div className="inline-flex items-center gap-2 mt-4 px-3 py-1.5 rounded-full bg-card border border-border text-xs font-bold text-foreground shadow-sm">
               <School className="size-4 text-primary" />
               <span>{profile.school_name}</span>
             </div>
@@ -262,13 +262,13 @@ export default function TeacherDashboard() {
       {/* Summary Cards Grid */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {statCards.map((card) => (
-          <div key={card.label} className={`bg-white p-6 rounded-3xl border ${card.color.split(' ')[4]} shadow-sm flex items-center gap-4 hover:shadow-md transition-shadow`}>
-            <div className={`p-4 rounded-2xl ${card.color.split(' ')[2]} ${card.color.split(' ')[1]}`}>
+          <div key={card.label} className={`bg-card p-6 rounded-3xl border ${card.border} shadow-sm flex items-center gap-4 hover:shadow-md transition-shadow`}>
+            <div className={`p-4 rounded-2xl ${card.iconBg}`}>
               <card.icon className="size-6" />
             </div>
             <div>
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">{card.label}</p>
-              <h4 className="text-3xl font-extrabold text-gray-900 mt-1">{card.value}</h4>
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">{card.label}</p>
+              <h4 className="text-3xl font-extrabold text-foreground mt-1">{card.value}</h4>
             </div>
           </div>
         ))}
@@ -281,10 +281,10 @@ export default function TeacherDashboard() {
         <div className="lg:col-span-7 space-y-6">
           
           {/* Recent Lessons */}
-          <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 flex flex-col">
+          <div className="bg-card rounded-3xl border border-border shadow-sm p-6 flex flex-col">
             <div className="flex items-center justify-between mb-5">
-              <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                <FileText className="size-5 text-gray-400" />
+              <h3 className="text-lg font-bold text-foreground flex items-center gap-2">
+                <FileText className="size-5 text-muted-foreground" />
                 Recent Lessons
               </h3>
               <Link href="/teacher/lessons" className="text-sm font-semibold text-primary hover:underline flex items-center gap-1">
@@ -296,8 +296,8 @@ export default function TeacherDashboard() {
             <div className="space-y-3">
               {recentLessons.length === 0 ? (
                 <div className="flex flex-col items-center justify-center text-center py-10">
-                  <FolderOpen className="size-12 text-gray-200 mb-2" />
-                  <p className="text-gray-400 font-medium">No lessons created yet.</p>
+                  <FolderOpen className="size-12 text-border mb-2" />
+                  <p className="text-muted-foreground font-medium">No lessons created yet.</p>
                   <Link
                     href="/teacher/lessons/create"
                     className="mt-3 inline-flex items-center gap-1.5 text-sm font-bold bg-primary/10 text-primary px-4 py-2 rounded-xl hover:bg-primary/20 transition"
@@ -308,13 +308,13 @@ export default function TeacherDashboard() {
                 </div>
               ) : (
                 recentLessons.map((lesson) => (
-                  <div key={lesson.id} className="flex items-center justify-between p-4 rounded-2xl border border-gray-50 hover:border-gray-100 hover:bg-gray-50/30 transition-all">
+                  <div key={lesson.id} className="flex items-center justify-between p-4 rounded-2xl border border-border hover:border-border hover:bg-secondary/30 transition-all">
                     <div className="min-w-0 pr-4">
-                      <p className="font-bold text-gray-900 truncate text-base">{lesson.title_en}</p>
+                      <p className="font-bold text-foreground truncate text-base">{lesson.title_en}</p>
                       {lesson.title_ta && (
-                        <p className="font-tamil text-sm text-gray-500 mt-0.5 truncate">{lesson.title_ta}</p>
+                        <p className="font-tamil text-sm text-muted-foreground mt-0.5 truncate">{lesson.title_ta}</p>
                       )}
-                      <div className="text-xs text-gray-400 mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
+                      <div className="text-xs text-muted-foreground mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
                         <span className="font-semibold text-primary/80 bg-primary/5 px-2 py-0.5 rounded-md">Grade {lesson.grade_level}</span>
                         <span>•</span>
                         <span>{lesson.subject}</span>
@@ -328,14 +328,14 @@ export default function TeacherDashboard() {
                     <div className="flex items-center gap-3 shrink-0">
                       <span className={`px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
                         lesson.status === 'published'
-                          ? 'bg-green-50 text-green-700 border border-green-100'
-                          : 'bg-yellow-50 text-yellow-700 border border-yellow-100'
+                          ? 'bg-success/10 text-success border border-success/20'
+                          : 'bg-accent/10 text-accent border border-accent/20'
                       }`}>
                         {lesson.status}
                       </span>
                       <Link
                         href={`/teacher/lessons/${lesson.id}`}
-                        className="p-1.5 rounded-lg border border-gray-100 hover:border-primary hover:text-primary transition bg-white"
+                        className="p-1.5 rounded-lg border border-border hover:border-primary hover:text-primary transition bg-card"
                       >
                         <ArrowRight className="size-4" />
                       </Link>
@@ -347,43 +347,43 @@ export default function TeacherDashboard() {
           </div>
 
           {/* Quick Actions */}
-          <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6">
-            <h3 className="text-lg font-bold text-gray-900 mb-5">Quick Actions</h3>
+          <div className="bg-card rounded-3xl border border-border shadow-sm p-6">
+            <h3 className="text-lg font-bold text-foreground mb-5">Quick Actions</h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
               <Link
                 href="/teacher/lessons/create"
-                className="flex flex-col items-center justify-center p-4 rounded-2xl border border-gray-100 hover:border-primary hover:bg-primary/5 transition text-center gap-2 group"
+                className="flex flex-col items-center justify-center p-4 rounded-2xl border border-border hover:border-primary hover:bg-primary/5 transition text-center gap-2 group"
               >
                 <PlusCircle className="size-7 text-primary group-hover:scale-105 transition" />
-                <span className="text-xs font-bold text-gray-700">Create Lesson</span>
+                <span className="text-xs font-bold text-foreground">Create Lesson</span>
               </Link>
               <Link
                 href="/teacher/analytics"
-                className="flex flex-col items-center justify-center p-4 rounded-2xl border border-gray-100 hover:border-primary hover:bg-primary/5 transition text-center gap-2 group"
+                className="flex flex-col items-center justify-center p-4 rounded-2xl border border-border hover:border-primary hover:bg-primary/5 transition text-center gap-2 group"
               >
-                <Users className="size-7 text-purple-500 group-hover:scale-105 transition" />
-                <span className="text-xs font-bold text-gray-700">View Students</span>
+                <Users className="size-7 text-primary group-hover:scale-105 transition" />
+                <span className="text-xs font-bold text-foreground">View Students</span>
               </Link>
               <Link
                 href="/teacher/lessons"
-                className="flex flex-col items-center justify-center p-4 rounded-2xl border border-gray-100 hover:border-primary hover:bg-primary/5 transition text-center gap-2 group"
+                className="flex flex-col items-center justify-center p-4 rounded-2xl border border-border hover:border-primary hover:bg-primary/5 transition text-center gap-2 group"
               >
-                <FileText className="size-7 text-blue-500 group-hover:scale-105 transition" />
-                <span className="text-xs font-bold text-gray-700">Manage Lessons</span>
+                <FileText className="size-7 text-primary group-hover:scale-105 transition" />
+                <span className="text-xs font-bold text-foreground">Manage Lessons</span>
               </Link>
               <Link
                 href="/teacher/lessons"
-                className="flex flex-col items-center justify-center p-4 rounded-2xl border border-gray-100 hover:border-primary hover:bg-primary/5 transition text-center gap-2 group"
+                className="flex flex-col items-center justify-center p-4 rounded-2xl border border-border hover:border-primary hover:bg-primary/5 transition text-center gap-2 group"
               >
-                <BookmarkCheck className="size-7 text-green-500 group-hover:scale-105 transition" />
-                <span className="text-xs font-bold text-gray-700">Assign Lesson</span>
+                <BookmarkCheck className="size-7 text-success group-hover:scale-105 transition" />
+                <span className="text-xs font-bold text-foreground">Assign Lesson</span>
               </Link>
               <Link
                 href="/teacher/reviews"
-                className="flex flex-col items-center justify-center p-4 rounded-2xl border border-gray-100 hover:border-primary hover:bg-primary/5 transition text-center gap-2 group"
+                className="flex flex-col items-center justify-center p-4 rounded-2xl border border-border hover:border-primary hover:bg-primary/5 transition text-center gap-2 group"
               >
-                <Languages className="size-7 text-yellow-500 group-hover:scale-105 transition" />
-                <span className="text-xs font-bold text-gray-700">Review Translations</span>
+                <Languages className="size-7 text-accent group-hover:scale-105 transition" />
+                <span className="text-xs font-bold text-foreground">Review Translations</span>
               </Link>
             </div>
           </div>
@@ -394,10 +394,10 @@ export default function TeacherDashboard() {
         <div className="lg:col-span-5 space-y-6">
           
           {/* Mapped Students Preview */}
-          <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 flex flex-col">
+          <div className="bg-card rounded-3xl border border-border shadow-sm p-6 flex flex-col">
             <div className="flex items-center justify-between mb-5">
-              <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                <GraduationCap className="size-5 text-gray-400" />
+              <h3 className="text-lg font-bold text-foreground flex items-center gap-2">
+                <GraduationCap className="size-5 text-muted-foreground" />
                 My Students
               </h3>
               <Link href="/teacher/analytics" className="text-sm font-semibold text-primary hover:underline">
@@ -407,19 +407,19 @@ export default function TeacherDashboard() {
 
             <div className="space-y-3">
               {students.length === 0 ? (
-                <div className="text-center py-8 text-gray-400">
+                <div className="text-center py-8 text-muted-foreground">
                   <p className="font-medium text-sm">No students assigned yet.</p>
                 </div>
               ) : (
                 students.map((student) => (
-                  <div key={student.id} className="flex items-center justify-between p-3.5 rounded-2xl bg-gray-50/50 border border-gray-50">
+                  <div key={student.id} className="flex items-center justify-between p-3.5 rounded-2xl bg-secondary/40 border border-border">
                     <div className="flex items-center gap-3">
                       <div className="h-9 w-9 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
                         {student.full_name ? student.full_name[0].toUpperCase() : 'S'}
                       </div>
                       <div>
-                        <p className="font-bold text-gray-900 text-sm leading-none">{student.full_name}</p>
-                        <p className="text-xs text-gray-400 mt-1.5">Grade Level: {student.grade_level || '3'}</p>
+                        <p className="font-bold text-foreground text-sm leading-none">{student.full_name}</p>
+                        <p className="text-xs text-muted-foreground mt-1.5">Grade Level: {student.grade_level || '3'}</p>
                       </div>
                     </div>
                   </div>
@@ -429,10 +429,10 @@ export default function TeacherDashboard() {
           </div>
 
           {/* Recent Student Progress Activity */}
-          <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 flex flex-col">
+          <div className="bg-card rounded-3xl border border-border shadow-sm p-6 flex flex-col">
             <div className="flex items-center justify-between mb-5">
-              <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                <History className="size-5 text-gray-400" />
+              <h3 className="text-lg font-bold text-foreground flex items-center gap-2">
+                <History className="size-5 text-muted-foreground" />
                 Student Activity
               </h3>
               <Link href="/teacher/analytics" className="text-sm font-semibold text-primary hover:underline">
@@ -442,30 +442,30 @@ export default function TeacherDashboard() {
 
             <div className="space-y-3">
               {activity.length === 0 ? (
-                <div className="text-center py-8 text-gray-400 leading-relaxed">
+                <div className="text-center py-8 text-muted-foreground leading-relaxed">
                   <p className="font-medium text-sm">No student activity logged yet.</p>
                   <p className="text-xs mt-1">Activity will appear here once students submit quizzes.</p>
                 </div>
               ) : (
                 activity.map((act) => (
-                  <div key={act.id} className="flex items-center justify-between p-3.5 rounded-2xl border border-gray-50 hover:border-gray-100 transition-colors">
+                  <div key={act.id} className="flex items-center justify-between p-3.5 rounded-2xl border border-border hover:bg-secondary/30 transition-colors">
                     <div className="min-w-0 pr-3">
-                      <p className="font-bold text-gray-900 text-sm truncate">{act.student_name}</p>
-                      <p className="text-xs text-gray-500 mt-1 truncate">
+                      <p className="font-bold text-foreground text-sm truncate">{act.student_name}</p>
+                      <p className="text-xs text-muted-foreground mt-1 truncate">
                         Completed quiz: <span className="font-medium">{act.lesson_title}</span>
                       </p>
                     </div>
                     <div className="text-right shrink-0">
                       <span className={`inline-block px-2.5 py-1 rounded-full text-xs font-extrabold ${
                         act.percentage >= 70
-                          ? 'bg-green-50 text-green-700'
+                          ? 'bg-success/10 text-success'
                           : act.percentage >= 40
-                          ? 'bg-yellow-50 text-yellow-700'
-                          : 'bg-red-50 text-red-700'
+                          ? 'bg-accent/10 text-accent'
+                          : 'bg-destructive/10 text-destructive'
                       }`}>
                         {act.score}/{act.total_questions} ({act.percentage}%)
                       </span>
-                      <p className="text-[10px] text-gray-400 mt-1.5 font-medium">
+                      <p className="text-[10px] text-muted-foreground mt-1.5 font-medium">
                         {new Date(act.submitted_at).toLocaleDateString()}
                       </p>
                     </div>

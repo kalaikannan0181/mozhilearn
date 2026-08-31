@@ -1,93 +1,89 @@
-import { Quote, Star } from 'lucide-react'
-import Image from 'next/image'
+import { Code2, Headphones, Languages, School } from 'lucide-react'
 
-const testimonials = [
-  {
-    quote:
-      'My Grade 3 students finally answer in their own words. Earlier they copied the textbook, now they explain the water cycle to me in Tamil.',
-    tamil: 'குழந்தைகள் இப்போது தாய்மொழியில் சிந்திக்கிறார்கள்.',
-    name: 'Lakshmi Sundaram',
-    role: 'Primary Teacher, Govt. School, Madurai',
-    image: '/images/teacher-1.png',
-  },
-  {
-    quote:
-      'Preparing a bilingual worksheet used to take my evening. MozhiLearn does it in under two minutes and the language level is right for the grade.',
-    tamil: 'பாடத் தயாரிப்பு நேரம் பெரிதும் குறைந்தது.',
-    name: 'Arun Prakash',
-    role: 'Science Teacher, Panchayat Union School, Trichy',
-    image: '/images/teacher-2.png',
-  },
-  {
-    quote:
-      'The audio narration changed everything for our slow readers. They listen, repeat and follow the text together — attendance in reading class went up.',
-    tamil: 'ஒலி வாசிப்பு மாணவர்களுக்கு பெரிதும் உதவுகிறது.',
-    name: 'Meena Rajendran',
-    role: 'Headmistress, Corporation School, Coimbatore',
-    image: '/images/teacher-3.png',
-  },
-]
+/**
+ * Replaces the fabricated testimonials section with an honest, factual
+ * "About This Prototype" note — no fake teacher quotes or unverified claims.
+ */
+export function PrototypeNote() {
+  const capabilities = [
+    {
+      icon: Languages,
+      title: 'English → Tamil lesson translation',
+      body: 'Converts teacher-written English content into clear, grade-appropriate Tamil.',
+      tone: 'primary' as const,
+    },
+    {
+      icon: Headphones,
+      title: 'Tamil audio narration',
+      body: 'Generates a spoken Tamil version so students can listen and follow along.',
+      tone: 'success' as const,
+    },
+    {
+      icon: School,
+      title: 'Teacher-controlled publishing',
+      body: 'Teachers review the translation before students can access it.',
+      tone: 'accent' as const,
+    },
+    {
+      icon: Code2,
+      title: 'Quiz-based comprehension checks',
+      body: 'Short quizzes after each lesson with results visible to the teacher.',
+      tone: 'primary' as const,
+    },
+  ]
 
-export function Testimonials() {
+  const toneMap = {
+    primary: 'bg-primary/8 text-primary',
+    success: 'bg-success/8 text-success',
+    accent: 'bg-accent/8 text-accent',
+  }
+
   return (
-    <section id="testimonials" className="bg-background py-16 lg:py-24">
+    <section id="about" className="bg-background py-16 lg:py-24">
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Header */}
         <div className="max-w-2xl">
           <p className="text-sm font-bold tracking-widest text-primary uppercase">
-            Teacher Voices
+            About This Prototype
           </p>
           <h2 className="mt-3 font-display text-3xl leading-tight font-bold tracking-tight text-balance text-foreground sm:text-4xl">
-            Loved by the teachers who use it every day
+            What MozhiLearn Can Do Right Now
           </h2>
+          <p className="mt-4 text-base leading-relaxed text-pretty text-muted-foreground">
+            MozhiLearn is a working prototype built for Smart India Hackathon 2026.
+            Below is an honest account of what the current version supports.
+          </p>
         </div>
 
-        <ul className="mt-12 grid gap-6 lg:grid-cols-3">
-          {testimonials.map((item) => (
+        {/* Capability cards */}
+        <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {capabilities.map((cap) => (
             <li
-              key={item.name}
-              className="flex flex-col rounded-3xl border border-border bg-card p-7 shadow-sm transition-shadow hover:shadow-lg"
+              key={cap.title}
+              className="flex flex-col rounded-3xl border border-border bg-card p-6 shadow-sm transition-shadow hover:shadow-md"
             >
-              <Quote className="size-8 text-accent/70" aria-hidden="true" />
-              <blockquote className="mt-4 flex-1 text-base leading-relaxed text-pretty text-foreground">
-                {item.quote}
-              </blockquote>
-              <p className="font-tamil mt-4 text-sm leading-relaxed text-muted-foreground">
-                {item.tamil}
+              <span className={`inline-flex size-12 items-center justify-center rounded-2xl ${toneMap[cap.tone]}`}>
+                <cap.icon className="size-6" aria-hidden="true" />
+              </span>
+              <h3 className="mt-5 font-display text-sm font-bold text-foreground leading-snug">
+                {cap.title}
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                {cap.body}
               </p>
-              <div className="mt-6 flex items-center gap-4 border-t border-border pt-6">
-                <Image
-                  src={item.image}
-                  alt={`Portrait of ${item.name}`}
-                  width={96}
-                  height={96}
-                  sizes="56px"
-                  className="size-14 shrink-0 rounded-full object-cover"
-                />
-                <div className="min-w-0">
-                  <p className="font-display text-sm font-bold text-foreground">
-                    {item.name}
-                  </p>
-                  <p className="text-xs leading-relaxed text-muted-foreground">
-                    {item.role}
-                  </p>
-                  <div
-                    className="mt-1 flex gap-0.5"
-                    role="img"
-                    aria-label="Rated 5 out of 5"
-                  >
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <Star
-                        key={i}
-                        className="size-3.5 fill-accent text-accent"
-                        aria-hidden="true"
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
             </li>
           ))}
         </ul>
+
+        {/* Honest disclaimer strip */}
+        <div className="mt-10 rounded-3xl border border-border bg-secondary/40 p-6">
+          <p className="text-sm leading-relaxed text-muted-foreground text-pretty">
+            <strong className="text-foreground">Prototype status:</strong> MozhiLearn is currently
+            in active development and has not been deployed to live schools. No student outcome data,
+            school adoption figures, or completion rates are claimed. This prototype demonstrates the
+            intended teacher–student workflow for the SIH 2026 evaluation.
+          </p>
+        </div>
       </div>
     </section>
   )

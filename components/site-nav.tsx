@@ -1,6 +1,6 @@
 'use client'
 
-import { BookOpenText, Menu, Sparkles, X } from 'lucide-react'
+import { BookOpenText, ChevronDown, LogIn, Menu, Sparkles, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 const links = [
@@ -8,7 +8,7 @@ const links = [
   { label: 'Features', href: '#features' },
   { label: 'For Teachers', href: '#how-it-works' },
   { label: 'For Students', href: '#demo' },
-  { label: 'About', href: '#impact' },
+  { label: 'About', href: '#mission' },
   { label: 'Contact', href: '#contact' },
 ]
 
@@ -23,11 +23,18 @@ export function SiteNav() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  /* Close menu on resize to desktop */
+  useEffect(() => {
+    const onResize = () => { if (window.innerWidth >= 1024) setOpen(false) }
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
+
   return (
     <header
-      className={`sticky top-0 z-50 w-full border-b transition-colors ${
+      className={`sticky top-0 z-50 w-full border-b transition-all duration-200 ${
         scrolled
-          ? 'border-border bg-background/90 shadow-sm backdrop-blur-md'
+          ? 'border-border bg-background/95 shadow-sm backdrop-blur-md'
           : 'border-transparent bg-background'
       }`}
     >
@@ -35,11 +42,12 @@ export function SiteNav() {
         aria-label="Main navigation"
         className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:h-20 lg:px-8"
       >
+        {/* Logo */}
         <a
           href="#home"
-          className="flex items-center gap-2.5 rounded-xl focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+          className="flex items-center gap-2.5 rounded-xl focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
         >
-          <span className="relative flex size-10 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
+          <span className="relative flex size-10 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-sm">
             <BookOpenText className="size-5" aria-hidden="true" />
             <Sparkles
               className="absolute -top-1 -right-1 size-4 text-accent"
@@ -56,12 +64,13 @@ export function SiteNav() {
           </span>
         </a>
 
-        <ul className="hidden items-center gap-1 lg:flex">
+        {/* Desktop links */}
+        <ul className="hidden items-center gap-0.5 lg:flex">
           {links.map((link) => (
             <li key={link.href}>
               <a
                 href={link.href}
-                className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-primary focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+                className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-primary focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
               >
                 {link.label}
               </a>
@@ -69,34 +78,32 @@ export function SiteNav() {
           ))}
         </ul>
 
-        <div className="hidden items-center gap-3 lg:flex">
+        {/* Desktop CTAs */}
+        <div className="hidden items-center gap-2 lg:flex">
           <a
-            href="/teacher/login"
-            className="inline-flex h-11 items-center justify-center rounded-xl border border-border px-4 text-sm font-semibold text-foreground transition-colors hover:border-primary hover:bg-secondary hover:text-primary focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+            href="/login"
+            className="inline-flex h-11 items-center justify-center gap-1.5 rounded-xl border border-border px-4 text-sm font-semibold text-foreground transition-colors hover:border-primary hover:bg-secondary hover:text-primary focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
           >
-            Teacher Login
-          </a>
-          <a
-            href="/student/login"
-            className="inline-flex h-11 items-center justify-center rounded-xl border border-border px-4 text-sm font-semibold text-foreground transition-colors hover:border-primary hover:bg-secondary hover:text-primary focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
-          >
-            Student Login
+            <LogIn className="size-4" aria-hidden="true" />
+            Login
           </a>
           <a
             href="/signup"
-            className="inline-flex h-11 items-center justify-center rounded-xl bg-accent px-5 text-sm font-semibold text-accent-foreground shadow-sm transition-transform hover:-translate-y-0.5 hover:shadow-md focus-visible:ring-3 focus-visible:ring-accent/40 focus-visible:outline-none"
+            className="inline-flex h-11 items-center justify-center rounded-xl bg-accent px-5 text-sm font-semibold text-accent-foreground shadow-sm transition-transform hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-accent/40"
           >
             Get Started
           </a>
         </div>
 
+        {/* Mobile hamburger */}
         <button
           type="button"
+          id="mobile-menu-toggle"
           onClick={() => setOpen((v) => !v)}
           aria-expanded={open}
           aria-controls="mobile-menu"
           aria-label={open ? 'Close menu' : 'Open menu'}
-          className="inline-flex size-11 items-center justify-center rounded-xl border border-border text-foreground transition-colors hover:bg-secondary focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none lg:hidden"
+          className="inline-flex size-11 items-center justify-center rounded-xl border border-border text-foreground transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50 lg:hidden"
         >
           {open ? (
             <X className="size-5" aria-hidden="true" />
@@ -106,6 +113,7 @@ export function SiteNav() {
         </button>
       </nav>
 
+      {/* Mobile menu */}
       {open && (
         <div
           id="mobile-menu"
@@ -126,18 +134,12 @@ export function SiteNav() {
           </ul>
           <div className="mt-4 flex flex-col gap-3">
             <a
-              href="/teacher/login"
+              href="/login"
               onClick={() => setOpen(false)}
-              className="inline-flex min-h-12 items-center justify-center rounded-xl border border-border px-5 text-base font-semibold text-foreground"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-border px-5 text-base font-semibold text-foreground transition-colors hover:border-primary hover:text-primary"
             >
-              Teacher Login
-            </a>
-            <a
-              href="/student/login"
-              onClick={() => setOpen(false)}
-              className="inline-flex min-h-12 items-center justify-center rounded-xl border border-border px-5 text-base font-semibold text-foreground"
-            >
-              Student Login
+              <LogIn className="size-4.5" aria-hidden="true" />
+              Login
             </a>
             <a
               href="/signup"

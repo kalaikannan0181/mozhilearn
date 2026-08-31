@@ -1,48 +1,68 @@
-import { BookOpen, School, TrendingUp, Users } from 'lucide-react'
+import { BookOpenText, Sparkles } from 'lucide-react'
 
-const stats = [
-  { icon: BookOpen, value: '500+', label: 'Lessons translated' },
-  { icon: Users, value: '1,000+', label: 'Students learning' },
-  { icon: TrendingUp, value: '78%', label: 'Comprehension improvement' },
-  { icon: School, value: '50+', label: 'Schools onboard' },
-]
-
-export function ImpactStats() {
+/**
+ * Replaces the fake impact statistics (500+ lessons, 1,000+ students, 50+ schools)
+ * with a deep-blue mission band containing the product's real purpose statement.
+ */
+export function MissionBand() {
   return (
-    <section id="impact" className="bg-primary py-16 lg:py-20">
+    <section id="mission" className="bg-primary py-16 lg:py-20">
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="font-display text-3xl leading-tight font-bold tracking-tight text-balance text-primary-foreground sm:text-4xl">
-            Our impact so far
-          </h2>
-          <p className="font-tamil mt-3 text-base text-primary-foreground/75">
-            எங்கள் பயணம்
-          </p>
-        </div>
+        <div className="grid items-center gap-10 lg:grid-cols-2">
+          {/* Left: mission text */}
+          <div>
+            <p className="text-sm font-bold tracking-widest text-accent uppercase">
+              Our Mission
+            </p>
+            <h2 className="mt-4 font-display text-3xl font-extrabold leading-tight tracking-tight text-balance text-primary-foreground sm:text-4xl">
+              Learning in Every Child&apos;s Mother Tongue
+            </h2>
+            <p className="font-tamil mt-3 text-xl text-primary-foreground/75">
+              கற்றல் அனைவருக்கும்
+            </p>
+            <p className="mt-5 max-w-lg text-base leading-relaxed text-pretty text-primary-foreground/75">
+              No child should struggle with a concept because it was explained
+              in a language they don&apos;t speak at home. MozhiLearn exists to
+              close that gap — one lesson at a time.
+            </p>
+          </div>
 
-        <dl className="mt-12 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
-          {stats.map((stat) => (
-            <div
-              key={stat.label}
-              className="flex flex-col items-center rounded-3xl border border-primary-foreground/15 bg-primary-foreground/10 px-4 py-8 text-center"
-            >
-              <stat.icon
-                className="size-7 text-primary-foreground/80"
-                aria-hidden="true"
-              />
-              <dt className="sr-only">{stat.label}</dt>
-              <dd className="mt-4 font-display text-3xl font-extrabold tracking-tight text-primary-foreground sm:text-4xl">
-                {stat.value}
-              </dd>
-              <p
-                aria-hidden="true"
-                className="mt-2 text-sm leading-relaxed text-balance text-primary-foreground/80"
+          {/* Right: build context */}
+          <div className="flex flex-col gap-5">
+            {[
+              {
+                label: 'Built for',
+                value: 'Smart India Hackathon 2026',
+                sub: 'Problem Statement SIH26042',
+              },
+              {
+                label: 'Team',
+                value: 'MozhiTech',
+                sub: 'Nandha Engineering College, Erode',
+              },
+              {
+                label: 'Focus area',
+                value: 'Smart Education',
+                sub: 'AI-Powered Vernacular Pedagogy',
+              },
+            ].map((item) => (
+              <div
+                key={item.label}
+                className="rounded-3xl border border-primary-foreground/15 bg-primary-foreground/8 px-6 py-5"
               >
-                {stat.label}
-              </p>
-            </div>
-          ))}
-        </dl>
+                <p className="text-xs font-bold tracking-widest text-primary-foreground/50 uppercase">
+                  {item.label}
+                </p>
+                <p className="mt-1 font-display text-lg font-bold text-primary-foreground">
+                  {item.value}
+                </p>
+                <p className="mt-0.5 text-sm text-primary-foreground/60">
+                  {item.sub}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   )

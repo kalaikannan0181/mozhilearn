@@ -2,12 +2,12 @@ import { CtaSection } from '@/components/cta-section'
 import { DemoSection } from '@/components/demo-section'
 import { Hero } from '@/components/hero'
 import { HowItWorks } from '@/components/how-it-works'
-import { ImpactStats } from '@/components/impact-stats'
+import { MissionBand } from '@/components/impact-stats'
 import { Problem } from '@/components/problem'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteNav } from '@/components/site-nav'
 import { Solution } from '@/components/solution'
-import { Testimonials } from '@/components/testimonials'
+import { PrototypeNote } from '@/components/testimonials'
 
 export default function HomePage() {
   return (
@@ -25,8 +25,8 @@ export default function HomePage() {
         <Solution />
         <HowItWorks />
         <DemoSection />
-        <Testimonials />
-        <ImpactStats />
+        <PrototypeNote />
+        <MissionBand />
         <CtaSection />
       </main>
       <SiteFooter />

@@ -50,115 +50,69 @@
   --font-tamil: 'Noto Sans Tamil', 'Noto Sans Tamil Fallback', serif;
 }
 
+/* ─── MozhiLearn brand light theme ─────────────────────────────────────────── */
 :root {
   color-scheme: light;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.279 0.041 260);
+
+  /* Backgrounds */
+  --background: oklch(1 0 0);            /* white */
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.279 0.041 260);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.279 0.041 260);
-  --primary: oklch(0.546 0.245 262.9);
+
+  /* Foreground / text */
+  --foreground: oklch(0.203 0.034 258);  /* #1F2937 — main text */
+  --card-foreground: oklch(0.203 0.034 258);
+  --popover-foreground: oklch(0.203 0.034 258);
+
+  /* Primary — education blue #1D4ED8 */
+  --primary: oklch(0.476 0.235 264);
   --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.97 0.013 254);
-  --secondary-foreground: oklch(0.4 0.16 262.9);
-  --muted: oklch(0.975 0.003 247.8);
-  --muted-foreground: oklch(0.53 0.028 258);
+
+  /* Secondary — soft light blue #EFF6FF */
+  --secondary: oklch(0.963 0.019 253);
+  --secondary-foreground: oklch(0.476 0.235 264);
+
+  /* Muted — #64748B */
+  --muted: oklch(0.963 0.019 253);
+  --muted-foreground: oklch(0.509 0.038 256);
+
+  /* Accent — warm saffron #F97316 */
   --accent: oklch(0.705 0.213 47.6);
   --accent-foreground: oklch(1 0 0);
-  --success: oklch(0.696 0.17 162.5);
+
+  /* Success — learning green #059669 */
+  --success: oklch(0.574 0.158 162);
   --success-foreground: oklch(1 0 0);
+
+  /* Destructive — #DC2626 */
   --destructive: oklch(0.577 0.245 27.325);
+
+  /* Borders & inputs */
   --border: oklch(0.918 0.014 252);
   --input: oklch(0.918 0.014 252);
-  --ring: oklch(0.546 0.245 262.9);
-  --chart-1: oklch(0.546 0.245 262.9);
+  --ring: oklch(0.476 0.235 264);
+
+  /* Charts */
+  --chart-1: oklch(0.476 0.235 264);
   --chart-2: oklch(0.705 0.213 47.6);
-  --chart-3: oklch(0.696 0.17 162.5);
+  --chart-3: oklch(0.574 0.158 162);
   --chart-4: oklch(0.68 0.15 254);
   --chart-5: oklch(0.8 0.12 90);
+
   --radius: 0.875rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+
+  /* Sidebar */
+  --sidebar: oklch(0.985 0.008 253);
+  --sidebar-foreground: oklch(0.203 0.034 258);
+  --sidebar-primary: oklch(0.476 0.235 264);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.963 0.019 253);
+  --sidebar-accent-foreground: oklch(0.476 0.235 264);
+  --sidebar-border: oklch(0.918 0.014 252);
+  --sidebar-ring: oklch(0.476 0.235 264);
 }
 
-.dark {
-  color-scheme: dark;
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not(.light) {
-    color-scheme: dark;
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
-  }
-}
+/* MozhiLearn is a light-mode app — no auto dark mode */
 
 @layer base {
   * {
@@ -180,6 +134,10 @@
 @layer components {
   .reveal {
     animation: reveal-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  /* Consistent focus ring for interactive elements */
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50;
   }
 }
 
