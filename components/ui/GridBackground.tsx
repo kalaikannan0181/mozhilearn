@@ -1,6 +1,6 @@
 import type { HTMLAttributes, ReactNode } from 'react'
 
-interface GridBackgroundProps extends HTMLAttributes<HTMLDivElement> {
+interface GridBackgroundProps extends HTMLAttributes<HTMLElement> {
   children: ReactNode
   className?: string
 }
@@ -12,7 +12,7 @@ export default function GridBackground({
 }: GridBackgroundProps) {
   return (
     <section
-      className={`relative isolate overflow-hidden bg-[#FFFBEB] ${className}`}
+      className={`relative isolate overflow-hidden ${className}`}
       {...props}
     >
       <div
@@ -28,7 +28,10 @@ export default function GridBackground({
           backgroundSize: '36px 36px, 36px 36px, 100% 100%, 100% 100%',
         }}
       />
-      <div className="relative z-10">{children}</div>
+
+      <div className="relative z-10">
+        {children}
+      </div>
     </section>
   )
 }
