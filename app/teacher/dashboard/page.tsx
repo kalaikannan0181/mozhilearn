@@ -313,7 +313,7 @@ export default function TeacherDashboard() {
                     <div className="min-w-0 pr-4">
                       <p className="font-bold text-foreground truncate text-base">{lesson.title_en}</p>
                       {lesson.title_ta && (
-                        <p className="font-tamil text-sm text-muted-foreground mt-0.5 truncate">{lesson.title_ta}</p>
+                        <p className="text-sm text-muted-foreground mt-0.5 truncate">{lesson.title_ta}</p>
                       )}
                       <div className="text-xs text-muted-foreground mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
                         <span className="font-semibold text-primary/80 bg-primary/5 px-2 py-0.5 rounded-md">Grade {lesson.grade_level}</span>

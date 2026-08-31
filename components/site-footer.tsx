@@ -55,9 +55,7 @@ export function SiteFooter() {
             </div>
 
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-background/70">
-              AI-powered mother tongue learning for Indian primary schools.
-              Built so that no child has to learn in a language they do not
-              speak.
+              MozhiLearn is an AI-powered multilingual teaching and learning platform for mother tongue-based primary education in India.
             </p>
 
             {/* Tagline */}
@@ -108,7 +106,7 @@ export function SiteFooter() {
               for SIH 2026
             </p>
             <p className="text-xs text-background/40">
-              Built by Team MozhiTech · SIH26042 — Smart Education
+              SIH26042 — Smart Education · Multilingual Mother Tongue-Based Primary Education Prototype
             </p>
           </div>
         </div>

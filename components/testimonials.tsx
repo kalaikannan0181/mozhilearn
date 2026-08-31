@@ -8,8 +8,8 @@ export function PrototypeNote() {
   const capabilities = [
     {
       icon: Languages,
-      title: 'Hindi ↔ Santhali lesson adaptation',
-      body: 'Converts teacher-written Hindi content into clear, grade-appropriate mother tongue learning material.',
+      title: 'Configurable language-pair adaptation',
+      body: 'The architecture is designed for configurable Indian language pairs. The prototype demonstrates selected language pairs based on available translation and speech resources, with teacher review required before classroom use.',
       tone: 'primary' as const,
     },
     {

@@ -100,8 +100,8 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
               <span className="font-display text-lg font-bold tracking-tight text-foreground">
                 MozhiLearn
               </span>
-              <span className="font-tamil text-[11px] text-muted-foreground">
-                ஆசிரியர் பக்கம்
+              <span className="text-[11px] font-medium text-muted-foreground">
+                Teacher Portal
               </span>
             </div>
           </div>

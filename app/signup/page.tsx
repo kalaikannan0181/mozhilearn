@@ -161,8 +161,8 @@ export default function SignupPage() {
         )}
 
         <div className="grid gap-3 sm:grid-cols-2">
-          {roleCard('teacher', 'Teacher', 'Create Hindi lessons, review mother-tongue learning content, and track student understanding.', GraduationCap)}
-          {roleCard('student', 'Student', 'Learn through familiar language content, audio support, worksheets, and practice activities.', Backpack)}
+          {roleCard('teacher', 'Teacher', 'Create and adapt lessons for multilingual primary classrooms.', GraduationCap)}
+          {roleCard('student', 'Student', 'Learn through content designed for your selected familiar language.', Backpack)}
         </div>
 
         <div>

@@ -19,7 +19,7 @@ export function CtaSection() {
             Make Learning Feel Closer to Every Child
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-pretty text-muted-foreground">
-            Build a teacher-guided learning experience in the language children understand best.
+            Create teacher-guided learning experiences in the languages children understand best.
           </p>
 
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">

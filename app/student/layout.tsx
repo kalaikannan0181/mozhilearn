@@ -79,8 +79,8 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
               <span className="font-display font-bold text-base text-foreground tracking-tight">
                 MozhiLearn
               </span>
-              <span className="font-tamil text-[10px] text-success font-semibold">
-                மாணவர் பக்கம்
+              <span className="text-[10px] text-success font-semibold">
+                Student Space
               </span>
             </div>
           </Link>

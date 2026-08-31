@@ -4,26 +4,26 @@ const steps = [
   {
     icon: Upload,
     step: '01',
-    title: 'Teacher Speaks or Adds a Hindi Lesson',
-    body: 'The teacher enters lesson text or speaks a classroom instruction in Hindi.',
+    title: 'Choose Source & Student Languages',
+    body: 'Teacher selects the classroom language and the student’s mother tongue.',
   },
   {
     icon: WandSparkles,
     step: '02',
-    title: 'AI Understands the Content',
-    body: 'The system prepares a translation and teaching-friendly explanation for the selected grade.',
+    title: 'Add or Speak the Lesson',
+    body: 'Teacher enters lesson content or uses voice input.',
   },
   {
     icon: Search,
     step: '03',
-    title: 'Mother Tongue Learning Support',
-    body: 'The content is presented in the student’s selected mother tongue, such as Santhali.',
+    title: 'AI Adapts Learning Content',
+    body: 'AI assists translation, simplification, worksheet creation, and learning activities.',
   },
   {
     icon: GraduationCap,
     step: '04',
     title: 'Teacher Reviews & Publishes',
-    body: 'The teacher checks translation, explanation, worksheets, and flashcards before publishing.',
+    body: 'Teacher checks the content before sharing it with students.',
   },
 ]
 
@@ -61,7 +61,7 @@ function DashboardMock() {
           <div key={title} className="flex items-center justify-between rounded-2xl border border-border bg-background p-3">
             <div>
               <p className="text-xs font-bold text-foreground">{title}</p>
-              <p className="mt-0.5 text-[10px] font-medium text-muted-foreground">Hindi → Santhali Ready</p>
+              <p className="mt-0.5 text-[10px] font-medium text-muted-foreground">Source → Target Ready</p>
             </div>
             <span className="rounded-full bg-success/15 px-2 py-0.5 text-[10px] font-bold text-success">Published</span>
           </div>
@@ -80,10 +80,10 @@ export function HowItWorks() {
             How It Works
           </p>
           <h2 className="mt-3 font-display text-3xl leading-tight font-bold tracking-tight text-balance text-foreground sm:text-4xl">
-            From Teacher’s Voice to Student Understanding
+            From Any Classroom Language to Student Understanding
           </h2>
           <p className="mt-4 text-base leading-relaxed text-pretty text-muted-foreground">
-            A simple teacher-guided workflow connects Hindi lessons to student understanding in their home language.
+            A simple teacher-guided workflow connects classroom lessons to student understanding in their home language.
           </p>
         </div>
 

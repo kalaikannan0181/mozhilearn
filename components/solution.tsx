@@ -5,36 +5,36 @@ const features = [
   {
     icon: Languages,
     step: '01',
-    title: 'Hindi ↔ Mother Tongue Translation',
+    title: 'Indian Language Translation',
     subtitle: 'Multilingual Support',
-    body: 'Supports lesson and instruction translation between Hindi and selected local languages like Santhali.',
+    body: 'Converts lessons and classroom instructions between selected Indian languages.',
     glowColor: '#1D4ED8', // Primary Blue
     tone: 'primary' as const,
   },
   {
     icon: Sparkles,
     step: '02',
-    title: 'Grade-Level Learning Adaptation',
+    title: 'Grade-Level Pedagogy',
     subtitle: 'Foundational Learning',
-    body: 'Simplifies lesson content into age-appropriate explanations aligned with foundational learning needs.',
+    body: 'Simplifies and adapts learning content for primary-school students.',
     glowColor: '#F97316', // Accent Orange
     tone: 'accent' as const,
   },
   {
     icon: Volume2,
     step: '03',
-    title: 'Voice-to-Voice Learning Support',
-    subtitle: 'Audio Assistance',
-    body: 'Designed to convert teacher speech into understandable spoken learning support for students.',
+    title: 'Multilingual Audio Support',
+    subtitle: 'Spoken Assistance',
+    body: 'Designed to provide spoken learning support in the selected language.',
     glowColor: '#059669', // Learning Green
     tone: 'success' as const,
   },
   {
     icon: BarChart3,
     step: '04',
-    title: 'Teacher Review & Publish',
+    title: 'Teacher Review & Insights',
     subtitle: 'Teacher Guidance',
-    body: 'Teachers review generated content and practice materials before publishing to their class.',
+    body: 'Teachers verify generated learning content before classroom use and track progress.',
     glowColor: '#102A43', // Deep Navy
     tone: 'primary' as const,
   },

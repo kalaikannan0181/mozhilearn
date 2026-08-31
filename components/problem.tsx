@@ -3,20 +3,20 @@ import { BookOpen, Brain, ScrollText, Zap } from 'lucide-react'
 const problems = [
   {
     icon: BookOpen,
-    title: 'Classroom & Home Languages May Differ',
-    body: 'Teachers may use Hindi while children speak Santhali, Ho, Mundari, or another mother tongue at home.',
+    title: 'Classroom & Home Languages Can Differ',
+    body: 'Teachers may use one language while children understand concepts best in another familiar language.',
     tone: 'primary' as const,
   },
   {
     icon: Zap,
-    title: 'Teachers Need Faster Ways to Adapt Lessons',
-    body: 'Preparing bilingual explanations, activities, and learning materials manually takes time and language expertise.',
+    title: 'Multilingual Lesson Preparation Takes Time',
+    body: 'Teachers need faster ways to adapt lessons, instructions, and activities for diverse classrooms.',
     tone: 'accent' as const,
   },
   {
     icon: Brain,
-    title: 'Young Learners Need More Than Text',
-    body: 'Children learn better with simple explanations, audio support, visual practice, and short activities.',
+    title: 'Children Need Learning Support, Not Only Translation',
+    body: 'Young learners benefit from simple explanations, audio, visual practice, and teacher-guided activities.',
     tone: 'success' as const,
   },
 ]
@@ -51,7 +51,7 @@ export function Problem() {
             Language Should Never Block Learning
           </h2>
           <p className="mt-4 text-base leading-relaxed text-pretty text-muted-foreground">
-            In multilingual classrooms, a teacher may teach in Hindi while children understand best in their mother tongue. Without accessible learning support, children may memorize words without fully understanding concepts.
+            In India’s multilingual classrooms, teachers and students may use different languages. When learning content is not available in a child’s familiar language, understanding can become harder than the lesson itself.
           </p>
         </div>
 

@@ -162,7 +162,7 @@ export default function TeacherLessons() {
 
               <h4 className="text-lg font-bold text-gray-900 line-clamp-1">{lesson.title_en}</h4>
               {lesson.title_ta && (
-                <h5 className="font-tamil text-sm text-gray-600 mt-1 line-clamp-1">{lesson.title_ta}</h5>
+                <h5 className="text-sm text-gray-600 mt-1 line-clamp-1">{lesson.title_ta}</h5>
               )}
 
               <p className="text-sm text-gray-500 mt-3 flex-1">{lesson.subject}</p>

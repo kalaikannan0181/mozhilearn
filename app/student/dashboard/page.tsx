@@ -132,8 +132,8 @@ export default function StudentDashboard() {
             Active Student
           </span>
           <h1 className="text-3xl font-extrabold md:text-4xl text-foreground">Hello, {profile?.full_name}!</h1>
-          <p className="text-muted-foreground text-sm md:text-base font-semibold max-w-xl font-tamil">
-            இன்று நாம் என்ன படிக்கப் போகிறோம்? தாய்மொழியில் கற்போம்!
+          <p className="text-muted-foreground text-sm md:text-base font-semibold max-w-xl">
+            Welcome to your learning space! Learn concepts in your familiar language.
           </p>
         </div>
       </div>
@@ -211,7 +211,7 @@ export default function StudentDashboard() {
                     {lesson.title_en}
                   </h4>
                   {lesson.title_ta && (
-                    <h5 className="font-tamil font-bold text-sm text-muted-foreground line-clamp-1">
+                    <h5 className="font-bold text-sm text-muted-foreground line-clamp-1">
                       {lesson.title_ta}
                     </h5>
                   )}

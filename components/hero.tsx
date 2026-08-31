@@ -73,8 +73,8 @@ function HeroIllustration() {
 }
 
 const badges = [
-  { icon: BookOpenCheck, label: 'Built for Mother Tongue-Based Primary Education' },
-  { icon: Headphones, label: 'Hindi ↔ Santhali MVP' },
+  { icon: BookOpenCheck, label: 'Built for Indian Multilingual Classrooms' },
+  { icon: Headphones, label: 'Source Language → Mother Tongue' },
   { icon: Users, label: 'Teacher-Reviewed Learning' },
 ]
 
@@ -86,7 +86,7 @@ export function Hero() {
         <div className="reveal flex flex-col items-start">
           {/* Language label pill */}
           <p className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/8 px-4 py-1.5 text-sm font-semibold text-primary">
-            <span>Hindi ↔ Santhali MVP</span>
+            <span>Source Language → Mother Tongue</span>
             <span aria-hidden="true">·</span>
             <span>Grades 1–5</span>
           </p>
@@ -97,7 +97,7 @@ export function Hero() {
           </h1>
 
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-pretty text-muted-foreground">
-            MozhiLearn helps teachers bridge Hindi and children’s home languages through AI-assisted translation, age-appropriate learning content, audio support, and teacher-guided practice.
+            MozhiLearn helps teachers adapt primary learning content from a chosen classroom language into each child’s familiar language through AI-assisted translation, simplified learning material, audio support, and teacher review.
           </p>
 
           {/* CTAs */}
@@ -146,21 +146,21 @@ export function Hero() {
           {/* Floating translation preview card */}
           <div className="absolute -bottom-6 -left-2 w-[15rem] rounded-3xl border border-border bg-card p-4 shadow-lg sm:-left-6 sm:w-[17rem]">
             <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
-              Hindi lesson
+              Classroom Language
             </p>
             <p className="mt-1 text-sm font-medium text-foreground">
-              &quot;पौधों को बढ़ने के लिए धूप चाहिए।&quot;
+              &quot;Plants need sunlight to grow.&quot;
             </p>
             <div className="my-3 h-px bg-border" />
             <p className="text-xs font-semibold tracking-wide text-primary uppercase">
-              Santhali · Grade 3
+              Selected Mother Tongue · Grade 3
             </p>
             <p className="mt-1 text-sm leading-relaxed font-medium text-foreground">
-              दरयाः हाराअ लागित् सितुं ल़ड़क्-आ।
+              [Adapted learning explanation in child&apos;s familiar language]
             </p>
             <p className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-success">
               <Headphones className="size-4" aria-hidden="true" />
-              Mother Tongue Audio
+              Mother Tongue Audio Support
             </p>
           </div>
         </div>
