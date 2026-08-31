@@ -58,8 +58,8 @@ export function SiteNav() {
             <span className="font-display text-lg font-bold tracking-tight text-foreground">
               MozhiLearn
             </span>
-            <span className="font-tamil text-[11px] text-muted-foreground">
-              மொழி கற்றல்
+            <span className="text-[11px] font-medium text-muted-foreground">
+              Multilingual Pedagogy
             </span>
           </span>
         </a>

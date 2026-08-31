@@ -3,20 +3,20 @@ import { BookOpen, Brain, ScrollText, Zap } from 'lucide-react'
 const problems = [
   {
     icon: BookOpen,
-    title: 'Unfamiliar language makes concepts harder to understand',
-    body: 'When lessons are delivered in English, children who speak Tamil at home lose meaning before learning even begins.',
+    title: 'Classroom & Home Languages May Differ',
+    body: 'Teachers may use Hindi while children speak Santhali, Ho, Mundari, or another mother tongue at home.',
     tone: 'primary' as const,
   },
   {
     icon: Zap,
-    title: 'Teachers need faster ways to adapt lesson content',
-    body: 'Translating and re-levelling every worksheet by hand is time-consuming, unpaid work that most teachers cannot sustain.',
+    title: 'Teachers Need Faster Ways to Adapt Lessons',
+    body: 'Preparing bilingual explanations, activities, and learning materials manually takes time and language expertise.',
     tone: 'accent' as const,
   },
   {
     icon: Brain,
-    title: 'Children need audio, simple explanations, and practice',
-    body: 'Young learners retain far more when they can hear a lesson in Tamil, re-read at their own pace, and test their understanding.',
+    title: 'Young Learners Need More Than Text',
+    body: 'Children learn better with simple explanations, audio support, visual practice, and short activities.',
     tone: 'success' as const,
   },
 ]
@@ -51,8 +51,7 @@ export function Problem() {
             Language Should Never Block Learning
           </h2>
           <p className="mt-4 text-base leading-relaxed text-pretty text-muted-foreground">
-            Three clear barriers stand between children and understanding in
-            Indian primary classrooms today.
+            In multilingual classrooms, a teacher may teach in Hindi while children understand best in their mother tongue. Without accessible learning support, children may memorize words without fully understanding concepts.
           </p>
         </div>
 

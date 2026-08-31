@@ -8,14 +8,14 @@ export function PrototypeNote() {
   const capabilities = [
     {
       icon: Languages,
-      title: 'English → Tamil lesson translation',
-      body: 'Converts teacher-written English content into clear, grade-appropriate Tamil.',
+      title: 'Hindi ↔ Santhali lesson adaptation',
+      body: 'Converts teacher-written Hindi content into clear, grade-appropriate mother tongue learning material.',
       tone: 'primary' as const,
     },
     {
       icon: Headphones,
-      title: 'Tamil audio narration',
-      body: 'Generates a spoken Tamil version so students can listen and follow along.',
+      title: 'Mother tongue audio narration',
+      body: 'Generates spoken audio so students can listen and follow along in their home language.',
       tone: 'success' as const,
     },
     {

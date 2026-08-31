@@ -107,7 +107,7 @@ export default function LoginPage() {
   }
 
   return (
-    <AuthShell title="Welcome Back" subtitle="Sign in to continue your learning journey.">
+    <AuthShell title="Welcome Back" subtitle="Sign in to continue your teaching or learning journey.">
       <form onSubmit={handleLogin} className="space-y-5">
         {error && (
           <div aria-live="polite">

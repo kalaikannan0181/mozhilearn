@@ -37,8 +37,8 @@ test.describe('Teacher Lesson Management', () => {
     // Choose 'draft' status
     await page.locator('#status').selectOption('draft')
 
-    // Trigger AI translation mock to populate required Tamil fields
-    await page.getByText('Generate Tamil Adaptation (DEMO MODE)').click()
+    // Trigger AI translation mock to populate required fields
+    await page.getByText('Generate Mother Tongue Adaptation (DEMO MODE)').click()
     await expect(page.locator('#title_ta')).not.toHaveValue('', { timeout: 10000 })
 
     // Save Lesson

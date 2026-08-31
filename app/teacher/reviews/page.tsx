@@ -111,7 +111,7 @@ export default function TranslationReviewsPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold tracking-tight text-gray-900">Translation Reviews</h1>
-        <p className="text-gray-500 mt-1">Review and approve Tamil translations for your authored lessons.</p>
+        <p className="text-gray-500 mt-1">Review and approve mother-tongue translations for your authored lessons.</p>
       </div>
 
       {reviews.length === 0 ? (
@@ -148,15 +148,15 @@ export default function TranslationReviewsPage() {
 
               <div className="grid gap-6 md:grid-cols-2">
                 <div className="space-y-1.5">
-                  <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">English Content</span>
+                  <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Hindi Content</span>
                   <div className="bg-gray-50 p-4 rounded-2xl text-sm text-gray-800 leading-relaxed min-h-[100px]">
                     {review.lesson?.original_content}
                   </div>
                 </div>
 
                 <div className="space-y-1.5">
-                  <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Tamil Translation</span>
-                  <div className="bg-primary/5 p-4 rounded-2xl text-sm text-primary leading-relaxed font-tamil min-h-[100px]">
+                  <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Mother Tongue Translation</span>
+                  <div className="bg-primary/5 p-4 rounded-2xl text-sm text-primary leading-relaxed min-h-[100px]">
                     {review.lesson?.translated_content}
                   </div>
                 </div>

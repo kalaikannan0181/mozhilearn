@@ -17,8 +17,8 @@ export function MissionBand() {
             <h2 className="mt-4 font-display text-3xl font-extrabold leading-tight tracking-tight text-balance text-primary-foreground sm:text-4xl">
               Learning in Every Child&apos;s Mother Tongue
             </h2>
-            <p className="font-tamil mt-3 text-xl text-primary-foreground/75">
-              கற்றல் அனைவருக்கும்
+            <p className="mt-3 text-xl font-semibold text-primary-foreground/75">
+              सीखना हर बच्चे की भाषा में
             </p>
             <p className="mt-5 max-w-lg text-base leading-relaxed text-pretty text-primary-foreground/75">
               No child should struggle with a concept because it was explained

@@ -13,17 +13,17 @@ function TeacherCreatorMock() {
       </div>
       <div className="p-4 space-y-3">
         <div className="rounded-xl border border-border bg-secondary/40 p-3">
-          <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wide">English Input</p>
-          <p className="mt-1 text-xs text-foreground leading-relaxed">&quot;Plants need sunlight, water and soil to grow. Roots absorb water...&quot;</p>
+          <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wide">Hindi Input</p>
+          <p className="mt-1 text-xs text-foreground leading-relaxed">&quot;पौधों को बढ़ने के लिए धूप, पानी और मिट्टी चाहिए। जड़ें पानी सोखती हैं...&quot;</p>
         </div>
         <div className="flex items-center gap-2">
           <div className="h-px flex-1 bg-border" />
-          <span className="text-[10px] font-bold text-accent">AI Processing</span>
+          <span className="text-[10px] font-bold text-accent">AI Processing &amp; Review</span>
           <div className="h-px flex-1 bg-border" />
         </div>
         <div className="rounded-xl border border-success/20 bg-success/6 p-3">
-          <p className="text-[11px] font-semibold text-success uppercase tracking-wide">Tamil Output · Grade 3</p>
-          <p className="font-tamil mt-1 text-xs text-foreground leading-relaxed">செடிகள் வளர சூரிய ஒளி, தண்ணீர் மற்றும் மண் தேவை. வேர்கள் தண்ணீரை உறிஞ்சுகின்றன...</p>
+          <p className="text-[11px] font-semibold text-success uppercase tracking-wide">Santhali Output · Grade 3</p>
+          <p className="mt-1 text-xs text-foreground leading-relaxed">दरयाः हाराअ लागित् सितुं, दः आर हासा ल़ड़क्-आ। रेहेत् दः ए सोबोच्-आ...</p>
         </div>
         <button className="w-full rounded-xl bg-accent py-2 text-xs font-bold text-accent-foreground" tabIndex={-1}>
           Review &amp; Publish →
@@ -42,18 +42,18 @@ function StudentLessonMock() {
       </div>
       <div className="p-4 space-y-3">
         <div>
-          <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide">Science · Grade 3</p>
+          <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide">Environmental Studies · Grade 3</p>
           <h4 className="font-display font-bold text-sm text-foreground mt-0.5">Plants &amp; Sunlight</h4>
-          <p className="font-tamil text-[11px] text-primary mt-0.5">செடிகள் மற்றும் சூரிய ஒளி</p>
+          <p className="text-[11px] font-semibold text-primary mt-0.5">दरयाः आर सितुं</p>
         </div>
         <div className="rounded-xl bg-secondary/40 p-3">
-          <p className="font-tamil text-xs leading-relaxed text-foreground">
-            செடிகள் வளர சூரிய ஒளி தேவை. இலைகள் சூரிய ஒளியை உணவாக மாற்றுகின்றன.
+          <p className="text-xs leading-relaxed text-foreground">
+            दरयाः हाराअ लागित् सितुं ल़ड़क्-आ। साकाम सितुं जमगाक् रेयाक् बदलाव-आ।
           </p>
         </div>
         <button className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-success/25 bg-success/8 py-2 text-xs font-bold text-success" tabIndex={-1}>
           <Headphones className="size-3.5" />
-          Listen in Tamil
+          Listen in Santhali
         </button>
         <div className="flex items-center gap-2">
           <div className="h-1.5 flex-1 rounded-full bg-border overflow-hidden">
@@ -86,8 +86,8 @@ function ProgressMock() {
           ))}
         </div>
         {[
-          { name: 'Kavya R.', score: 85, color: 'bg-success' },
-          { name: 'Arjun M.', score: 62, color: 'bg-accent' },
+          { name: 'Saran M.', score: 85, color: 'bg-success' },
+          { name: 'Ranchi K.', score: 62, color: 'bg-accent' },
           { name: 'Priya S.', score: 44, color: 'bg-destructive/50' },
         ].map((s) => (
           <div key={s.name} className="flex items-center gap-3">
@@ -112,7 +112,7 @@ function ProgressMock() {
 
 const screens = [
   { label: 'Teacher Lesson Creator', component: TeacherCreatorMock },
-  { label: 'Student Tamil Lesson', component: StudentLessonMock },
+  { label: 'Student Santhali Lesson', component: StudentLessonMock },
   { label: 'Progress Insights', component: ProgressMock },
 ]
 
@@ -129,8 +129,8 @@ export function DemoSection() {
             See the Learning Flow
           </h2>
           <p className="mt-4 text-base leading-relaxed text-pretty text-background/70">
-            Three static screens showing how a lesson travels from the teacher's
-            input to a student's Tamil reading experience.
+            Three static screens showing how a lesson travels from the teacher&apos;s
+            Hindi input to a student&apos;s Santhali reading experience.
           </p>
         </div>
 

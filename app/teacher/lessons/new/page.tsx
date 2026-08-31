@@ -327,7 +327,7 @@ export default function NewLesson() {
         </Link>
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">Create Lesson</h1>
-          <p className="text-gray-500 mt-1">Upload English lesson content and adapt it to Tamil.</p>
+          <p className="text-gray-500 mt-1">Upload Hindi lesson content and adapt it to the student&apos;s mother tongue.</p>
         </div>
       </div>
 
@@ -426,7 +426,7 @@ export default function NewLesson() {
 
           <button
             type="button"
-            disabled={translating}
+            disabled={translating || !originalContent.trim()}
             onClick={triggerMockTranslation}
             className="w-full md:w-auto inline-flex items-center justify-center gap-2 rounded-2xl bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground shadow-sm hover:shadow-md transition-all disabled:opacity-50"
           >
@@ -438,7 +438,7 @@ export default function NewLesson() {
             ) : (
               <>
                 <Sparkles className="size-4" />
-                Generate Tamil Adaptation (DEMO MODE)
+                Generate Mother Tongue Adaptation (DEMO MODE)
               </>
             )}
           </button>

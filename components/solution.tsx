@@ -5,36 +5,36 @@ const features = [
   {
     icon: Languages,
     step: '01',
-    title: 'AI-Assisted Translation',
-    tamil: 'மொழிபெயர்ப்பு',
-    body: 'Converts teacher-created lesson content into clear Tamil learning material.',
+    title: 'Hindi ↔ Mother Tongue Translation',
+    subtitle: 'Multilingual Support',
+    body: 'Supports lesson and instruction translation between Hindi and selected local languages like Santhali.',
     glowColor: '#1D4ED8', // Primary Blue
     tone: 'primary' as const,
   },
   {
     icon: Sparkles,
     step: '02',
-    title: 'Grade-Level Simplification',
-    tamil: 'கற்பித்தல் முறை',
-    body: 'Adapts explanations into simple language suitable for Grades 1–5.',
+    title: 'Grade-Level Learning Adaptation',
+    subtitle: 'Foundational Learning',
+    body: 'Simplifies lesson content into age-appropriate explanations aligned with foundational learning needs.',
     glowColor: '#F97316', // Accent Orange
     tone: 'accent' as const,
   },
   {
     icon: Volume2,
     step: '03',
-    title: 'Tamil Audio Learning',
-    tamil: 'ஒலி வாசிப்பு',
-    body: 'Lets students listen to Tamil lesson content while they learn.',
+    title: 'Voice-to-Voice Learning Support',
+    subtitle: 'Audio Assistance',
+    body: 'Designed to convert teacher speech into understandable spoken learning support for students.',
     glowColor: '#059669', // Learning Green
     tone: 'success' as const,
   },
   {
     icon: BarChart3,
     step: '04',
-    title: 'Teacher Progress Insights',
-    tamil: 'முன்னேற்றம்',
-    body: 'Helps teachers review lesson completion and quiz-based comprehension.',
+    title: 'Teacher Review & Publish',
+    subtitle: 'Teacher Guidance',
+    body: 'Teachers review generated content and practice materials before publishing to their class.',
     glowColor: '#102A43', // Deep Navy
     tone: 'primary' as const,
   },
@@ -104,8 +104,8 @@ export function Solution() {
                   <h3 className="mt-5 font-display text-base font-bold text-foreground leading-snug relative z-20">
                     {feature.title}
                   </h3>
-                  <p className="font-tamil mt-0.5 text-sm text-muted-foreground relative z-20">
-                    {feature.tamil}
+                  <p className="mt-0.5 text-xs font-semibold tracking-wide text-muted-foreground uppercase relative z-20">
+                    {feature.subtitle}
                   </p>
                   <p className="mt-3 text-sm leading-relaxed text-muted-foreground flex-1 relative z-20">
                     {feature.body}

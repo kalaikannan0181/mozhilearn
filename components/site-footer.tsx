@@ -48,8 +48,8 @@ export function SiteFooter() {
                 <span className="font-display text-lg font-bold tracking-tight">
                   MozhiLearn
                 </span>
-                <span className="font-tamil text-[11px] text-background/60">
-                  மொழி கற்றல்
+                <span className="text-[11px] text-background/60">
+                  Multilingual Learning
                 </span>
               </span>
             </div>
@@ -61,8 +61,8 @@ export function SiteFooter() {
             </p>
 
             {/* Tagline */}
-            <p className="mt-4 font-tamil text-sm text-background/50">
-              கற்றல் அனைவருக்கும்
+            <p className="mt-4 text-xs font-medium text-background/60">
+              Built by Team MozhiTech for Smart India Hackathon 2026
             </p>
 
             {/* Location only — no fake email or social links */}

@@ -4,26 +4,26 @@ const steps = [
   {
     icon: Upload,
     step: '01',
-    title: 'Teacher adds lesson content',
-    body: 'Paste or type an English lesson — no special formatting needed. Upload a PDF or worksheet.',
+    title: 'Teacher Speaks or Adds a Hindi Lesson',
+    body: 'The teacher enters lesson text or speaks a classroom instruction in Hindi.',
   },
   {
     icon: WandSparkles,
     step: '02',
-    title: 'MozhiLearn prepares Tamil learning material',
-    body: 'The system translates, simplifies for the grade level, and generates a Tamil audio narration.',
+    title: 'AI Understands the Content',
+    body: 'The system prepares a translation and teaching-friendly explanation for the selected grade.',
   },
   {
     icon: Search,
     step: '03',
-    title: 'Teacher reviews and publishes',
-    body: 'The teacher checks the Tamil lesson for accuracy and publishes it to their class.',
+    title: 'Mother Tongue Learning Support',
+    body: 'The content is presented in the student’s selected mother tongue, such as Santhali.',
   },
   {
     icon: GraduationCap,
     step: '04',
-    title: 'Student learns, listens, and completes a quiz',
-    body: 'Children read in Tamil, listen to the audio, then take a short quiz — results reach the teacher instantly.',
+    title: 'Teacher Reviews & Publishes',
+    body: 'The teacher checks translation, explanation, worksheets, and flashcards before publishing.',
   },
 ]
 
@@ -57,11 +57,11 @@ function DashboardMock() {
           ))}
         </div>
         {/* Fake lesson rows */}
-        {['Plants & Sunlight', 'The Water Cycle', 'Our Solar System'].map((title) => (
+        {['Plants & Sunlight', 'Numbers 1–10', 'Our Environment'].map((title) => (
           <div key={title} className="flex items-center justify-between rounded-2xl border border-border bg-background p-3">
             <div>
               <p className="text-xs font-bold text-foreground">{title}</p>
-              <p className="mt-0.5 font-tamil text-[10px] text-muted-foreground">தமிழில் கிடைக்கிறது</p>
+              <p className="mt-0.5 text-[10px] font-medium text-muted-foreground">Hindi → Santhali Ready</p>
             </div>
             <span className="rounded-full bg-success/15 px-2 py-0.5 text-[10px] font-bold text-success">Published</span>
           </div>
@@ -80,10 +80,10 @@ export function HowItWorks() {
             How It Works
           </p>
           <h2 className="mt-3 font-display text-3xl leading-tight font-bold tracking-tight text-balance text-foreground sm:text-4xl">
-            From Lesson to Understanding
+            From Teacher’s Voice to Student Understanding
           </h2>
           <p className="mt-4 text-base leading-relaxed text-pretty text-muted-foreground">
-            Four steps connect an English worksheet to a confident Tamil-speaking student.
+            A simple teacher-guided workflow connects Hindi lessons to student understanding in their home language.
           </p>
         </div>
 
@@ -127,7 +127,7 @@ export function HowItWorks() {
             </h3>
             <p className="mt-4 text-base leading-relaxed text-pretty text-muted-foreground">
               Teachers see every lesson, every student, and every weak concept
-              in one place — in English or Tamil, on any device.
+              in one place — in Hindi or student mother tongue, on any device.
             </p>
             <ul className="mt-6 flex flex-col gap-3">
               {[

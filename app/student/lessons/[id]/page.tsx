@@ -352,13 +352,13 @@ export default function StudentLessonViewer({ params: paramsPromise }: { params:
 
         {/* Content Body */}
         <div className="p-6 sm:p-8 space-y-8">
-          {/* Simplified Tamil Text */}
+          {/* Simplified Mother Tongue Text */}
           <div className="space-y-4">
             <h3 className="text-sm font-bold text-green-600 uppercase tracking-wider flex items-center gap-2">
               <Sparkles className="size-4.5 text-yellow-500 fill-yellow-400" />
-              Easy Lesson (பாட விளக்கம்)
+              Easy Lesson Explanation
             </h3>
-            <p className="text-lg leading-relaxed text-gray-800 font-medium font-tamil whitespace-pre-line bg-green-50/20 p-5 rounded-3xl border border-green-500/10">
+            <p className="text-lg leading-relaxed text-gray-800 font-medium whitespace-pre-line bg-green-50/20 p-5 rounded-3xl border border-green-500/10">
               {lesson.simplified_content_ta || lesson.translated_content}
             </p>
           </div>
@@ -368,7 +368,7 @@ export default function StudentLessonViewer({ params: paramsPromise }: { params:
             <div className="bg-yellow-50/20 border border-yellow-500/10 rounded-3xl p-6 space-y-3">
               <h4 className="font-extrabold text-gray-900 flex items-center gap-2">
                 <BookOpenCheck className="size-5 text-yellow-600" />
-                What we will learn (நோக்கங்கள்):
+                What we will learn:
               </h4>
               <ul className="list-disc pl-5 text-sm font-semibold text-gray-600 space-y-1.5">
                 {lesson.learning_objectives.map((obj, i) => (
@@ -382,7 +382,7 @@ export default function StudentLessonViewer({ params: paramsPromise }: { params:
           {lesson.vocabulary?.length > 0 && (
             <div className="space-y-4">
               <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider">
-                New Words (அறிமுகச் சொற்கள்)
+                New Words &amp; Vocabulary
               </h3>
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                 {lesson.vocabulary.map((vocab, idx) => (

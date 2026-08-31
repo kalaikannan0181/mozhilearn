@@ -25,19 +25,19 @@ function HeroIllustration() {
       <rect x="128" y="226" width="105" height="7" rx="3.5" fill="oklch(0.476 0.235 264 / 0.12)" />
       <rect x="128" y="252" width="120" height="7" rx="3.5" fill="oklch(0.476 0.235 264 / 0.10)" />
       <rect x="128" y="266" width="80" height="7" rx="3.5" fill="oklch(0.476 0.235 264 / 0.10)" />
-      {/* "EN" label */}
+      {/* "HI" label */}
       <rect x="128" y="300" width="36" height="22" rx="8" fill="oklch(0.476 0.235 264 / 0.12)" />
-      <text x="146" y="315" textAnchor="middle" fontFamily="system-ui" fontSize="10" fontWeight="700" fill="oklch(0.476 0.235 264)">EN</text>
+      <text x="146" y="315" textAnchor="middle" fontFamily="system-ui" fontSize="10" fontWeight="700" fill="oklch(0.476 0.235 264)">HI</text>
 
-      {/* Right page: Tamil content lines (wavy to suggest script) */}
+      {/* Right page: Santhali content lines */}
       <rect x="292" y="196" width="115" height="8" rx="4" fill="oklch(0.574 0.158 162 / 0.22)" />
       <rect x="292" y="212" width="130" height="7" rx="3.5" fill="oklch(0.574 0.158 162 / 0.15)" />
       <rect x="292" y="226" width="100" height="7" rx="3.5" fill="oklch(0.574 0.158 162 / 0.15)" />
       <rect x="292" y="252" width="125" height="7" rx="3.5" fill="oklch(0.574 0.158 162 / 0.12)" />
       <rect x="292" y="266" width="85" height="7" rx="3.5" fill="oklch(0.574 0.158 162 / 0.12)" />
-      {/* "தமிழ்" label */}
-      <rect x="292" y="300" width="52" height="22" rx="8" fill="oklch(0.574 0.158 162 / 0.14)" />
-      <text x="318" y="315" textAnchor="middle" fontFamily="system-ui" fontSize="9" fontWeight="700" fill="oklch(0.574 0.158 162)">தமிழ்</text>
+      {/* "Santhali" label */}
+      <rect x="292" y="300" width="62" height="22" rx="8" fill="oklch(0.574 0.158 162 / 0.14)" />
+      <text x="323" y="315" textAnchor="middle" fontFamily="system-ui" fontSize="9" fontWeight="700" fill="oklch(0.574 0.158 162)">Santhali</text>
 
       {/* Arrow bridge between pages */}
       <path d="M248 240 Q280 220 312 240" stroke="oklch(0.705 0.213 47.6)" strokeWidth="2.5" strokeDasharray="5 3" fill="none" strokeLinecap="round" />
@@ -73,9 +73,9 @@ function HeroIllustration() {
 }
 
 const badges = [
-  { icon: BookOpenCheck, label: 'Built for Primary Education' },
-  { icon: Headphones, label: 'Tamil-first Prototype' },
-  { icon: Users, label: 'Teacher-reviewed Learning' },
+  { icon: BookOpenCheck, label: 'Built for Mother Tongue-Based Primary Education' },
+  { icon: Headphones, label: 'Hindi ↔ Santhali MVP' },
+  { icon: Users, label: 'Teacher-Reviewed Learning' },
 ]
 
 export function Hero() {
@@ -84,9 +84,9 @@ export function Hero() {
       <div className="mx-auto grid w-full max-w-7xl items-center gap-12 px-4 py-14 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-24">
         {/* Left: text */}
         <div className="reveal flex flex-col items-start">
-          {/* Tamil label pill */}
+          {/* Language label pill */}
           <p className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/8 px-4 py-1.5 text-sm font-semibold text-primary">
-            <span className="font-tamil">தாய்மொழியில் கற்றல்</span>
+            <span>Hindi ↔ Santhali MVP</span>
             <span aria-hidden="true">·</span>
             <span>Grades 1–5</span>
           </p>
@@ -97,8 +97,7 @@ export function Hero() {
           </h1>
 
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-pretty text-muted-foreground">
-            MozhiLearn helps teachers create simple, age-appropriate learning
-            experiences in the language children understand best.
+            MozhiLearn helps teachers bridge Hindi and children’s home languages through AI-assisted translation, age-appropriate learning content, audio support, and teacher-guided practice.
           </p>
 
           {/* CTAs */}
@@ -147,21 +146,21 @@ export function Hero() {
           {/* Floating translation preview card */}
           <div className="absolute -bottom-6 -left-2 w-[15rem] rounded-3xl border border-border bg-card p-4 shadow-lg sm:-left-6 sm:w-[17rem]">
             <p className="text-xs font-semibold tracking-wide text-muted-foreground uppercase">
-              English lesson
+              Hindi lesson
             </p>
             <p className="mt-1 text-sm font-medium text-foreground">
-              &quot;Plants need sunlight to grow.&quot;
+              &quot;पौधों को बढ़ने के लिए धूप चाहिए।&quot;
             </p>
             <div className="my-3 h-px bg-border" />
             <p className="text-xs font-semibold tracking-wide text-primary uppercase">
-              Tamil · Grade 3
+              Santhali · Grade 3
             </p>
-            <p className="font-tamil mt-1 text-sm leading-relaxed font-medium text-foreground">
-              செடிகள் வளர சூரிய ஒளி தேவை.
+            <p className="mt-1 text-sm leading-relaxed font-medium text-foreground">
+              दरयाः हाराअ लागित् सितुं ल़ड़क्-आ।
             </p>
             <p className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-success">
               <Headphones className="size-4" aria-hidden="true" />
-              Audio ready
+              Mother Tongue Audio
             </p>
           </div>
         </div>

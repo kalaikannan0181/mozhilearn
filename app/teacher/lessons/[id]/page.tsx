@@ -497,12 +497,12 @@ export default function EditLesson({ params: paramsPromise }: { params: Promise<
           </div>
         </div>
 
-        {/* Step 2: Tamil Adaptation */}
+        {/* Step 2: Mother Tongue Adaptation */}
         <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 space-y-6">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
               <Sparkles className="size-5 text-accent" />
-              2. Tamil Pedagogy Adaptation
+              2. Mother Tongue Pedagogy Adaptation
             </h3>
             <button
               type="button"
@@ -510,43 +510,43 @@ export default function EditLesson({ params: paramsPromise }: { params: Promise<
               className="inline-flex items-center gap-1 text-xs font-bold text-primary bg-primary/10 px-3 py-1.5 rounded-xl hover:bg-primary/15 transition-all"
             >
               <Volume2 className="size-4" />
-              Listen (Preview TTS)
+              Listen (Preview Audio)
             </button>
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700">Lesson Title (Tamil)</label>
+            <label className="block text-sm font-semibold text-gray-700">Lesson Title (Mother Tongue)</label>
             <input
               id="title_ta"
               type="text"
               required
               value={titleTa}
               onChange={(e) => setTitleTa(e.target.value)}
-              className="mt-1 block w-full rounded-2xl border border-gray-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary font-tamil"
+              className="mt-1 block w-full rounded-2xl border border-gray-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700">Translated Content (Tamil)</label>
+            <label className="block text-sm font-semibold text-gray-700">Translated Content (Mother Tongue)</label>
             <textarea
               id="translated"
               required
               rows={5}
               value={translatedContent}
               onChange={(e) => setTranslatedContent(e.target.value)}
-              className="mt-1 block w-full rounded-2xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-primary font-tamil"
+              className="mt-1 block w-full rounded-2xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700">Simplified Explanation for Kids (Tamil)</label>
+            <label className="block text-sm font-semibold text-gray-700">Simplified Explanation for Kids</label>
             <textarea
               id="simplified"
               required
               rows={5}
               value={simplifiedContentTa}
               onChange={(e) => setSimplifiedContentTa(e.target.value)}
-              className="mt-1 block w-full rounded-2xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-primary font-tamil"
+              className="mt-1 block w-full rounded-2xl border border-gray-200 px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
             />
           </div>
 

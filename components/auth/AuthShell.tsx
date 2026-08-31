@@ -33,10 +33,10 @@ export function AuthShell({
       <div className="relative mx-auto grid w-full max-w-5xl gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">
         {/* ── Left hero pane (desktop only) ─── */}
         <div className="hidden flex-col justify-between overflow-hidden rounded-4xl bg-primary bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:24px_24px] p-10 lg:flex relative">
-          {/* Top: Tamil text + headline */}
+          {/* Top: Hindi text + headline */}
           <div>
-            <p className="font-tamil text-2xl font-semibold text-primary-foreground/75">
-              கற்றல் அனைவருக்கும்
+            <p className="text-xl font-semibold text-primary-foreground/80">
+              सीखना हर बच्चे की भाषा में
             </p>
             <h1 className="mt-4 font-display text-4xl font-extrabold leading-tight text-primary-foreground">
               Learning feels closer in the language children know best.
@@ -48,8 +48,8 @@ export function AuthShell({
 
           {/* Middle: feature pills */}
           <div className="my-8 flex flex-col gap-3">
-            <AuthHeroPill icon={Languages} label="English → Tamil lesson translation" />
-            <AuthHeroPill icon={Volume2} label="Tamil audio narration" />
+            <AuthHeroPill icon={Languages} label="Hindi ↔ Santhali lesson adaptation" />
+            <AuthHeroPill icon={Volume2} label="Mother tongue audio narration" />
             <AuthHeroPill icon={GraduationCap} label="Teacher-reviewed content" />
           </div>
 
@@ -77,8 +77,8 @@ export function AuthShell({
               <span className="font-display text-lg font-bold text-foreground">
                 MozhiLearn
               </span>
-              <span className="font-tamil text-[11px] text-muted-foreground">
-                மொழி கற்றல்
+              <span className="text-[11px] font-medium text-muted-foreground">
+                Multilingual Pedagogy
               </span>
             </span>
           </Link>

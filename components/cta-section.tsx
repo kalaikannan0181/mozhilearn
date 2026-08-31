@@ -19,7 +19,7 @@ export function CtaSection() {
             Make Learning Feel Closer to Every Child
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-pretty text-muted-foreground">
-            A prototype designed for teacher-guided mother-tongue learning.
+            Build a teacher-guided learning experience in the language children understand best.
           </p>
 
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
