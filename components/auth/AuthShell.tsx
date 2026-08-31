@@ -32,7 +32,7 @@ export function AuthShell({
 
       <div className="relative mx-auto grid w-full max-w-5xl gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">
         {/* ── Left hero pane (desktop only) ─── */}
-        <div className="hidden flex-col justify-between overflow-hidden rounded-4xl bg-primary p-10 lg:flex">
+        <div className="hidden flex-col justify-between overflow-hidden rounded-4xl bg-primary bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:24px_24px] p-10 lg:flex relative">
           {/* Top: Tamil text + headline */}
           <div>
             <p className="font-tamil text-2xl font-semibold text-primary-foreground/75">
@@ -41,9 +41,8 @@ export function AuthShell({
             <h1 className="mt-4 font-display text-4xl font-extrabold leading-tight text-primary-foreground">
               Learning feels closer in the language children know best.
             </h1>
-            <p className="mt-4 max-w-sm text-base leading-relaxed text-primary-foreground/65">
-              A welcoming space for teachers and students to learn, create, and
-              grow together.
+            <p className="mt-4 max-w-sm text-base leading-relaxed text-primary-foreground/75">
+              MozhiLearn supports teacher-guided mother-tongue learning for primary education.
             </p>
           </div>
 
