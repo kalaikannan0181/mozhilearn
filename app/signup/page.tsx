@@ -28,6 +28,10 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
+    document.title = 'Create Account | MozhiLearn'
+  }, [])
+
+  useEffect(() => {
     const requestedRole = new URLSearchParams(window.location.search).get('role')
     if (requestedRole === 'teacher' || requestedRole === 'student') setRole(requestedRole)
   }, [])
@@ -111,7 +115,188 @@ export default function SignupPage() {
     }
   }
 
-  const roleCard = (value: Role, title: string, text: string, Icon: typeof GraduationCap) => <button type="button" onClick={() => setRole(value)} aria-pressed={role === value} className={`rounded-2xl border-2 p-4 text-left transition ${role === value ? 'border-primary bg-primary/5 shadow-sm' : 'border-border hover:border-primary/40'}`}><Icon className={`size-7 ${role === value ? 'text-primary' : 'text-muted-foreground'}`} /><span className="mt-3 block font-display font-bold">{title}</span><span className="mt-1 block text-sm leading-relaxed text-muted-foreground">{text}</span></button>
+  const roleCard = (value: Role, title: string, text: string, Icon: typeof GraduationCap) => {
+    const isSelected = role === value
+    return (
+      <button
+        type="button"
+        onClick={() => setRole(value)}
+        aria-pressed={isSelected}
+        className={`relative flex flex-col rounded-2xl border-2 p-5 text-left transition focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-primary/40 ${
+          isSelected
+            ? 'border-primary bg-primary/5 shadow-sm'
+            : 'border-border hover:border-primary/40'
+        }`}
+      >
+        <div className="flex items-center justify-between w-full">
+          <Icon className={`size-7 ${isSelected ? 'text-primary' : 'text-muted-foreground'}`} aria-hidden="true" />
+          <div
+            className={`size-5 rounded-full border flex items-center justify-center transition-colors ${
+              isSelected ? 'border-primary bg-primary' : 'border-muted-foreground/30 bg-transparent'
+            }`}
+          >
+            {isSelected && (
+              <span className="block size-2 rounded-full bg-white" />
+            )}
+          </div>
+        </div>
+        <span className="mt-4 block font-display font-bold text-foreground">{title}</span>
+        <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">{text}</span>
+      </button>
+    )
+  }
 
-  return <AuthShell title="Create Your Account" subtitle="Choose how you will use MozhiLearn."><form onSubmit={submit} className="space-y-5">{error && <Message error>{error}</Message>}{success && <Message>Account created. Please check your email to confirm your account.</Message>}<div className="grid gap-3 sm:grid-cols-2">{roleCard('teacher', 'Teacher', 'Create lessons, review translations, and track learner progress.', GraduationCap)}{roleCard('student', 'Student', 'Learn in Tamil, listen to lessons, and take fun quizzes.', Backpack)}</div><label className="block text-sm font-semibold">Full Name<input className={inputClass} required value={fullName} onChange={(e) => setFullName(e.target.value)} /></label><label className="block text-sm font-semibold">Email<input className={inputClass} type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} /></label><div className="grid gap-5 sm:grid-cols-2"><label className="block text-sm font-semibold">Password<div className="relative"><input className={`${inputClass} pr-11`} type={showPassword ? 'text' : 'password'} autoComplete="new-password" required value={password} onChange={(e) => setPassword(e.target.value)} /><button type="button" aria-label="Toggle password visibility" onClick={() => setShowPassword(!showPassword)} className="absolute top-3 right-2 p-2 text-muted-foreground">{showPassword ? <EyeOff className="size-5" /> : <Eye className="size-5" />}</button></div></label><label className="block text-sm font-semibold">Confirm Password<input className={inputClass} type={showPassword ? 'text' : 'password'} required value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} /></label></div>{role === 'teacher' ? <label className="block text-sm font-semibold">School Name<input className={inputClass} required value={schoolName} onChange={(e) => setSchoolName(e.target.value)} /></label> : <label className="block text-sm font-semibold">Grade Level<select className={inputClass} required value={grade} onChange={(e) => setGrade(e.target.value)}><option value="">Choose grade</option>{[1, 2, 3, 4, 5].map((value) => <option key={value} value={value}>Grade {value}</option>)}</select></label>}<button disabled={loading || success} className="flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 font-semibold text-primary-foreground shadow-md disabled:opacity-60">{loading ? <><Loader2 className="size-5 animate-spin" />Creating account...</> : 'Create Account'}</button><p className="text-center text-sm text-muted-foreground">Already have an account? <Link href="/login" className="font-semibold text-primary hover:underline">Sign in</Link></p></form></AuthShell>
+  return (
+    <AuthShell title="Create Your Account" subtitle="Choose how you will use MozhiLearn.">
+      <form onSubmit={submit} className="space-y-5">
+        {error && (
+          <div aria-live="polite">
+            <Message error>{error}</Message>
+          </div>
+        )}
+        {success && (
+          <div aria-live="polite">
+            <Message>Account created. Please check your email to confirm your account.</Message>
+          </div>
+        )}
+
+        <div className="grid gap-3 sm:grid-cols-2">
+          {roleCard('teacher', 'Teacher', 'Create lessons, review translations, and track learner progress.', GraduationCap)}
+          {roleCard('student', 'Student', 'Learn in Tamil, listen to lessons, and take fun quizzes.', Backpack)}
+        </div>
+
+        <div>
+          <label htmlFor="signup-name" className="block text-sm font-semibold text-foreground">
+            Full Name
+          </label>
+          <input
+            id="signup-name"
+            className={`${inputClass} mt-2`}
+            autoComplete="name"
+            required
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            placeholder="e.g., Kalaikannan J…"
+          />
+        </div>
+
+        <div>
+          <label htmlFor="signup-email" className="block text-sm font-semibold text-foreground">
+            Email
+          </label>
+          <input
+            id="signup-email"
+            className={`${inputClass} mt-2`}
+            type="email"
+            autoComplete="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@example.com…"
+          />
+        </div>
+
+        <div className="grid gap-5 sm:grid-cols-2">
+          <div>
+            <label htmlFor="signup-password" className="block text-sm font-semibold text-foreground">
+              Password
+            </label>
+            <div className="relative mt-2">
+              <input
+                id="signup-password"
+                className={`${inputClass} pr-11 !mt-0`}
+                type={showPassword ? 'text' : 'password'}
+                autoComplete="new-password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Choose password…"
+              />
+              <button
+                type="button"
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute top-3 right-2 p-2 text-muted-foreground hover:text-foreground"
+              >
+                {showPassword ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label htmlFor="signup-confirm-password" className="block text-sm font-semibold text-foreground">
+              Confirm Password
+            </label>
+            <input
+              id="signup-confirm-password"
+              className={`${inputClass} mt-2`}
+              type={showPassword ? 'text' : 'password'}
+              required
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="Confirm password…"
+            />
+          </div>
+        </div>
+
+        {role === 'teacher' ? (
+          <div>
+            <label htmlFor="signup-school" className="block text-sm font-semibold text-foreground">
+              School Name
+            </label>
+            <input
+              id="signup-school"
+              className={`${inputClass} mt-2`}
+              autoComplete="organization"
+              required
+              value={schoolName}
+              onChange={(e) => setSchoolName(e.target.value)}
+              placeholder="e.g., Nandha Engineering College…"
+            />
+          </div>
+        ) : (
+          <div>
+            <label htmlFor="signup-grade" className="block text-sm font-semibold text-foreground">
+              Grade Level
+            </label>
+            <select
+              id="signup-grade"
+              className={`${inputClass} mt-2`}
+              required
+              value={grade}
+              onChange={(e) => setGrade(e.target.value)}
+            >
+              <option value="">Choose grade…</option>
+              {[1, 2, 3, 4, 5].map((value) => (
+                <option key={value} value={value}>
+                  Grade {value}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        <button
+          disabled={loading || success}
+          className="flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 font-semibold text-primary-foreground shadow-md hover:bg-primary/90 disabled:opacity-60 focus-visible:ring-3 focus-visible:ring-primary/40"
+        >
+          {loading ? (
+            <>
+              <Loader2 className="size-5 animate-spin" />
+              Creating Account…
+            </>
+          ) : (
+            'Create Account'
+          )}
+        </button>
+
+        <p className="text-center text-sm text-muted-foreground">
+          Already have an account?{' '}
+          <Link href="/login" className="font-semibold text-primary hover:underline">
+            Sign in
+          </Link>
+        </p>
+      </form>
+    </AuthShell>
+  )
 }

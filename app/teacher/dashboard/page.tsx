@@ -198,6 +198,7 @@ export default function TeacherDashboard() {
   }
 
   useEffect(() => {
+    document.title = 'Teacher Dashboard | MozhiLearn'
     fetchDashboardData()
   }, [user])
 

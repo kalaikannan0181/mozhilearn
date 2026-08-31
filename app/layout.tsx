@@ -17,22 +17,24 @@ const _notoTamil = Noto_Sans_Tamil({
 })
 
 export const metadata: Metadata = {
-  title: 'MozhiLearn — Every Child Deserves to Learn in Their Mother Tongue',
+  title: {
+    default: "MozhiLearn | Learning in Every Child's Mother Tongue",
+    template: '%s | MozhiLearn',
+  },
   description:
-    'MozhiLearn is an AI-powered mother tongue learning platform for Indian primary schools. Instant English to Tamil lesson translation, pedagogy adaptation for Grades 1-5, natural Tamil audio narration and real-time progress analytics for teachers.',
+    'MozhiLearn is a mother tongue-based learning platform for Indian primary schools. Teacher-guided Tamil lesson workflow, audio narration, and quiz-based comprehension checks for Grades 1–5.',
   keywords: [
     'mother tongue learning',
     'Tamil education',
     'NEP 2020',
-    'AI translation for schools',
     'primary education India',
     'SIH 2026',
+    'vernacular pedagogy',
   ],
-  generator: 'v0.app',
   openGraph: {
-    title: 'MozhiLearn — Learning in Mother Tongue',
+    title: 'MozhiLearn — Learning in Every Child\'s Mother Tongue',
     description:
-      'AI-powered translation and pedagogy adaptation for Indian primary education. Free for government schools.',
+      'Teacher-guided Tamil lesson workflow, audio narration, and quiz-based comprehension checks for Indian primary schools.',
     type: 'website',
   },
   icons: {
@@ -56,7 +58,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   colorScheme: 'light',
-  themeColor: '#2563EB',
+  themeColor: '#1D4ED8',
 }
 
 export default function RootLayout({
@@ -65,7 +67,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="light bg-background">
+    <html lang="en" translate="no" className="light bg-background">
       <body className="font-sans antialiased">
         <AuthProvider>
           {children}

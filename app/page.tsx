@@ -12,14 +12,11 @@ import { PrototypeNote } from '@/components/testimonials'
 export default function HomePage() {
   return (
     <>
-      <a
-        href="#home"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-100 focus:rounded-xl focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-primary-foreground"
-      >
-        Skip to content
+      <a href="#main-content" className="skip-link">
+        Skip to main content
       </a>
       <SiteNav />
-      <main>
+      <main id="main-content">
         <Hero />
         <Problem />
         <Solution />

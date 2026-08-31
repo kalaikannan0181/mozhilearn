@@ -152,11 +152,88 @@
   }
 }
 
+/* ─── Accessibility: focus-visible ──────────────────────────────────────────── */
+:focus-visible {
+  outline: 3px solid #F97316;
+  outline-offset: 3px;
+}
+
+/* ─── Skip to main content link ─────────────────────────────────────────────── */
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 200;
+  transform: translateY(-200%);
+  transition: transform 160ms ease;
+  background: #1D4ED8;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-decoration: none;
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* ─── Mobile tap targets ─────────────────────────────────────────────────────── */
+html {
+  -webkit-tap-highlight-color: rgba(29, 78, 216, 0.16);
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  touch-action: manipulation;
+}
+
+/* Prevent iOS Safari zoom on input focus (min 16px) */
+input,
+textarea,
+select {
+  font-size: 16px;
+}
+
+/* ─── Interactive card hover ─────────────────────────────────────────────────── */
+.interactive-card {
+  transition-property: transform, box-shadow, border-color;
+  transition-duration: 180ms;
+  transition-timing-function: ease;
+}
+.interactive-card:hover {
+  transform: translateY(-2px);
+}
+
+/* ─── Tabular numbers for metrics/scores ────────────────────────────────────── */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── Scroll margin for anchor headings (under sticky nav) ──────────────────── */
+[id] {
+  scroll-margin-top: 5.5rem;
+}
+
+/* ─── Reduced motion ─────────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
   .reveal {
     animation: none;
+  }
+  .interactive-card:hover {
+    transform: none;
   }
 }

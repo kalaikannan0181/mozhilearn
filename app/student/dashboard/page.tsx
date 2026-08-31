@@ -36,6 +36,7 @@ export default function StudentDashboard() {
   })
 
   useEffect(() => {
+    document.title = 'Student Dashboard | MozhiLearn'
     if (!user) return
 
     const fetchStudentData = async () => {
