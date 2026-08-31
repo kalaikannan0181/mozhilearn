@@ -1,4 +1,5 @@
 import { ArrowRight, BookOpenCheck, Headphones, Users } from 'lucide-react'
+import GridBackground from '@/components/ui/GridBackground'
 
 /* ─── Inline SVG illustration: language bridge / book motif ─── */
 function HeroIllustration() {
@@ -80,35 +81,8 @@ const badges = [
 
 export function Hero() {
   return (
-    <section id="home" className="relative overflow-hidden bg-[#FFFBEB]">
-      {/* Static grid background pattern */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-[0.06] -z-10"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(29, 78, 216, 0.25) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(29, 78, 216, 0.25) 1px, transparent 1px)
-          `,
-          backgroundSize: "36px 36px"
-        }}
-      />
-
-      {/* Decorative soft glow overlays */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -right-32 -top-32 h-[30rem] w-[30rem] rounded-full bg-[#F97316]/10 blur-3xl -z-10"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -bottom-32 -left-32 h-[30rem] w-[30rem] rounded-full bg-[#1D4ED8]/10 blur-3xl -z-10"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute top-1/2 left-1/3 h-[25rem] w-[25rem] rounded-full bg-[#059669]/5 blur-3xl -z-10"
-      />
-
-      <div className="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-12 px-4 py-14 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-24">
+    <GridBackground id="home" className="bg-[#FFFBEB]">
+      <div className="mx-auto grid w-full max-w-7xl items-center gap-12 px-4 py-14 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-24">
         {/* Left: text */}
         <div className="reveal flex flex-col items-start">
           {/* Tamil label pill */}
@@ -193,6 +167,6 @@ export function Hero() {
           </div>
         </div>
       </div>
-    </section>
+    </GridBackground>
   )
 }
