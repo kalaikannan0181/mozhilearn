@@ -6,7 +6,7 @@
 >
 > **College**: Nandha Engineering College, Erode
 
-MozhiLearn is an AI-powered vernacular pedagogy platform that helps primary school students (Grades 1–5) learn in their mother tongue. It gives teachers real-time translation tools to convert English lesson content into regional languages, and lets students learn, listen, and take quizzes in the language they understand best.
+MozhiLearn is an AI-powered multilingual teaching and learning platform for mother tongue-based primary education in India (Grades 1–5). It helps teachers transform lesson content, classroom instructions, audio, worksheets, flashcards, and quizzes from a selected source language into a student’s selected mother tongue.
 
 ---
 
@@ -14,19 +14,41 @@ MozhiLearn is an AI-powered vernacular pedagogy platform that helps primary scho
 
 **SIH26042 — AI-Powered Vernacular Pedagogy and Real-Time Translation Tool for Mother Tongue-Based Primary Education**
 
-Most digital learning content in Indian primary schools is available only in English or Hindi, leaving regional-language students at a comprehension disadvantage. Teachers in rural and semi-urban schools also lack easy tools to translate and adapt classroom material into local languages while keeping the meaning intact. This creates a learning gap that widens over a child's foundational years.
+In India's multilingual classrooms, teachers and students may use different languages. When learning content is not available in a child's familiar language, understanding can become harder than the lesson itself.
 
 ---
 
-## 💡 Solution Overview
+## 💡 Solution Overview & Architecture
 
-MozhiLearn bridges this gap by combining a lesson-authoring workflow with real-time AI translation:
+MozhiLearn is language-pair agnostic by design:
 
-1. **Teachers** write or upload lesson content in English through a simple dashboard.
-2. The platform **auto-translates** the content into Tamil (and other regional languages), with audio narration generated for early readers.
-3. **Students** access lessons in their mother tongue — reading, listening, and interacting with the material at their own pace.
-4. Students take **quizzes** in their native language, graded securely on the server.
-5. **Teachers** view an analytics dashboard showing lesson engagement, quiz performance, and areas where students are struggling.
+```text
+Teacher Source Language Selection
+                ↓
+Speech-to-Text / Lesson Input
+                ↓
+AI Translation + Grade-Level Pedagogy Engine
+                ↓
+Selected Student Mother Tongue
+                ↓
+Teacher Review
+                ↓
+Audio Support + Worksheets + Flashcards + Quiz
+                ↓
+Student Learning & Progress Analytics
+```
+
+1. **Teachers** enter or speak lesson content in their chosen classroom language through a simple dashboard.
+2. The platform **assists adaptation** into the student's selected learning language or mother tongue, with audio support generated for foundational readers.
+3. **Teachers** review and verify AI-assisted content before sharing it with students.
+4. **Students** access lessons, practice activities, worksheets, and quizzes in their familiar language.
+5. **Teachers** monitor learning progress and class-level comprehension analytics.
+
+---
+
+## ⚠️ Accuracy & Scope
+
+> MozhiLearn is designed as a configurable multilingual platform for Indian languages. Available language pairs depend on validated translation, speech, and educational-content resources. All AI-generated material requires teacher review before classroom use.
 
 ---
 
@@ -36,18 +58,18 @@ MozhiLearn bridges this gap by combining a lesson-authoring workflow with real-t
 |---|---|
 | Frontend Framework | Next.js (App Router, Tailwind CSS) |
 | Backend & Database | Supabase (PostgreSQL, Auth, Storage) |
-| Text-to-Speech | Web Speech API (Tamil `ta-IN` locale) |
+| Audio Learning Support | Web Speech API & Multilingual Speech Synthesis |
 | Package Manager | pnpm |
 
 ---
 
 ## ✨ Features
 
-- 🔤 Real-time English ⇄ Tamil translation for lesson content (AI simulation model for prototype)
-- 📚 Curriculum-aligned vernacular lesson library with audio narration
-- 📝 Interactive quizzes in the student's mother tongue with secure server-side scoring
-- 👩‍🏫 Teacher content-authoring tool for quick lesson creation and quiz building
-- 📊 Student progress dashboard for both students and teachers
+- 🔤 Configurable Indian language translation & adaptation for lesson content
+- 📚 Curriculum-aligned mother tongue learning library with audio support
+- 📝 Interactive quizzes in the student's selected language with secure server-side scoring
+- 👩‍🏫 Teacher content-authoring tool for lesson creation, reviews, and activity building
+- 📊 Student learning progress dashboard for both students and teachers
 - 🔐 Role-based authentication (Student / Teacher / Admin)
 - 📈 Teacher analytics view — lesson-wise and student-wise performance
 
