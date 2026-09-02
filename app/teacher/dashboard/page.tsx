@@ -161,7 +161,7 @@ export default function TeacherDashboard() {
       title: 'Live Voice Translation',
       subtitle: `Speak Hindi ↔ ${activeLangConfig.name}`,
       icon: Mic,
-      badge: activeLangConfig.status === 'active' ? 'Live Latency < 3s' : 'Beta Preview',
+      badge: 'Voice Translation (Prototype)',
       color: 'from-blue-500/10 to-indigo-500/10 border-blue-500/20 text-blue-600 dark:text-blue-400',
       href: '/teacher/lessons',
     },
@@ -563,11 +563,88 @@ export default function TeacherDashboard() {
             </div>
 
             <p className="text-xs text-muted-foreground leading-relaxed">
-              Mother-tongue audio instructions in <strong>{activeLangConfig.name}</strong> improved class comprehension by 42% this week.
+              Mother-tongue audio instructions in <strong>{activeLangConfig.name}</strong> improved class comprehension.
             </p>
+
+            {/* Feature 8: Smart Progress Synchronization info */}
+            <div className="mt-4 pt-4 border-t border-border space-y-2">
+              <div className="flex items-center justify-between text-xs font-bold">
+                <span className="text-emerald-600 flex items-center gap-1">
+                  <CheckCircle className="size-3.5" /> Smart Progress Sync
+                </span>
+                <span className="text-muted-foreground">Last Synced: Just now</span>
+              </div>
+              <p className="text-[11px] text-muted-foreground">
+                Student progress recorded locally in offline mode. Automatically syncs to the server when connectivity returns. Teachers can view updated progress once synced.
+              </p>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Feature 3: Verified Reference Dataset */}
+      <section className="rounded-3xl border border-border bg-card p-6 sm:p-8 shadow-sm space-y-4">
+        <div className="flex items-start justify-between flex-wrap gap-3">
+          <div>
+            <div className="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-widest text-emerald-600">
+              <CheckCircle className="size-4" /> Feature 3
+            </div>
+            <h3 className="text-xl font-extrabold text-foreground mt-0.5">
+              Verified Reference Dataset
+            </h3>
+          </div>
+          <div className="group relative inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-xs font-bold text-muted-foreground cursor-help border border-border">
+            <span>ℹ Info</span>
+            <div className="absolute right-0 top-7 z-20 hidden w-64 rounded-2xl border border-border bg-popover p-3 text-xs text-popover-foreground shadow-lg group-hover:block">
+              Content accuracy depends on validated resources and teacher review.
+            </div>
+          </div>
+        </div>
+
+        <p className="text-sm font-semibold text-foreground/90">
+          Built from government textbooks, NIPUN Bharat materials, tribal-language books, dictionaries, and public research sets.
+        </p>
+
+        <ul className="grid gap-3 sm:grid-cols-2 text-xs font-medium text-muted-foreground">
+          <li className="flex items-start gap-2 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-3">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-600 mt-1 shrink-0" />
+            <span>Language accuracy validated through native speakers or community experts</span>
+          </li>
+          <li className="flex items-start gap-2 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-3">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-600 mt-1 shrink-0" />
+            <span>Dataset improves over time with more validated content</span>
+          </li>
+        </ul>
+      </section>
+
+      {/* Feature 9: Future AI Features (Planned) */}
+      <section className="rounded-3xl border border-border bg-card p-6 sm:p-8 shadow-sm space-y-4">
+        <div className="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-widest text-purple-600">
+          <Sparkles className="size-4" /> Feature 9
+        </div>
+        <h3 className="text-xl font-extrabold text-foreground">
+          Future AI Features (Planned)
+        </h3>
+
+        <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 text-xs font-semibold text-foreground">
+          {[
+            'Real-time voice translation (when technically feasible)',
+            'On-device speech and translation models for full offline support',
+            'Pronunciation assessment for speaking practice',
+            'Teacher analytics dashboard',
+            'Expansion to additional languages (e.g., Ho, Mundari, and other Indian languages)'
+          ].map((item, idx) => (
+            <li key={idx} className="rounded-2xl border border-purple-500/20 bg-purple-500/5 p-3.5 flex items-start gap-2">
+              <Sparkles className="size-4 text-purple-600 shrink-0 mt-0.5" />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+
+        <p className="text-xs text-muted-foreground italic bg-secondary/50 p-3 rounded-2xl border border-border">
+          These features are planned for future development and depend on validated resources and technical feasibility.
+        </p>
+      </section>
     </div>
   )
 }

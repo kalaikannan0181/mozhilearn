@@ -44,6 +44,11 @@ export default function StudentDashboard() {
   // Flashcard carousel index
   const [flashcardIndex, setFlashcardIndex] = useState(0)
 
+  // Feature 1 & 8 Sync Progress States
+  const [syncStatus, setSyncStatus] = useState<'synced' | 'pending_sync' | 'syncing'>('synced')
+  const [lastSyncedTime, setLastSyncedTime] = useState<string>('Just now')
+  const [playingTrack, setPlayingTrack] = useState<string | null>(null)
+
   const activeLangConfig = getLanguageByCode(assignedLang)
   const featuredLesson = MULTILINGUAL_LESSONS[0]
   const currentContent = getLessonContentForLanguage(featuredLesson, assignedLang)
@@ -171,11 +176,36 @@ export default function StudentDashboard() {
             <span>Sound: {soundEnabled ? 'ON' : 'OFF'}</span>
           </button>
 
-          {/* Connection Badge */}
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-bold text-emerald-600">
-            <Wifi className="h-3.5 w-3.5" />
-            Offline Ready
+          {/* Feature 1 & 8: Connection Badge & Sync Progress Button */}
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-bold text-emerald-600 border border-emerald-500/20">
+              <Wifi className="h-3.5 w-3.5" />
+              Offline Mode
+            </span>
+
+            <button
+              type="button"
+              onClick={() => {
+                setSyncStatus('syncing')
+                setTimeout(() => {
+                  setSyncStatus('synced')
+                  setLastSyncedTime(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }))
+                }, 1000)
+              }}
+              className="inline-flex items-center gap-1.5 rounded-2xl bg-primary px-3.5 py-1.5 text-xs font-extrabold text-primary-foreground shadow-xs hover:bg-primary/90 transition-all"
+            >
+              <RotateCcw className={`h-3.5 w-3.5 ${syncStatus === 'syncing' ? 'animate-spin' : ''}`} />
+              <span>{syncStatus === 'syncing' ? 'Syncing...' : 'Sync Progress'}</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Feature 1 & 8 Sync Notice Bar */}
+        <div className="mt-3 flex items-center justify-between gap-2 border-t border-border/50 pt-2 text-xs text-muted-foreground">
+          <span>
+            {syncStatus === 'synced' ? '✓ Student progress recorded locally & synced to server.' : '⚠️ Pending Sync: Offline progress waiting to auto-sync.'}
           </span>
+          <span className="font-semibold text-foreground">Last Synced: {lastSyncedTime}</span>
         </div>
       </div>
 
@@ -430,6 +460,53 @@ export default function StudentDashboard() {
           </button>
         </div>
       </div>
+
+      {/* Feature 7: Local Audio Library Section */}
+      <section className="rounded-3xl border border-border bg-card p-6 sm:p-8 shadow-sm space-y-4">
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <div>
+            <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-indigo-600">
+              <Headphones className="h-4 w-4" /> Feature 7
+            </div>
+            <h3 className="text-xl font-extrabold text-foreground mt-0.5">
+              Local Audio Library
+            </h3>
+          </div>
+          <span className="rounded-full bg-indigo-500/10 px-3 py-1 text-xs font-bold text-indigo-600 border border-indigo-500/20">
+            Audio Available Offline
+          </span>
+        </div>
+
+        <p className="text-xs text-muted-foreground">
+          Audio generated when internet is available. Downloaded and stored locally on the device. Plays without internet during classroom use.
+        </p>
+
+        <div className="grid gap-3 sm:grid-cols-2">
+          {[
+            { title: 'Photosynthesis & Plant Growth', lang: activeLangConfig.name, duration: '2 min 15 sec' },
+            { title: 'Basic Addition & Double Digit Sums', lang: activeLangConfig.name, duration: '1 min 45 sec' },
+          ].map((track, idx) => (
+            <div key={idx} className="flex items-center justify-between p-4 rounded-2xl border border-border bg-secondary/30">
+              <div>
+                <p className="text-xs font-extrabold text-foreground">{track.title}</p>
+                <p className="text-[11px] text-muted-foreground mt-0.5">{track.lang} Audio • {track.duration}</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setPlayingTrack(playingTrack === track.title ? null : track.title)}
+                className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-3 py-1.5 text-xs font-extrabold text-white shadow-xs hover:bg-indigo-700"
+              >
+                <Volume2 className="h-3.5 w-3.5" />
+                <span>{playingTrack === track.title ? 'Playing' : 'Play Audio'}</span>
+              </button>
+            </div>
+          ))}
+        </div>
+
+        <p className="text-[11px] text-muted-foreground italic pt-1">
+          Note: Audio availability depends on the selected language and supported speech resources.
+        </p>
+      </section>
     </div>
   )
 }

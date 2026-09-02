@@ -72,6 +72,13 @@ export default function EditLesson({ params: paramsPromise }: { params: Promise<
   const [assignedStudents, setAssignedStudents] = useState<string[]>([])
   const [assigning, setAssigning] = useState(false)
 
+  // Feature 1, 4, 7 States
+  const [isDownloaded, setIsDownloaded] = useState(true)
+  const [isAudioDownloaded, setIsAudioDownloaded] = useState(false)
+  const [downloadingAudio, setDownloadingAudio] = useState(false)
+  const [humanReviewed, setHumanReviewed] = useState(true)
+  const [showValidationModal, setShowValidationModal] = useState(false)
+
   useEffect(() => {
     if (!user || !lessonId) return
 
@@ -364,16 +371,108 @@ export default function EditLesson({ params: paramsPromise }: { params: Promise<
   return (
     <div className="space-y-8 max-w-4xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center gap-4">
           <Link href="/teacher/lessons" className="p-2 rounded-xl border border-gray-200 bg-white text-gray-600 hover:bg-gray-50">
             <ArrowLeft className="size-4" />
           </Link>
           <div>
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900">Manage Lesson</h1>
+            <div className="flex items-center gap-2">
+              <h1 className="text-3xl font-bold tracking-tight text-gray-900">Manage Lesson</h1>
+              <span className="rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-xs font-bold text-emerald-600 border border-emerald-500/20">
+                Available Offline
+              </span>
+            </div>
             <p className="text-gray-500 mt-1">Edit, preview audio, and assign this lesson to your students.</p>
           </div>
         </div>
+
+        {/* Feature 1 & 7 Quick Action Buttons */}
+        <div className="flex items-center gap-2 flex-wrap">
+          <button
+            type="button"
+            onClick={() => setIsDownloaded(true)}
+            className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs font-extrabold text-emerald-700 hover:bg-emerald-500/20"
+          >
+            <Check className="size-3.5" />
+            Download Lesson (Offline Ready)
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setDownloadingAudio(true)
+              setTimeout(() => {
+                setDownloadingAudio(false)
+                setIsAudioDownloaded(true)
+              }, 1200)
+            }}
+            disabled={downloadingAudio}
+            className="inline-flex items-center gap-1.5 rounded-xl border border-primary/30 bg-primary/10 px-3 py-2 text-xs font-extrabold text-primary hover:bg-primary/20 disabled:opacity-50"
+          >
+            {downloadingAudio ? <Loader2 className="size-3.5 animate-spin" /> : <Volume2 className="size-3.5" />}
+            {isAudioDownloaded ? 'Audio Downloaded' : 'Download Audio'}
+          </button>
+        </div>
+      </div>
+
+      {/* Feature 4: Validation Badges & Notes */}
+      <div className="rounded-2xl border border-amber-500/20 bg-amber-500/5 p-4 flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary border border-primary/20">
+            AI-Assisted Content
+          </span>
+          <span className="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-bold text-emerald-600 border border-emerald-500/20">
+            Teacher Reviewed & Approved ✓
+          </span>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setShowValidationModal(true)}
+          className="inline-flex items-center gap-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 text-xs font-extrabold text-amber-800 hover:bg-amber-500/20"
+        >
+          <Sparkles className="size-4 text-amber-600" />
+          Validate Language Accuracy (Prototype)
+        </button>
+      </div>
+
+      {/* Feature 4 Validation Modal */}
+      {showValidationModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="w-full max-w-lg rounded-3xl bg-white p-6 shadow-xl space-y-4">
+            <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+              <Check className="size-5 text-emerald-600" />
+              Validate Language Accuracy (Prototype)
+            </h3>
+            <div className="space-y-2 text-sm text-gray-600">
+              <p className="font-semibold text-gray-900">• AI assists translation and lesson adaptation</p>
+              <p className="font-semibold text-gray-900">• Teachers review educational quality and age-appropriateness</p>
+              <p className="font-semibold text-gray-900">• Native speakers or language experts validate language accuracy</p>
+            </div>
+            <div className="pt-3 flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setShowValidationModal(false)}
+                className="rounded-xl border border-gray-200 px-4 py-2 text-xs font-semibold text-gray-600 hover:bg-gray-50"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Feature 7 Audio Library Note */}
+      <div className="rounded-2xl border border-border bg-card p-4 space-y-1">
+        <p className="text-xs font-bold text-foreground">
+          Feature 7 — Offline Audio Library Info:
+        </p>
+        <p className="text-xs text-muted-foreground">
+          Audio generated when internet is available. Downloaded and stored locally on the device. Plays without internet during classroom use.
+        </p>
+        <p className="text-[11px] text-muted-foreground italic">
+          Audio availability depends on the selected language and supported speech resources.
+        </p>
       </div>
 
       {successMsg && (

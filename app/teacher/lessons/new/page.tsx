@@ -43,6 +43,17 @@ export default function NewLesson() {
   const [learningObjectives, setLearningObjectives] = useState<string[]>([''])
   const [vocabulary, setVocabulary] = useState<{ en: string; ta: string }[]>([{ en: '', ta: '' }])
   const [status, setStatus] = useState<'draft' | 'published'>('draft')
+  
+  // Feature 1: Offline-First Learning state
+  const [offlineDownloadable, setOfflineDownloadable] = useState(true)
+
+  // Feature 2: Voice-to-Voice Translation Pipeline state
+  const [isSpeaking, setIsSpeaking] = useState(false)
+  const [speakStep, setSpeakStep] = useState<0 | 1 | 2 | 3>(0)
+
+  // Feature 4: AI + Human Validation state
+  const [humanReviewed, setHumanReviewed] = useState(false)
+  const [showValidationModal, setShowValidationModal] = useState(false)
 
   // Quiz Builder
   const [questions, setQuestions] = useState<QuizQuestionInput[]>([
@@ -171,6 +182,25 @@ export default function NewLesson() {
       setVocabulary(result.vocab)
       setQuestions(result.quizzes)
       setTranslating(false)
+    }, 1500)
+  }
+
+  // Feature 2: Voice-to-Voice Translation Pipeline workflow
+  const handleSpeakLesson = () => {
+    setIsSpeaking(true)
+    setSpeakStep(1) // Listening
+    setTimeout(() => {
+      setSpeakStep(2) // Speech-to-Text
+      setTitleEn(titleEn || 'Photosynthesis & Plant Growth')
+      setOriginalContent(originalContent || 'Teacher speaks Hindi: पौधे सूर्य के प्रकाश से भोजन बनाते हैं। (Plants make food using sunlight.)')
+      setTimeout(() => {
+        setSpeakStep(3) // AI Translation
+        setTimeout(() => {
+          setIsSpeaking(false)
+          setSpeakStep(0)
+          triggerMockTranslation()
+        }, 1200)
+      }, 1200)
     }, 1500)
   }
 
@@ -424,6 +454,49 @@ export default function NewLesson() {
             />
           </div>
 
+          {/* Feature 2: Voice-to-Voice Translation Pipeline */}
+          <div className="rounded-2xl border border-indigo-500/20 bg-indigo-500/5 p-4 space-y-3">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <div>
+                <h4 className="text-sm font-extrabold text-foreground flex items-center gap-2">
+                  <Sparkles className="size-4 text-indigo-600" />
+                  Voice-to-Voice Translation Pipeline (Prototype)
+                </h4>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Teacher speaks Hindi → Speech-to-Text converts to Hindi text → AI translates Hindi → selected mother tongue (e.g., Santhali) → Text-to-Speech generates audio
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={handleSpeakLesson}
+                disabled={isSpeaking}
+                className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-extrabold text-white shadow-xs hover:bg-indigo-700 transition-all disabled:opacity-50"
+              >
+                {isSpeaking ? <Loader2 className="size-4 animate-spin" /> : <Sparkles className="size-4" />}
+                {isSpeaking ? 'Processing Voice...' : 'Speak Lesson'}
+              </button>
+            </div>
+
+            {speakStep > 0 && (
+              <div className="space-y-2 pt-2 border-t border-indigo-500/10 text-xs">
+                <div className="flex items-center gap-2">
+                  <span className={`h-2 w-2 rounded-full ${speakStep >= 1 ? 'bg-indigo-600 animate-ping' : 'bg-gray-300'}`} />
+                  <span className="font-bold">Speech-to-Text (Prototype):</span>
+                  <span className="text-muted-foreground">{speakStep >= 1 ? 'Teacher speaks Hindi...' : 'Waiting for voice input'}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className={`h-2 w-2 rounded-full ${speakStep >= 2 ? 'bg-indigo-600 animate-ping' : 'bg-gray-300'}`} />
+                  <span className="font-bold">AI Translation (Prototype):</span>
+                  <span className="text-muted-foreground">{speakStep >= 2 ? 'Hindi → Selected Language (Prototype)' : 'Pending speech conversion'}</span>
+                </div>
+              </div>
+            )}
+
+            <p className="text-[11px] text-muted-foreground italic">
+              Voice-to-voice translation is a prototype workflow. Full implementation requires validated speech and translation resources.
+            </p>
+          </div>
+
           <button
             type="button"
             disabled={translating || !originalContent.trim()}
@@ -442,6 +515,86 @@ export default function NewLesson() {
               </>
             )}
           </button>
+        </div>
+
+        {/* Feature 4: AI + Human Validation Header Badges */}
+        <div className="rounded-2xl border border-amber-500/20 bg-amber-500/5 p-4 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2">
+            <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary border border-primary/20">
+              AI-Assisted Content
+            </span>
+            <span className={`rounded-full px-3 py-1 text-xs font-bold ${humanReviewed ? 'bg-emerald-500/10 text-emerald-600 border border-emerald-500/20' : 'bg-amber-500/10 text-amber-700 border border-amber-500/20'}`}>
+              {humanReviewed ? 'Teacher Reviewed & Approved ✓' : 'Teacher Review Required'}
+            </span>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setShowValidationModal(true)}
+            className="inline-flex items-center gap-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 text-xs font-extrabold text-amber-800 hover:bg-amber-500/20"
+          >
+            <CheckCircle className="size-4 text-amber-600" />
+            Validate Language Accuracy (Prototype)
+          </button>
+        </div>
+
+        {/* Feature 4 Validation Modal */}
+        {showValidationModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+            <div className="w-full max-w-lg rounded-3xl bg-white p-6 shadow-xl space-y-4">
+              <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                <CheckCircle className="size-5 text-emerald-600" />
+                Validate Language Accuracy (Prototype)
+              </h3>
+
+              <div className="space-y-2 text-sm text-gray-600">
+                <p className="font-semibold text-gray-900">• AI assists translation and lesson adaptation</p>
+                <p className="font-semibold text-gray-900">• Teachers review educational quality and age-appropriateness</p>
+                <p className="font-semibold text-gray-900">• Native speakers or language experts validate language accuracy</p>
+              </div>
+
+              <div className="pt-3 flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowValidationModal(false)}
+                  className="rounded-xl border border-gray-200 px-4 py-2 text-xs font-semibold text-gray-600 hover:bg-gray-50"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setHumanReviewed(true)
+                    setShowValidationModal(false)
+                  }}
+                  className="rounded-xl bg-emerald-600 px-4 py-2 text-xs font-bold text-white shadow-xs hover:bg-emerald-700"
+                >
+                  Review & Approve
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Feature 1: Offline Download Settings */}
+        <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-4 flex items-center justify-between gap-4">
+          <div>
+            <label className="text-sm font-bold text-foreground flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={offlineDownloadable}
+                onChange={(e) => setOfflineDownloadable(e.target.checked)}
+                className="rounded border-emerald-300 text-emerald-600 focus:ring-emerald-500 h-4 w-4"
+              />
+              Mark Downloadable for Offline Use (Feature 1)
+            </label>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Lessons, audio, activities, and quizzes available without internet. Student progress saved locally and synced when connectivity returns.
+            </p>
+          </div>
+          <span className="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-extrabold text-emerald-600 shrink-0">
+            Available Offline
+          </span>
         </div>
 
         {/* Step 2: Tamil Adaptation */}

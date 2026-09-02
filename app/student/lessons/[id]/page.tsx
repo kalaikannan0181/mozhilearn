@@ -56,6 +56,12 @@ export default function StudentLessonViewer({ params: paramsPromise }: { params:
   const [marking, setMarking] = useState(false)
   const [progressStatus, setProgressStatus] = useState<'not_started' | 'in_progress' | 'completed'>('not_started')
 
+  // Feature 5 Child-Friendly Experience States
+  const [activeTab, setActiveTab] = useState<'story' | 'flashcards' | 'games' | 'quiz'>('story')
+  const [audioSupported, setAudioSupported] = useState(true)
+  const [matchedCount, setMatchedCount] = useState(0)
+  const [gameFeedback, setGameFeedback] = useState<string | null>(null)
+
   useEffect(() => {
     if (!user || !lessonId) return
 
@@ -276,146 +282,284 @@ export default function StudentLessonViewer({ params: paramsPromise }: { params:
   }
 
   return (
-    <div className="space-y-8 max-w-3xl mx-auto pb-12">
-      {/* Navigation */}
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 max-w-3xl mx-auto pb-12">
+      {/* Top Header & Status Badges (Feature 1 & Feature 7) */}
+      <div className="flex flex-wrap items-center justify-between gap-3 bg-white p-4 rounded-3xl border border-gray-100 shadow-sm">
         <Link href="/student/dashboard" className="inline-flex items-center gap-1.5 text-sm font-semibold text-gray-500 hover:text-gray-900">
           <ArrowLeft className="size-4" />
-          Dashboard (முகப்பு)
+          Dashboard
         </Link>
-        <span className="text-xs font-bold text-green-700 bg-green-50 px-3 py-1 rounded-full uppercase tracking-wider">
-          {lesson.subject}
-        </span>
+        <div className="flex flex-wrap items-center gap-2">
+          {/* Feature 1 Offline Mode Indicator */}
+          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-bold text-emerald-700 border border-emerald-500/20">
+            Offline Mode Ready
+          </span>
+          {/* Feature 7 Audio Available Offline Badge */}
+          <span className="inline-flex items-center gap-1 rounded-full bg-indigo-500/10 px-3 py-1 text-xs font-bold text-indigo-700 border border-indigo-500/20">
+            Audio Available Offline
+          </span>
+          {/* Feature 1 Available Offline Badge */}
+          <span className="inline-flex items-center gap-1 rounded-full bg-yellow-500/10 px-3 py-1 text-xs font-bold text-yellow-800 border border-yellow-500/20">
+            Available Offline
+          </span>
+        </div>
       </div>
 
-      {/* Main Story Book Card */}
-      <article className="bg-white rounded-4xl border border-gray-100 shadow-xl overflow-hidden">
-        {/* Banner */}
-        <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-b border-green-100/50 px-6 py-8 sm:px-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-extrabold text-gray-900 sm:text-3xl leading-tight font-tamil">
-              {lesson.title_ta || lesson.title_en}
-            </h1>
-            <p className="text-sm font-semibold text-green-600 mt-1 uppercase tracking-wider">
-              Grade {lesson.grade_level} Lesson
-            </p>
-          </div>
-
-          {/* Speech Controls */}
-          <div className="flex items-center gap-2">
-            {!isSpeechSupported ? (
-              <p className="text-xs text-red-500 font-semibold bg-red-50 px-3 py-1.5 rounded-xl border border-red-100">
-                Text-to-speech is not supported in this browser.
-              </p>
-            ) : (
-              <div className="flex flex-wrap items-center gap-2">
-                {!isPlaying ? (
-                  <button
-                    onClick={handlePlay}
-                    className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-xl bg-green-500 text-white px-4 text-xs font-bold shadow-sm hover:bg-green-600 transition"
-                  >
-                    <Play className="size-4 fill-current" />
-                    Listen (கேள்)
-                  </button>
-                ) : (
-                  <>
-                    {isPaused ? (
-                      <button
-                        onClick={handleResume}
-                        className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-xl bg-green-500 text-white px-4 text-xs font-bold shadow-sm hover:bg-green-600 transition"
-                      >
-                        <Play className="size-4 fill-current" />
-                        Resume (தொடர்)
-                      </button>
-                    ) : (
-                      <button
-                        onClick={handlePause}
-                        className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-xl bg-yellow-500 text-yellow-950 px-4 text-xs font-bold shadow-sm hover:bg-yellow-600 transition"
-                      >
-                        <Pause className="size-4 fill-current" />
-                        Pause (நிறுத்து)
-                      </button>
-                    )}
-                    <button
-                      onClick={handleStop}
-                      className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-xl bg-red-500 text-white px-4 text-xs font-bold shadow-sm hover:bg-red-600 transition"
-                    >
-                      <Square className="size-4 fill-current" />
-                      Stop (முடி)
-                    </button>
-                  </>
-                )}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Content Body */}
-        <div className="p-6 sm:p-8 space-y-8">
-          {/* Simplified Mother Tongue Text */}
-          <div className="space-y-4">
-            <h3 className="text-sm font-bold text-green-600 uppercase tracking-wider flex items-center gap-2">
-              <Sparkles className="size-4.5 text-yellow-500 fill-yellow-400" />
-              Easy Lesson Explanation
-            </h3>
-            <p className="text-lg leading-relaxed text-gray-800 font-medium whitespace-pre-line bg-green-50/20 p-5 rounded-3xl border border-green-500/10">
-              {lesson.simplified_content_ta || lesson.translated_content}
-            </p>
-          </div>
-
-          {/* Learning Objectives */}
-          {lesson.learning_objectives?.length > 0 && (
-            <div className="bg-yellow-50/20 border border-yellow-500/10 rounded-3xl p-6 space-y-3">
-              <h4 className="font-extrabold text-gray-900 flex items-center gap-2">
-                <BookOpenCheck className="size-5 text-yellow-600" />
-                What we will learn:
-              </h4>
-              <ul className="list-disc pl-5 text-sm font-semibold text-gray-600 space-y-1.5">
-                {lesson.learning_objectives.map((obj, i) => (
-                  <li key={i}>{obj}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {/* Vocabulary Section */}
-          {lesson.vocabulary?.length > 0 && (
-            <div className="space-y-4">
-              <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider">
-                New Words &amp; Vocabulary
-              </h3>
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                {lesson.vocabulary.map((vocab, idx) => (
-                  <div key={idx} className="bg-gray-50 border border-gray-100 rounded-2xl p-3.5 text-center">
-                    <p className="font-bold text-gray-800 text-sm">{vocab.en}</p>
-                    <p className="font-tamil font-bold text-green-600 text-sm mt-1">{vocab.ta}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Collapsible English Original */}
-          <div className="border-t border-gray-100 pt-6">
+      {/* Feature 5: Child-Friendly Mode Tabs & Audio Toggle */}
+      <div className="bg-white rounded-3xl border border-gray-100 p-4 shadow-sm space-y-3">
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <div className="flex items-center gap-1 bg-secondary/50 p-1 rounded-2xl overflow-x-auto">
             <button
-              onClick={() => setShowEnglish(!showEnglish)}
-              className="w-full flex items-center justify-between py-2 text-sm font-bold text-gray-500 hover:text-gray-900"
+              type="button"
+              onClick={() => setActiveTab('story')}
+              className={`rounded-xl px-4 py-2 text-xs font-extrabold transition-all ${
+                activeTab === 'story' ? 'bg-primary text-primary-foreground shadow-xs' : 'text-muted-foreground hover:bg-secondary'
+              }`}
             >
-              <span className="flex items-center gap-1.5">
-                <BookOpen className="size-4" />
-                Show English Original (ஆங்கில வடிவம்)
-              </span>
-              {showEnglish ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" />}
+              📖 Story Mode
             </button>
-            
-            {showEnglish && (
-              <div className="mt-4 p-5 bg-gray-50/50 border border-gray-100 rounded-3xl text-sm leading-relaxed text-gray-600 whitespace-pre-line">
-                {lesson.original_content}
+            <button
+              type="button"
+              onClick={() => setActiveTab('flashcards')}
+              className={`rounded-xl px-4 py-2 text-xs font-extrabold transition-all ${
+                activeTab === 'flashcards' ? 'bg-primary text-primary-foreground shadow-xs' : 'text-muted-foreground hover:bg-secondary'
+              }`}
+            >
+              🎨 Flashcards
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab('games')}
+              className={`rounded-xl px-4 py-2 text-xs font-extrabold transition-all ${
+                activeTab === 'games' ? 'bg-primary text-primary-foreground shadow-xs' : 'text-muted-foreground hover:bg-secondary'
+              }`}
+            >
+              🧩 Practice Games
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab('quiz')}
+              className={`rounded-xl px-4 py-2 text-xs font-extrabold transition-all ${
+                activeTab === 'quiz' ? 'bg-primary text-primary-foreground shadow-xs' : 'text-muted-foreground hover:bg-secondary'
+              }`}
+            >
+              ⭐ Quiz
+            </button>
+          </div>
+
+          {/* Feature 5 Audio-Supported Lesson toggle */}
+          <label className="flex items-center gap-2 cursor-pointer text-xs font-bold text-foreground">
+            <input
+              type="checkbox"
+              checked={audioSupported}
+              onChange={(e) => setAudioSupported(e.target.checked)}
+              className="rounded border-gray-300 text-primary focus:ring-primary h-4 w-4"
+            />
+            Audio-Supported Lesson
+          </label>
+        </div>
+
+        <p className="text-xs text-muted-foreground">
+          {activeTab === 'story' && 'Story mode for listening and reading'}
+          {activeTab === 'flashcards' && 'Picture-based flashcards'}
+          {activeTab === 'games' && 'Simple interactive games'}
+          {activeTab === 'quiz' && 'Short quizzes and practice activities'}
+        </p>
+      </div>
+
+      {/* TAB 1: STORY MODE */}
+      {activeTab === 'story' && (
+        <article className="bg-white rounded-4xl border border-gray-100 shadow-xl overflow-hidden">
+          {/* Banner */}
+          <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-b border-green-100/50 px-6 py-8 sm:px-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h1 className="text-2xl font-extrabold text-gray-900 sm:text-3xl leading-tight font-tamil">
+                {lesson.title_ta || lesson.title_en}
+              </h1>
+              <p className="text-sm font-semibold text-green-600 mt-1 uppercase tracking-wider">
+                Grade {lesson.grade_level} Lesson
+              </p>
+            </div>
+
+            {/* Feature 2: Listen in Selected Language Button */}
+            <div className="flex items-center gap-2">
+              {!isSpeechSupported ? (
+                <p className="text-xs text-red-500 font-semibold bg-red-50 px-3 py-1.5 rounded-xl border border-red-100">
+                  Speech synthesis not supported.
+                </p>
+              ) : (
+                <div className="flex flex-wrap items-center gap-2">
+                  {!isPlaying ? (
+                    <button
+                      onClick={handlePlay}
+                      className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-2xl bg-emerald-600 text-white px-5 text-xs font-extrabold shadow-sm hover:bg-emerald-700 transition"
+                    >
+                      <Volume2 className="size-4" />
+                      Listen in Selected Language (Prototype)
+                    </button>
+                  ) : (
+                    <>
+                      {isPaused ? (
+                        <button
+                          onClick={handleResume}
+                          className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-xl bg-emerald-600 text-white px-4 text-xs font-bold"
+                        >
+                          <Play className="size-4 fill-current" />
+                          Resume
+                        </button>
+                      ) : (
+                        <button
+                          onClick={handlePause}
+                          className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-xl bg-yellow-500 text-yellow-950 px-4 text-xs font-bold"
+                        >
+                          <Pause className="size-4 fill-current" />
+                          Pause
+                        </button>
+                      )}
+                      <button
+                        onClick={handleStop}
+                        className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-xl bg-red-500 text-white px-4 text-xs font-bold"
+                      >
+                        <Square className="size-4 fill-current" />
+                        Stop
+                      </button>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Content Body */}
+          <div className="p-6 sm:p-8 space-y-6">
+            <div className="space-y-3">
+              <h3 className="text-xs font-bold text-green-600 uppercase tracking-wider flex items-center gap-2">
+                <Sparkles className="size-4 text-yellow-500 fill-yellow-400" />
+                Lesson Explanation
+              </h3>
+              <p className="text-lg leading-relaxed text-gray-800 font-medium whitespace-pre-line bg-green-50/20 p-5 rounded-3xl border border-green-500/10">
+                {lesson.simplified_content_ta || lesson.translated_content}
+              </p>
+            </div>
+
+            {/* Feature 2 Voice Workflow Disclaimers */}
+            <div className="rounded-2xl border border-indigo-500/20 bg-indigo-500/5 p-4 text-xs space-y-1">
+              <p className="font-bold text-indigo-900">Voice-to-Voice Pipeline (Prototype Workflow):</p>
+              <p className="text-indigo-700">Teacher speaks Hindi → Speech-to-Text converts to Hindi text → AI translates Hindi → selected mother tongue (e.g., Santhali) → Text-to-Speech generates audio in the student’s language</p>
+              <p className="text-[11px] text-muted-foreground italic pt-1">
+                Voice-to-voice translation is a prototype workflow. Full implementation requires validated speech and translation resources.
+              </p>
+            </div>
+
+            {/* Vocabulary */}
+            {lesson.vocabulary?.length > 0 && (
+              <div className="space-y-3">
+                <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+                  Vocabulary Words
+                </h4>
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                  {lesson.vocabulary.map((vocab, idx) => (
+                    <div key={idx} className="bg-gray-50 border border-gray-100 rounded-2xl p-3.5 text-center">
+                      <p className="font-bold text-gray-800 text-sm">{vocab.en}</p>
+                      <p className="font-tamil font-bold text-green-600 text-sm mt-1">{vocab.ta}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </div>
+        </article>
+      )}
+
+      {/* TAB 2: FLASHCARDS */}
+      {activeTab === 'flashcards' && (
+        <div className="bg-white rounded-4xl border border-gray-100 p-8 shadow-xl text-center space-y-6">
+          <div className="inline-flex items-center gap-2 rounded-full bg-purple-500/10 px-3 py-1 text-xs font-bold text-purple-600">
+            Picture-based flashcards
+          </div>
+
+          <div className="mx-auto max-w-sm rounded-3xl border-2 border-purple-500/30 bg-gradient-to-b from-purple-500/10 to-pink-500/10 p-8 space-y-4 shadow-md">
+            <div className="text-7xl">🌱</div>
+            <div>
+              <h3 className="text-2xl font-extrabold text-foreground">Plant Growth</h3>
+              <p className="text-lg font-bold text-primary font-tamil mt-1">தாவர வளர்ச்சி</p>
+            </div>
+            {audioSupported && (
+              <button
+                type="button"
+                onClick={handlePlay}
+                className="inline-flex items-center gap-2 rounded-2xl bg-purple-600 px-4 py-2 text-xs font-extrabold text-white shadow-xs"
+              >
+                <Volume2 className="h-4 w-4" /> Listen Audio
+              </button>
+            )}
+          </div>
+
+          <p className="text-xs text-muted-foreground">
+            Tap cards to see picture, word, and hear pronunciation in student&apos;s home language.
+          </p>
         </div>
-      </article>
+      )}
+
+      {/* TAB 3: PRACTICE GAMES */}
+      {activeTab === 'games' && (
+        <div className="bg-white rounded-4xl border border-gray-100 p-8 shadow-xl space-y-6">
+          <div className="flex items-center justify-between">
+            <div className="inline-flex items-center gap-2 rounded-full bg-cyan-500/10 px-3 py-1 text-xs font-bold text-cyan-700">
+              Simple interactive games (Prototype)
+            </div>
+            <span className="text-xs font-bold text-muted-foreground">Score: {matchedCount} / 3</span>
+          </div>
+
+          <div className="space-y-3">
+            <h3 className="text-base font-bold text-foreground">Tap-to-Match Activity: Match Picture to Word</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {[
+                { emoji: '☀️', word: 'Sunlight (சூரிய ஒளி)' },
+                { emoji: '💧', word: 'Water (நீர்)' },
+                { emoji: '🍃', word: 'Leaf (இலை)' },
+              ].map((item, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => {
+                    setMatchedCount((c) => Math.min(c + 1, 3))
+                    setGameFeedback(`Matched ${item.emoji} with ${item.word}! Great job! 🎉`)
+                  }}
+                  className="rounded-3xl border border-cyan-500/20 bg-cyan-500/5 p-6 text-center hover:bg-cyan-500/10 transition-all space-y-2"
+                >
+                  <div className="text-4xl">{item.emoji}</div>
+                  <p className="text-xs font-extrabold text-foreground">{item.word}</p>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {gameFeedback && (
+            <div className="rounded-2xl bg-emerald-500/10 p-3 text-xs font-bold text-emerald-700 border border-emerald-500/20 text-center">
+              {gameFeedback}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* TAB 4: QUIZ */}
+      {activeTab === 'quiz' && (
+        <div className="bg-white rounded-4xl border border-gray-100 p-8 shadow-xl text-center space-y-6">
+          <div className="inline-flex items-center gap-2 rounded-full bg-yellow-500/10 px-3 py-1 text-xs font-bold text-yellow-800">
+            Short quizzes and practice activities
+          </div>
+          <h3 className="text-xl font-extrabold text-foreground">Ready to test your knowledge?</h3>
+          <p className="text-sm text-muted-foreground">Short multiple-choice questions designed for early readers.</p>
+          <Link
+            href={`/student/quiz/${lesson.id}`}
+            className="inline-flex items-center gap-2 rounded-2xl bg-yellow-500 text-yellow-950 px-6 py-3 text-sm font-extrabold shadow-md hover:bg-yellow-600 transition"
+          >
+            <HelpCircle className="size-5" />
+            Start Lesson Quiz Now
+          </Link>
+        </div>
+      )}
 
       {/* Completion & Next Actions bar */}
       <div className="bg-white rounded-3xl border border-gray-100 p-5 shadow-lg flex flex-col sm:flex-row items-center gap-4 justify-between">
@@ -425,10 +569,10 @@ export default function StudentLessonViewer({ params: paramsPromise }: { params:
           </div>
           <div>
             <h4 className="font-bold text-gray-900 text-sm sm:text-base">
-              {progressStatus === 'completed' ? 'Lesson Completed! 🎉' : 'Read this lesson to take the quiz.'}
+              {progressStatus === 'completed' ? 'Lesson Completed! 🎉' : 'Read this lesson to complete your progress.'}
             </h4>
             <p className="text-xs text-gray-400 mt-0.5">
-              {progressStatus === 'completed' ? 'வெற்றிகரமாக முடித்துவிட்டீர்கள்!' : 'பாடத்தைப் படித்து முடித்து தேர்வை எழுதுங்கள்.'}
+              Student progress saved locally and synced when connectivity returns.
             </p>
           </div>
         </div>
@@ -443,7 +587,7 @@ export default function StudentLessonViewer({ params: paramsPromise }: { params:
               {marking ? (
                 <Loader2 className="size-4 animate-spin" />
               ) : (
-                'I Finished Reading (முடித்துவிட்டேன்)'
+                'Mark Completed'
               )}
             </button>
           )}
@@ -453,7 +597,7 @@ export default function StudentLessonViewer({ params: paramsPromise }: { params:
             className="flex-1 sm:flex-none inline-flex h-11 items-center justify-center gap-1.5 rounded-2xl bg-yellow-500 text-yellow-950 px-5 text-sm font-extrabold shadow-sm shadow-yellow-100 hover:bg-yellow-600 transition"
           >
             <HelpCircle className="size-4.5" />
-            Start Quiz (தேர்வு எழுது)
+            Take Quiz
           </Link>
         </div>
       </div>
