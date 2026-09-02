@@ -2,6 +2,7 @@
 
 import { BookOpenText, ChevronDown, LogIn, Menu, Sparkles, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { MozhiLogo } from '@/components/logo'
 
 const links = [
   { label: 'Home', href: '#home' },
@@ -43,26 +44,7 @@ export function SiteNav() {
         className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:h-20 lg:px-8"
       >
         {/* Logo */}
-        <a
-          href="#home"
-          className="flex items-center gap-2.5 rounded-xl focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
-        >
-          <span className="relative flex size-10 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-sm">
-            <BookOpenText className="size-5" aria-hidden="true" />
-            <Sparkles
-              className="absolute -top-1 -right-1 size-4 text-accent"
-              aria-hidden="true"
-            />
-          </span>
-          <span className="flex flex-col leading-none">
-            <span className="font-display text-lg font-bold tracking-tight text-foreground">
-              MozhiLearn
-            </span>
-            <span className="text-[11px] font-medium text-muted-foreground">
-              Multilingual Pedagogy
-            </span>
-          </span>
-        </a>
+        <MozhiLogo href="#home" subtext="Multilingual Pedagogy" size="md" />
 
         {/* Desktop links */}
         <ul className="hidden items-center gap-0.5 lg:flex">

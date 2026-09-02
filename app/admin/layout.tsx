@@ -4,7 +4,8 @@ import React, { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/context/AuthContext'
-import { BookOpenText, Sparkles, LogOut, Home, ShieldAlert } from 'lucide-react'
+import { MozhiLogo } from '@/components/logo'
+import { LogOut, ShieldAlert } from 'lucide-react'
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const { user, profile, loading, logout } = useAuth()
@@ -41,20 +42,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <div className="min-h-screen bg-gray-100 flex flex-col">
       <header className="sticky top-0 z-40 w-full border-b border-gray-200 bg-white">
         <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-2">
-            <span className="relative flex size-9 items-center justify-center rounded-xl bg-orange-600 text-white shadow-sm">
-              <BookOpenText className="size-4.5" />
-              <ShieldAlert className="absolute -top-1 -right-1 size-3.5 text-yellow-300 fill-yellow-300" />
-            </span>
-            <div className="flex flex-col leading-none text-left">
-              <span className="font-display font-bold text-base text-gray-900 tracking-tight">
-                MozhiLearn Admin
-              </span>
-              <span className="text-[10px] text-orange-600 font-semibold uppercase">
-                Console
-              </span>
-            </div>
-          </div>
+          <MozhiLogo href="/admin/dashboard" subtext="Admin Console" size="sm" />
 
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">

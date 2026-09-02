@@ -1,7 +1,7 @@
 'use client'
 
-import { Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { MozhiLogo } from '@/components/logo'
 
 const navLinks = [
   { label: 'Features', href: '#features' },
@@ -13,14 +13,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-4 sm:px-6">
-        <a href="#" className="flex items-center gap-2">
-          <span className="flex size-9 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-sm">
-            <Sparkles className="size-5" aria-hidden="true" />
-          </span>
-          <span className="font-display text-xl font-extrabold tracking-tight text-foreground">
-            MozhiLearn
-          </span>
-        </a>
+        <MozhiLogo href="#" size="sm" />
 
         <nav aria-label="Main navigation" className="hidden items-center gap-8 md:flex">
           {navLinks.map((link) => (

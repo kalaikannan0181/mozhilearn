@@ -4,7 +4,8 @@ import React, { useEffect, useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/context/AuthContext'
-import { BookOpenText, Sparkles, LogOut, Home, Award, Layout, X } from 'lucide-react'
+import { MozhiLogo } from '@/components/logo'
+import { LogOut, Home, Award, Layout, X } from 'lucide-react'
 
 export default function StudentLayout({ children }: { children: React.ReactNode }) {
   const { user, profile, loading, logout } = useAuth()
@@ -70,20 +71,7 @@ export default function StudentLayout({ children }: { children: React.ReactNode 
       {/* Student Top Bar */}
       <header className="sticky top-0 z-40 w-full border-b border-border bg-card/95 backdrop-blur-md">
         <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <Link href="/student/dashboard" className="flex items-center gap-2">
-            <span className="relative flex size-9 items-center justify-center rounded-xl bg-success text-success-foreground shadow-sm">
-              <BookOpenText className="size-4.5" />
-              <Sparkles className="absolute -top-1 -right-1 size-3.5 text-accent" />
-            </span>
-            <div className="flex flex-col leading-none text-left">
-              <span className="font-display font-bold text-base text-foreground tracking-tight">
-                MozhiLearn
-              </span>
-              <span className="text-[10px] text-success font-semibold">
-                Student Space
-              </span>
-            </div>
-          </Link>
+          <MozhiLogo href="/student/dashboard" subtext="Student Space" size="sm" />
 
           <div className="flex items-center gap-4">
             <Link

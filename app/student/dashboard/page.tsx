@@ -2,255 +2,433 @@
 
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { 
-  BookOpen, 
-  Award, 
-  Clock, 
-  CheckCircle2, 
-  Play, 
-  HelpCircle,
+import {
+  Volume2,
+  VolumeX,
+  Play,
   Sparkles,
-  BookOpenCheck
+  Star,
+  Flame,
+  Award,
+  Download,
+  Wifi,
+  RotateCcw,
+  CheckCircle2,
+  ChevronRight,
+  ChevronLeft,
+  Smile,
+  BookOpen,
+  HelpCircle,
+  Headphones,
 } from 'lucide-react'
-import { supabase } from '@/lib/supabaseClient'
 import { useAuth } from '@/context/AuthContext'
-
-interface LessonItem {
-  id: string
-  title_en: string
-  title_ta: string
-  subject: string
-  grade_level: number
-  progress_status: 'not_started' | 'in_progress' | 'completed'
-  quiz_percentage: number | null
-}
+import {
+  SUPPORTED_LANGUAGES,
+  SupportedLanguageCode,
+  getLanguageByCode,
+} from '@/config/languages'
+import {
+  MULTILINGUAL_LESSONS,
+  getLessonContentForLanguage,
+} from '@/data/multilingualLessons'
 
 export default function StudentDashboard() {
   const { user, profile } = useAuth()
-  const [lessons, setLessons] = useState<LessonItem[]>([])
-  const [loading, setLoading] = useState(true)
-  const [stats, setStats] = useState({
-    completed: 0,
-    inProgress: 0,
-    badges: 0
-  })
+
+  // Assigned Language for Student (Default: Santhali 'sat')
+  const [assignedLang, setAssignedLang] = useState<SupportedLanguageCode>('sat')
+  const [soundEnabled, setSoundEnabled] = useState(true)
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false)
+  const [activeCategory, setActiveCategory] = useState<string>('numbers')
+
+  // Flashcard carousel index
+  const [flashcardIndex, setFlashcardIndex] = useState(0)
+
+  const activeLangConfig = getLanguageByCode(assignedLang)
+  const featuredLesson = MULTILINGUAL_LESSONS[0]
+  const currentContent = getLessonContentForLanguage(featuredLesson, assignedLang)
 
   useEffect(() => {
-    document.title = 'Student Dashboard | MozhiLearn'
-    if (!user) return
-
-    const fetchStudentData = async () => {
-      try {
-        setLoading(true)
-
-        // 1. Fetch assigned lessons & public lessons
-        const { data: assignments } = await supabase
-          .from('lesson_assignments')
-          .select('lesson_id')
-          .eq('student_id', user.id)
-
-        const assignedIds = assignments?.map(a => a.lesson_id) || []
-
-        // Fetch lessons (assigned + public demo lessons where created_by is null)
-        let query = supabase
-          .from('lessons')
-          .select('id, title_en, title_ta, subject, grade_level, status, created_by')
-          .eq('status', 'published')
-
-        const { data: allLessons } = await query
-
-        // Filter: keep if created_by is null (public demo) OR in assignedIds list
-        const studentLessons = allLessons?.filter(l => l.created_by === null || assignedIds.includes(l.id)) || []
-
-        // 2. Fetch student progress
-        const { data: progress } = await supabase
-          .from('lesson_progress')
-          .select('lesson_id, status')
-          .eq('student_id', user.id)
-
-        // 3. Fetch quiz attempts for scoring
-        const { data: attempts } = await supabase
-          .from('quiz_attempts')
-          .select('lesson_id, percentage')
-          .eq('student_id', user.id)
-
-        // Map everything together
-        const mappedLessons: LessonItem[] = studentLessons.map(lesson => {
-          const prog = progress?.find(p => p.lesson_id === lesson.id)
-          const attempt = attempts?.filter(a => a.lesson_id === lesson.id) || []
-          
-          let maxPercent: number | null = null
-          if (attempt.length > 0) {
-            maxPercent = Math.max(...attempt.map(a => Number(a.percentage)))
-          }
-
-          return {
-            id: lesson.id,
-            title_en: lesson.title_en,
-            title_ta: lesson.title_ta || '',
-            subject: lesson.subject,
-            grade_level: lesson.grade_level,
-            progress_status: (prog?.status || 'not_started') as 'not_started' | 'in_progress' | 'completed',
-            quiz_percentage: maxPercent
-          }
-        })
-
-        // Stats calculation
-        const completed = mappedLessons.filter(l => l.progress_status === 'completed').length
-        const inProgress = mappedLessons.filter(l => l.progress_status === 'in_progress').length
-        // Badges: 1 badge for each quiz score >= 70%
-        const badges = mappedLessons.filter(l => l.quiz_percentage !== null && l.quiz_percentage >= 70).length
-
-        setLessons(mappedLessons)
-        setStats({ completed, inProgress, badges })
-
-      } catch (err) {
-        console.error('Error fetching student dashboard:', err)
-      } finally {
-        setLoading(false)
-      }
+    document.title = 'Student Learning Space | MozhiLearn'
+    // Map profile language if set
+    if (profile?.preferred_language && ['sat', 'hoc', 'unr', 'hi'].includes(profile.preferred_language)) {
+      setAssignedLang(profile.preferred_language as SupportedLanguageCode)
     }
+  }, [profile])
 
-    fetchStudentData()
-  }, [user])
+  const flashcards = [
+    {
+      img: '🥭',
+      hi: 'आम (Mango)',
+      sat: 'ᱩᱞ (Ul)',
+      hoc: 'Uli (Ho)',
+      unr: 'Uli (Mundari)',
+      bg: 'from-amber-500/20 to-orange-500/20 border-amber-500/30',
+    },
+    {
+      img: '☀️',
+      hi: 'सूरज (Sun)',
+      sat: 'ᱥᱤᱧ ᱪᱟᱸᱫᱚ (Sin Chando)',
+      hoc: 'Sing Bonga (Ho)',
+      unr: 'Sing Bonga (Mundari)',
+      bg: 'from-yellow-500/20 to-amber-500/20 border-yellow-500/30',
+    },
+    {
+      img: '🐟',
+      hi: 'मछली (Fish)',
+      sat: 'ᱦᱟᱹᱠᱩ (Haku)',
+      hoc: 'Hako (Ho)',
+      unr: 'Haku (Mundari)',
+      bg: 'from-blue-500/20 to-cyan-500/20 border-blue-500/30',
+    },
+    {
+      img: '🌺',
+      hi: 'फूल (Flower)',
+      sat: 'ᱵᱟᱦᱟ (Baha)',
+      hoc: 'Baha (Ho)',
+      unr: 'Baha (Mundari)',
+      bg: 'from-pink-500/20 to-rose-500/20 border-pink-500/30',
+    },
+  ]
 
-  if (loading) {
-    return (
-      <div className="flex h-96 items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
-      </div>
-    )
+  const categories = [
+    { id: 'numbers', title: 'Numbers', icon: '🔢', color: 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' },
+    { id: 'letters', title: 'Letters', icon: '🔤', color: 'bg-blue-500/10 text-blue-600 border-blue-500/20' },
+    { id: 'colours', title: 'Colours', icon: '🎨', color: 'bg-purple-500/10 text-purple-600 border-purple-500/20' },
+    { id: 'animals', title: 'Animals', icon: '🐘', color: 'bg-amber-500/10 text-amber-600 border-amber-500/20' },
+    { id: 'stories', title: 'Stories', icon: '📖', color: 'bg-rose-500/10 text-rose-600 border-rose-500/20' },
+    { id: 'listen', title: 'Listen & Repeat', icon: '🎵', color: 'bg-indigo-500/10 text-indigo-600 border-indigo-500/20' },
+    { id: 'match', title: 'Match Picture', icon: '🧩', color: 'bg-cyan-500/10 text-cyan-600 border-cyan-500/20' },
+    { id: 'stars', title: 'My Stars', icon: '⭐', color: 'bg-yellow-500/10 text-yellow-600 border-yellow-500/20' },
+  ]
+
+  const playInstructionAudio = () => {
+    if (!soundEnabled) return
+    setIsPlayingAudio(true)
+    setTimeout(() => {
+      setIsPlayingAudio(false)
+    }, 2500)
   }
+
+  const currentFlashcard = flashcards[flashcardIndex]
 
   return (
     <div className="space-y-8">
-      {/* Welcome Banner */}
-      <div className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-r from-secondary/70 via-secondary/30 to-background p-6 md:p-8 shadow-sm flex flex-col md:flex-row md:items-center gap-5">
-        <div className="relative z-10 space-y-2">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">
-            <Sparkles className="size-3.5 text-accent" />
-            Active Student
-          </span>
-          <h1 className="text-3xl font-extrabold md:text-4xl text-foreground">Hello, {profile?.full_name}!</h1>
-          <p className="text-muted-foreground text-sm md:text-base font-semibold max-w-xl">
-            Welcome to your learning space! Learn concepts in your familiar language.
-          </p>
-        </div>
-      </div>
-
-      {/* Progress Cards */}
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
-        <div className="bg-card p-6 rounded-3xl border border-border shadow-sm flex items-center gap-4">
-          <div className="p-3.5 rounded-2xl bg-success/10 text-success shrink-0">
-            <CheckCircle2 className="size-6" />
+      {/* Student Top Control Bar */}
+      <div className="rounded-3xl border border-border bg-card p-4 sm:p-6 shadow-sm flex flex-wrap items-center justify-between gap-4">
+        {/* Child Profile Info */}
+        <div className="flex items-center gap-3">
+          <div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center text-2xl shadow-xs">
+            👧
           </div>
           <div>
-            <p className="text-sm font-semibold text-muted-foreground">Completed (முடித்தவை)</p>
-            <h4 className="text-2xl font-extrabold text-foreground mt-0.5">{stats.completed} Lessons</h4>
+            <div className="flex items-center gap-2">
+              <span className="font-extrabold text-foreground text-lg">
+                {profile?.full_name || 'Rani'}
+              </span>
+              <span className="rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-xs font-bold text-emerald-600">
+                Grade 1
+              </span>
+            </div>
+            <p className="text-xs text-muted-foreground font-semibold">
+              Learning Language: <strong className="text-primary">{activeLangConfig.name} ({activeLangConfig.nativeName})</strong>
+            </p>
           </div>
         </div>
 
-        <div className="bg-card p-6 rounded-3xl border border-border shadow-sm flex items-center gap-4">
-          <div className="p-3.5 rounded-2xl bg-primary/10 text-primary shrink-0">
-            <Clock className="size-6" />
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-muted-foreground">In Progress (படிப்பவை)</p>
-            <h4 className="text-2xl font-extrabold text-foreground mt-0.5">{stats.inProgress} Lessons</h4>
-          </div>
-        </div>
-
-        <div className="bg-card p-6 rounded-3xl border border-border shadow-sm flex items-center gap-4">
-          <div className="p-3.5 rounded-2xl bg-accent/10 text-accent shrink-0">
-            <Award className="size-6" />
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-muted-foreground">Badges Won (பதக்கங்கள்)</p>
-            <h4 className="text-2xl font-extrabold text-foreground mt-0.5">{stats.badges} Badges</h4>
-          </div>
-        </div>
-      </div>
-
-      {/* Lessons List Section */}
-      <div className="space-y-4">
-        <h2 className="text-2xl font-extrabold text-foreground flex items-center gap-2">
-          <BookOpenCheck className="size-6 text-success" />
-          My Lessons (எனது பாடங்கள்)
-        </h2>
-
-        {lessons.length === 0 ? (
-          <div className="bg-card rounded-3xl border border-border shadow-sm p-12 text-center">
-            <BookOpen className="mx-auto size-16 text-border" />
-            <h3 className="mt-4 text-lg font-bold text-foreground">No lessons assigned yet</h3>
-            <p className="text-muted-foreground mt-1">Once your teacher assigns lessons, they will show up here.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {lessons.map((lesson) => (
-              <div 
-                key={lesson.id} 
-                className="bg-card rounded-3xl border border-border shadow-sm p-6 flex flex-col hover:border-success/30 hover:shadow-md transition-all group"
+        {/* Controls: Audio Toggle & Language Preview */}
+        <div className="flex flex-wrap items-center gap-3">
+          {/* Language Switcher for Student Preview */}
+          <div className="flex items-center gap-1.5 rounded-2xl border border-border bg-secondary/40 p-1">
+            <span className="px-2 text-[11px] font-bold text-muted-foreground uppercase">Language:</span>
+            {SUPPORTED_LANGUAGES.filter(l => l.code !== 'hi').map((lang) => (
+              <button
+                key={lang.code}
+                type="button"
+                onClick={() => setAssignedLang(lang.code)}
+                className={`rounded-xl px-2.5 py-1 text-xs font-extrabold transition-all ${
+                  assignedLang === lang.code
+                    ? 'bg-primary text-primary-foreground shadow-xs'
+                    : 'text-muted-foreground hover:bg-secondary'
+                }`}
               >
-                <div className="flex items-center justify-between gap-2 mb-4">
-                  <span className="text-xs font-bold text-success bg-success/10 px-2.5 py-1 rounded-full">
-                    {lesson.subject}
-                  </span>
-                  <span className={`px-2.5 py-1 rounded-full text-xs font-extrabold ${
-                    lesson.progress_status === 'completed'
-                      ? 'bg-success/10 text-success'
-                      : lesson.progress_status === 'in_progress'
-                      ? 'bg-primary/10 text-primary'
-                      : 'bg-muted text-muted-foreground'
-                  }`}>
-                    {lesson.progress_status === 'completed' ? 'Completed' : lesson.progress_status === 'in_progress' ? 'Reading' : 'Not Started'}
-                  </span>
-                </div>
-
-                <div className="flex-1 space-y-1.5">
-                  <h4 className="text-lg font-extrabold text-foreground group-hover:text-success transition-colors line-clamp-1">
-                    {lesson.title_en}
-                  </h4>
-                  {lesson.title_ta && (
-                    <h5 className="font-bold text-sm text-muted-foreground line-clamp-1">
-                      {lesson.title_ta}
-                    </h5>
-                  )}
-                </div>
-
-                {lesson.quiz_percentage !== null && (
-                  <div className="mt-4 bg-accent/6 rounded-2xl p-2.5 border border-accent/15 flex items-center justify-between">
-                    <span className="text-xs font-semibold text-accent flex items-center gap-1">
-                      <Award className="size-4 text-accent" />
-                      Best Score:
-                    </span>
-                    <span className="text-sm font-extrabold text-foreground">
-                      {lesson.quiz_percentage}%
-                    </span>
-                  </div>
-                )}
-
-                <div className="border-t border-border pt-4 mt-6 flex items-center justify-between gap-2">
-                  <Link
-                    href={`/student/lessons/${lesson.id}`}
-                    className="flex-1 inline-flex h-10 items-center justify-center gap-1.5 rounded-2xl bg-success text-success-foreground text-xs font-bold shadow-sm hover:bg-success/90 transition-colors"
-                  >
-                    <Play className="size-3.5 fill-current" />
-                    Learn (படி)
-                  </Link>
-                  {lesson.progress_status !== 'not_started' && (
-                    <Link
-                      href={`/student/quiz/${lesson.id}`}
-                      className="flex-1 inline-flex h-10 items-center justify-center gap-1.5 rounded-2xl border border-success/25 text-success text-xs font-bold hover:bg-success/8 transition-colors"
-                    >
-                      <HelpCircle className="size-3.5" />
-                      Quiz (தேர்வு)
-                    </Link>
-                  )}
-                </div>
-              </div>
+                {lang.nativeName}
+              </button>
             ))}
           </div>
-        )}
+
+          {/* Sound Toggle */}
+          <button
+            type="button"
+            onClick={() => setSoundEnabled(!soundEnabled)}
+            className={`inline-flex items-center gap-1.5 rounded-2xl border px-3 py-2 text-xs font-bold transition-all ${
+              soundEnabled
+                ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-600'
+                : 'border-slate-300 bg-slate-100 text-slate-500 dark:bg-slate-800'
+            }`}
+          >
+            {soundEnabled ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
+            <span>Sound: {soundEnabled ? 'ON' : 'OFF'}</span>
+          </button>
+
+          {/* Connection Badge */}
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-bold text-emerald-600">
+            <Wifi className="h-3.5 w-3.5" />
+            Offline Ready
+          </span>
+        </div>
+      </div>
+
+      {/* Child-Friendly Welcome Hero Card */}
+      <div className="relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-r from-primary/10 via-secondary/40 to-background p-6 sm:p-8 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div className="max-w-xl space-y-3">
+          <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-extrabold text-primary">
+            <Sparkles className="h-4 w-4 text-amber-500" />
+            Mother-Tongue Learning Space
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
+            Hello, {profile?.full_name || 'Rani'}! 👋
+          </h1>
+          <p className="text-base text-muted-foreground font-semibold leading-relaxed">
+            Let’s learn with pictures, stories, and sounds in <strong>{activeLangConfig.name} ({activeLangConfig.nativeName})</strong>.
+          </p>
+
+          <div className="flex items-center gap-4 pt-2">
+            <button
+              type="button"
+              onClick={playInstructionAudio}
+              className="inline-flex items-center gap-2 rounded-2xl bg-secondary px-4 py-2.5 text-xs font-extrabold text-foreground hover:bg-secondary/80"
+            >
+              <Volume2 className={`h-4 w-4 ${isPlayingAudio ? 'animate-bounce text-primary' : ''}`} />
+              <span>{isPlayingAudio ? 'Playing Audio...' : `🔊 Listen in ${activeLangConfig.name}`}</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Continue Learning Action Box */}
+        <div className="rounded-3xl border border-primary/30 bg-card p-6 shadow-md w-full md:w-80 shrink-0 space-y-4">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-extrabold text-primary uppercase tracking-wider">
+              Continue Learning
+            </span>
+            <span className="text-xs font-bold text-muted-foreground">45% Completed</span>
+          </div>
+
+          <div>
+            <h3 className="font-extrabold text-foreground text-lg">
+              {featuredLesson.topic}
+            </h3>
+            <p className="text-xs text-muted-foreground mt-1">
+              Class {featuredLesson.classLevel} • {featuredLesson.subjectLabel}
+            </p>
+          </div>
+
+          <div className="w-full bg-secondary h-2.5 rounded-full overflow-hidden">
+            <div className="bg-primary h-full rounded-full w-[45%]" />
+          </div>
+
+          <Link
+            href={`/student/lessons/${featuredLesson.id}`}
+            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary px-4 py-3 text-sm font-extrabold text-primary-foreground shadow-md hover:bg-primary/90 transition-transform active:scale-95"
+          >
+            <Play className="h-5 w-5 fill-current" />
+            <span>▶ Continue Learning</span>
+          </Link>
+        </div>
+      </div>
+
+      {/* 8 Large Touch-Friendly Activity Categories */}
+      <div className="space-y-4">
+        <h2 className="text-xl font-extrabold text-foreground flex items-center gap-2">
+          <span>Choose an Activity</span>
+          <span className="text-xs font-normal text-muted-foreground">(Tap any button to start)</span>
+        </h2>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          {categories.map((cat) => (
+            <button
+              key={cat.id}
+              type="button"
+              onClick={() => setActiveCategory(cat.id)}
+              className={`flex flex-col items-center justify-center p-5 rounded-3xl border transition-all hover:scale-105 active:scale-95 ${cat.color} ${
+                activeCategory === cat.id ? 'ring-2 ring-primary shadow-md' : 'shadow-xs'
+              }`}
+            >
+              <span className="text-4xl mb-2">{cat.icon}</span>
+              <span className="font-extrabold text-sm">{cat.title}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Today's Activity Card */}
+      <div className="rounded-3xl border border-border bg-card p-6 sm:p-8 shadow-sm space-y-6">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+          <div>
+            <span className="text-xs font-extrabold uppercase tracking-wider text-emerald-600">
+              Today’s Interactive Activity
+            </span>
+            <h3 className="text-2xl font-extrabold text-foreground mt-1">
+              Count the Mangoes (आम गिनो)
+            </h3>
+          </div>
+
+          <button
+            type="button"
+            onClick={playInstructionAudio}
+            className="inline-flex items-center gap-2 rounded-2xl bg-emerald-500/10 px-4 py-2 text-xs font-extrabold text-emerald-600 hover:bg-emerald-500/20"
+          >
+            <Volume2 className={`h-4 w-4 ${isPlayingAudio ? 'animate-spin' : ''}`} />
+            <span>{isPlayingAudio ? 'Playing...' : `🔊 Listen in ${activeLangConfig.name}`}</span>
+          </button>
+        </div>
+
+        {/* Visual Mango Counter */}
+        <div className="flex flex-col items-center justify-center p-8 rounded-3xl bg-secondary/30 border border-border text-center space-y-4">
+          <div className="text-6xl tracking-widest flex items-center justify-center gap-3">
+            <span>🥭</span>
+            <span>🥭</span>
+            <span>🥭</span>
+            <span>🥭</span>
+            <span>🥭</span>
+          </div>
+
+          <div className="max-w-md space-y-1">
+            <p className="text-xs font-bold text-muted-foreground uppercase">Hindi Teacher Context:</p>
+            <p className="text-sm font-semibold text-foreground">आम गिनो और सही संख्या चुनो।</p>
+            <p className="text-xs font-bold text-primary uppercase pt-2">{activeLangConfig.name} Instruction:</p>
+            <p className="text-base font-extrabold text-foreground">
+              {currentContent.instructions}
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3 pt-2">
+            {[3, 4, 5, 6].map((num) => (
+              <button
+                key={num}
+                type="button"
+                onClick={() => {
+                  if (num === 5) {
+                    alert('🎉 Correct! Well done! You earned a Star! ⭐')
+                  } else {
+                    alert('Try again! Count carefully 😊')
+                  }
+                }}
+                className="h-14 w-14 rounded-2xl border-2 border-primary bg-card text-2xl font-extrabold text-primary hover:bg-primary hover:text-primary-foreground shadow-sm transition-all active:scale-95 flex items-center justify-center"
+              >
+                {num}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Interactive Visual Flashcard Preview */}
+      <div className="rounded-3xl border border-border bg-card p-6 shadow-sm space-y-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-bold text-foreground flex items-center gap-2">
+            <span>🃏</span>
+            <span>Visual Flashcard ({activeLangConfig.name})</span>
+          </h3>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setFlashcardIndex((prev) => (prev > 0 ? prev - 1 : flashcards.length - 1))}
+              className="p-2 rounded-xl border border-border bg-secondary/50 hover:bg-secondary"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <span className="text-xs font-bold text-muted-foreground">
+              {flashcardIndex + 1} / {flashcards.length}
+            </span>
+            <button
+              type="button"
+              onClick={() => setFlashcardIndex((prev) => (prev < flashcards.length - 1 ? prev + 1 : 0))}
+              className="p-2 rounded-xl border border-border bg-secondary/50 hover:bg-secondary"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+
+        <div className={`flex flex-col sm:flex-row items-center justify-between p-6 rounded-3xl border bg-gradient-to-r ${currentFlashcard.bg} gap-6`}>
+          <div className="text-7xl">{currentFlashcard.img}</div>
+          <div className="text-center sm:text-left space-y-1">
+            <span className="text-xs font-bold uppercase text-muted-foreground">Hindi Word:</span>
+            <h4 className="text-xl font-bold text-foreground">{currentFlashcard.hi}</h4>
+            <span className="text-xs font-bold uppercase text-primary pt-2 block">{activeLangConfig.name} Word:</span>
+            <h3 className="text-2xl font-extrabold text-foreground">
+              {assignedLang === 'sat'
+                ? currentFlashcard.sat
+                : assignedLang === 'hoc'
+                ? currentFlashcard.hoc
+                : currentFlashcard.unr}
+            </h3>
+          </div>
+          <button
+            type="button"
+            onClick={playInstructionAudio}
+            className="flex items-center gap-2 rounded-2xl bg-primary px-5 py-3 text-sm font-extrabold text-primary-foreground shadow-md hover:bg-primary/90 shrink-0"
+          >
+            <Volume2 className="h-5 w-5" />
+            <span>🔊 Listen Word</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Stars, Badges & Offline Readiness */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Progress & Encouragement */}
+        <div className="rounded-3xl border border-border bg-card p-6 shadow-sm space-y-4">
+          <h3 className="text-lg font-bold text-foreground flex items-center gap-2">
+            <Star className="h-5 w-5 text-amber-500 fill-amber-500" />
+            <span>My Learning Stars & Streaks</span>
+          </h3>
+
+          <div className="grid grid-cols-3 gap-3 text-center">
+            <div className="p-4 bg-amber-500/10 rounded-2xl border border-amber-500/20">
+              <span className="text-3xl font-extrabold text-amber-600">⭐ 12</span>
+              <p className="text-xs font-extrabold text-amber-600/90 mt-1">Stars Earned</p>
+            </div>
+            <div className="p-4 bg-rose-500/10 rounded-2xl border border-rose-500/20">
+              <span className="text-3xl font-extrabold text-rose-600">🔥 3</span>
+              <p className="text-xs font-extrabold text-rose-600/90 mt-1">Day Streak</p>
+            </div>
+            <div className="p-4 bg-emerald-500/10 rounded-2xl border border-emerald-500/20">
+              <span className="text-3xl font-extrabold text-emerald-600">📚 4</span>
+              <p className="text-xs font-extrabold text-emerald-600/90 mt-1">Lessons Done</p>
+            </div>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-secondary/40 border border-border text-center">
+            <p className="text-sm font-bold text-foreground">🎉 "Well done! Keep learning every day!"</p>
+          </div>
+        </div>
+
+        {/* Downloaded Offline Content Card */}
+        <div className="rounded-3xl border border-border bg-card p-6 shadow-sm space-y-4">
+          <h3 className="text-lg font-bold text-foreground flex items-center gap-2">
+            <Download className="h-5 w-5 text-primary" />
+            <span>Offline Classroom Storage</span>
+          </h3>
+
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            Your lessons and audio packs are saved locally on this tablet. Your work will automatically sync with your teacher when internet connects.
+          </p>
+
+          <div className="flex items-center justify-between p-3.5 rounded-2xl bg-secondary/40 border border-border text-xs font-bold">
+            <span>Downloaded Lessons: <strong>5 Lessons Ready</strong></span>
+            <span className="text-emerald-600">✓ Offline Ready</span>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => alert('Opening Offline Saved Lessons Library')}
+            className="w-full rounded-2xl border border-border bg-secondary p-3 text-xs font-extrabold text-foreground hover:bg-secondary/80"
+          >
+            My Downloaded Lessons
+          </button>
+        </div>
       </div>
     </div>
   )

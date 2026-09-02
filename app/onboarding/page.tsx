@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { BookOpenText, Sparkles, Loader2, ArrowRight } from 'lucide-react'
+import { Loader2, ArrowRight } from 'lucide-react'
+import { MozhiLogo } from '@/components/logo'
 import { supabase } from '@/lib/supabaseClient'
 
 export default function OnboardingPage() {
@@ -155,19 +156,8 @@ export default function OnboardingPage() {
   return (
     <div className="flex min-h-screen flex-col justify-center bg-gradient-to-br from-blue-50 via-white to-orange-50 py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="flex items-center justify-center gap-2.5">
-          <span className="relative flex size-10 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
-            <BookOpenText className="size-5" />
-            <Sparkles className="absolute -top-1 -right-1 size-4 text-accent" />
-          </span>
-          <span className="flex flex-col leading-none text-left">
-            <span className="font-display text-lg font-bold tracking-tight text-foreground">
-              MozhiLearn
-            </span>
-            <span className="font-tamil text-[11px] text-muted-foreground">
-              மொழி கற்றல்
-            </span>
-          </span>
+        <div className="flex items-center justify-center">
+          <MozhiLogo href="/" subtext="மொழி கற்றல்" size="lg" />
         </div>
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
           Complete Your Profile

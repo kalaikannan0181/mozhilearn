@@ -4,9 +4,9 @@ import React, { useEffect, useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/context/AuthContext'
+import { MozhiLogo } from '@/components/logo'
 import { 
   BookOpenText, 
-  Sparkles, 
   LayoutDashboard, 
   BookOpen, 
   BarChart3, 
@@ -91,19 +91,8 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
       {/* Desktop Sidebar */}
       <aside className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 border-r border-border bg-card shadow-sm z-20">
         <div className="flex flex-col flex-1 min-h-0">
-          <div className="flex items-center h-20 px-6 border-b border-border gap-2.5">
-            <span className="relative flex size-10 items-center justify-center rounded-2xl bg-primary text-primary-foreground shrink-0">
-              <BookOpenText className="size-5" />
-              <Sparkles className="absolute -top-1 -right-1 size-4 text-accent" />
-            </span>
-            <div className="flex flex-col leading-none">
-              <span className="font-display text-lg font-bold tracking-tight text-foreground">
-                MozhiLearn
-              </span>
-              <span className="text-[11px] font-medium text-muted-foreground">
-                Teacher Portal
-              </span>
-            </div>
+          <div className="flex items-center h-20 px-6 border-b border-border">
+            <MozhiLogo href="/teacher/dashboard" subtext="Teacher Portal" size="md" />
           </div>
           <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
             <nav className="flex-1 px-4 space-y-1.5">
@@ -158,14 +147,7 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
       <div className="flex flex-col flex-1 w-full md:pl-64">
         {/* Mobile Header */}
         <header className="flex items-center justify-between h-16 bg-card border-b border-border px-4 md:hidden">
-          <Link href="/teacher/dashboard" className="flex items-center gap-2">
-            <span className="relative flex size-8 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-              <BookOpenText className="size-4" />
-            </span>
-            <span className="font-display font-bold text-base text-foreground">
-              MozhiLearn
-            </span>
-          </Link>
+          <MozhiLogo href="/teacher/dashboard" size="sm" />
           <button
             onClick={() => setMobileMenuOpen(true)}
             className="p-2 rounded-lg border border-border text-muted-foreground"

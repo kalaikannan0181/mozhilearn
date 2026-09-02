@@ -6,7 +6,8 @@ import { FormEvent, useState, useEffect } from 'react'
 import { AuthShell, Message, inputClass } from '@/components/auth/AuthShell'
 import { useAuth } from '@/hooks/useAuth'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabaseClient'
+import { handleAuthError } from '@/lib/authError'
+import { isConfigValid } from '@/lib/supabaseClient'
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -19,22 +20,6 @@ export default function LoginPage() {
   const [remember, setRemember] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-
-  const getFriendlyError = (message: string) => {
-    const text = message.toLowerCase()
-
-    if (text.includes('invalid login credentials') || text.includes('invalid email or password')) {
-      return 'Invalid email or password.'
-    }
-    if (text.includes('email not confirmed')) {
-      return 'Please confirm your email before signing in.'
-    }
-    if (text.includes('network') || text.includes('fetch') || text.includes('failed to fetch')) {
-      return 'The connection to Supabase failed. Please try again.'
-    }
-
-    return 'Unable to sign in right now. Please try again.'
-  }
 
   const { user, profile, loading: authLoading } = useAuth()
 
@@ -59,18 +44,24 @@ export default function LoginPage() {
     if (loading) return
     setError('')
 
+    if (!isConfigValid) {
+      setError(handleAuthError(null))
+      return
+    }
+
     if (!email.trim()) return setError('Please enter your email address.')
     if (!emailPattern.test(email.trim())) return setError('Please enter a valid email address.')
     if (!password) return setError('Please enter your password.')
 
     setLoading(true)
-    const { data, error: authError } = await signIn({ email: email.trim(), password })
-    setLoading(false)
+    try {
+      const { data, error: authError } = await signIn({ email: email.trim(), password })
 
-    if (authError) {
-      setError(getFriendlyError(authError.message))
-      return
-    }
+      if (authError) {
+        setLoading(false)
+        setError(handleAuthError(authError))
+        return
+      }
 
     const userId = data.user?.id
     if (!userId) {
@@ -104,6 +95,10 @@ export default function LoginPage() {
     }
 
     router.push('/select-role')
+    } catch (err: any) {
+      setLoading(false)
+      setError(handleAuthError(err))
+    }
   }
 
   return (
@@ -128,7 +123,11 @@ export default function LoginPage() {
               autoComplete="email"
               required
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onInput={() => setError('')}
+              onChange={(e) => {
+                setEmail(e.target.value)
+                setError('')
+              }}
               placeholder="you@example.com…"
               aria-invalid={Boolean(error && error.includes('email'))}
             />
@@ -148,7 +147,11 @@ export default function LoginPage() {
               autoComplete="current-password"
               required
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onInput={() => setError('')}
+              onChange={(e) => {
+                setPassword(e.target.value)
+                setError('')
+              }}
               placeholder="Enter password…"
               aria-invalid={Boolean(error && error.includes('password'))}
             />

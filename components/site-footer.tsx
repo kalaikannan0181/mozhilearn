@@ -1,4 +1,5 @@
-import { BookOpenText, Heart, MapPin, Sparkles } from 'lucide-react'
+import { Heart, MapPin } from 'lucide-react'
+import { MozhiLogo } from '@/components/logo'
 
 const columns = [
   {
@@ -36,23 +37,12 @@ export function SiteFooter() {
         <div className="grid gap-12 lg:grid-cols-[1.4fr_repeat(3,1fr)]">
           {/* Brand column */}
           <div>
-            <div className="flex items-center gap-2.5">
-              <span className="relative flex size-10 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
-                <BookOpenText className="size-5" aria-hidden="true" />
-                <Sparkles
-                  className="absolute -top-1 -right-1 size-4 text-accent"
-                  aria-hidden="true"
-                />
-              </span>
-              <span className="flex flex-col leading-none">
-                <span className="font-display text-lg font-bold tracking-tight">
-                  MozhiLearn
-                </span>
-                <span className="text-[11px] text-background/60">
-                  Multilingual Learning
-                </span>
-              </span>
-            </div>
+            <MozhiLogo
+              href="#"
+              subtext="Multilingual Learning"
+              size="md"
+              textClassName="[&_span:first-child]:text-background [&_span:last-child]:text-background/60"
+            />
 
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-background/70">
               MozhiLearn is an AI-powered multilingual teaching and learning platform for mother tongue-based primary education in India.

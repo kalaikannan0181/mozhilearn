@@ -6,7 +6,8 @@ import { FormEvent, useEffect, useState } from 'react'
 import { AuthShell, Message, inputClass } from '@/components/auth/AuthShell'
 import { useAuth } from '@/hooks/useAuth'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabaseClient'
+import { handleAuthError } from '@/lib/authError'
+import { isConfigValid, supabase } from '@/lib/supabaseClient'
 
 type Role = 'teacher' | 'student'
 
@@ -36,30 +37,16 @@ export default function SignupPage() {
     if (requestedRole === 'teacher' || requestedRole === 'student') setRole(requestedRole)
   }, [])
 
-  const getFriendlyError = (message: string) => {
-    const text = message.toLowerCase()
-
-    if (text.includes('already registered') || text.includes('already exists') || text.includes('user already')) {
-      return 'An account with this email already exists. Please sign in instead.'
-    }
-    if (text.includes('invalid email')) {
-      return 'Please enter a valid email address.'
-    }
-    if (text.includes('weak password') || text.includes('password should be') || text.includes('password is too short')) {
-      return 'Please choose a stronger password with at least 8 characters.'
-    }
-    if (text.includes('network') || text.includes('fetch') || text.includes('failed to fetch')) {
-      return 'The connection to Supabase failed. Please try again.'
-    }
-
-    return 'Something went wrong while creating your account. Please try again.'
-  }
-
   const submit = async (event: FormEvent) => {
     event.preventDefault()
     if (loading) return
     setError('')
     setSuccess(false)
+
+    if (!isConfigValid) {
+      setError(handleAuthError(null))
+      return
+    }
 
     if (!fullName.trim()) return setError('Please enter your full name.')
     if (!email.trim()) return setError('Please enter your email address.')
@@ -94,12 +81,7 @@ export default function SignupPage() {
       setLoading(false)
 
       if (authError) {
-        const isRateLimit = authError.status === 429 || authError.message?.toLowerCase().includes('rate limit exceeded')
-        if (isRateLimit) {
-          setError('Too many signup attempts were made recently. Please wait and try again later.')
-        } else {
-          setError(getFriendlyError(authError.message))
-        }
+        setError(handleAuthError(authError))
         return
       }
 
@@ -109,9 +91,9 @@ export default function SignupPage() {
       }
 
       setSuccess(true)
-    } catch (err) {
+    } catch (err: any) {
       setLoading(false)
-      setError('Something went wrong. Please try again.')
+      setError(handleAuthError(err))
     }
   }
 
@@ -191,7 +173,10 @@ export default function SignupPage() {
             autoComplete="email"
             required
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value)
+              if (error) setError('')
+            }}
             placeholder="you@example.com…"
           />
         </div>
@@ -209,7 +194,10 @@ export default function SignupPage() {
                 autoComplete="new-password"
                 required
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value)
+                  if (error) setError('')
+                }}
                 placeholder="Choose password…"
               />
               <button
@@ -233,7 +221,10 @@ export default function SignupPage() {
               type={showPassword ? 'text' : 'password'}
               required
               value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              onChange={(e) => {
+                setConfirmPassword(e.target.value)
+                if (error) setError('')
+              }}
               placeholder="Confirm password…"
             />
           </div>
@@ -250,7 +241,10 @@ export default function SignupPage() {
               autoComplete="organization"
               required
               value={schoolName}
-              onChange={(e) => setSchoolName(e.target.value)}
+              onChange={(e) => {
+                setSchoolName(e.target.value)
+                if (error) setError('')
+              }}
               placeholder="e.g., Nandha Engineering College…"
             />
           </div>

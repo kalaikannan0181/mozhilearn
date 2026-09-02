@@ -6,7 +6,8 @@ import { FormEvent, useState } from 'react'
 import { AuthShell, Message, inputClass } from '@/components/auth/AuthShell'
 import { useAuth } from '@/hooks/useAuth'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabaseClient'
+import { handleAuthError } from '@/lib/authError'
+import { isConfigValid, supabase } from '@/lib/supabaseClient'
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -23,30 +24,16 @@ export default function StudentSignupPage() {
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const getFriendlyError = (message: string) => {
-    const text = message.toLowerCase()
-
-    if (text.includes('already registered') || text.includes('already exists') || text.includes('user already')) {
-      return 'An account with this email already exists. Please sign in instead.'
-    }
-    if (text.includes('invalid email')) {
-      return 'Please enter a valid email address.'
-    }
-    if (text.includes('weak password') || text.includes('password should be') || text.includes('password is too short')) {
-      return 'Please choose a stronger password with at least 8 characters.'
-    }
-    if (text.includes('network') || text.includes('fetch') || text.includes('failed to fetch')) {
-      return 'The connection to Supabase failed. Please try again.'
-    }
-
-    return 'Something went wrong while creating your account. Please try again.'
-  }
-
   const submit = async (event: FormEvent) => {
     event.preventDefault()
     if (loading) return
     setError('')
     setSuccess(false)
+
+    if (!isConfigValid) {
+      setError(handleAuthError(null))
+      return
+    }
 
     if (!fullName.trim()) return setError('Please enter your full name.')
     if (!email.trim()) return setError('Please enter your email address.')
@@ -77,12 +64,7 @@ export default function StudentSignupPage() {
       setLoading(false)
 
       if (authError) {
-        const isRateLimit = authError.status === 429 || authError.message?.toLowerCase().includes('rate limit exceeded')
-        if (isRateLimit) {
-          setError('Too many signup attempts were made recently. Please wait and try again later.')
-        } else {
-          setError(getFriendlyError(authError.message))
-        }
+        setError(handleAuthError(authError))
         return
       }
 
@@ -92,9 +74,9 @@ export default function StudentSignupPage() {
       }
 
       setSuccess(true)
-    } catch (err) {
+    } catch (err: any) {
       setLoading(false)
-      setError('Something went wrong. Please try again.')
+      setError(handleAuthError(err))
     }
   }
 

@@ -1,5 +1,6 @@
-import { BookOpenText, GraduationCap, Languages, Sparkles, Volume2 } from 'lucide-react'
+import { GraduationCap, Languages, Volume2 } from 'lucide-react'
 import Link from 'next/link'
+import { MozhiLogo } from '@/components/logo'
 
 /* ─── Left hero pane: educational visual ─────────────────────────────────── */
 function AuthHeroPill({ icon: Icon, label }: { icon: typeof Languages; label: string }) {
@@ -62,26 +63,7 @@ export function AuthShell({
         {/* ── Right: form card ─── */}
         <section className="rounded-3xl border border-border bg-card/95 p-6 shadow-xl sm:p-10">
           {/* Logo link */}
-          <Link
-            href="/"
-            className="flex w-fit items-center gap-2.5 rounded-xl focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
-          >
-            <span className="relative flex size-10 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
-              <BookOpenText className="size-5" aria-hidden="true" />
-              <Sparkles
-                className="absolute -top-1 -right-1 size-4 text-accent"
-                aria-hidden="true"
-              />
-            </span>
-            <span className="flex flex-col leading-none">
-              <span className="font-display text-lg font-bold text-foreground">
-                MozhiLearn
-              </span>
-              <span className="text-[11px] font-medium text-muted-foreground">
-                Multilingual Pedagogy
-              </span>
-            </span>
-          </Link>
+          <MozhiLogo href="/" subtext="Multilingual Pedagogy" size="md" />
 
           {/* Title */}
           <div className="mt-8">
