@@ -7,7 +7,7 @@ import { AuthShell, Message, inputClass } from '@/components/auth/AuthShell'
 import { useAuth } from '@/hooks/useAuth'
 import { useRouter } from 'next/navigation'
 import { handleAuthError } from '@/lib/authError'
-import { isConfigValid } from '@/lib/supabaseClient'
+import { isConfigValid, supabase } from '@/lib/supabaseClient'
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -63,38 +63,42 @@ export default function LoginPage() {
         return
       }
 
-    const userId = data.user?.id
-    if (!userId) {
-      setError('Your session could not be loaded. Please try again.')
-      return
-    }
+      const userId = data.user?.id
+      if (!userId) {
+        setLoading(false)
+        setError('Your session could not be loaded. Please try again.')
+        return
+      }
 
-    const { data: profileData, error: profileError } = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', userId)
-      .maybeSingle()
+      const { data: profileData, error: profileError } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', userId)
+        .maybeSingle()
 
-    if (profileError) {
-      setError('Your account profile could not be loaded. Please try again.')
-      return
-    }
+      if (profileError) {
+        setLoading(false)
+        setError('Your account profile could not be loaded. Please try again.')
+        return
+      }
 
-    const role = profileData?.role
-    if (role === 'teacher') {
-      router.push('/teacher/dashboard')
-      return
-    }
-    if (role === 'student') {
-      router.push('/student/dashboard')
-      return
-    }
-    if (role === 'admin') {
-      router.push('/admin/dashboard')
-      return
-    }
+      setLoading(false)
 
-    router.push('/select-role')
+      const role = profileData?.role
+      if (role === 'teacher') {
+        router.push('/teacher/dashboard')
+        return
+      }
+      if (role === 'student') {
+        router.push('/student/dashboard')
+        return
+      }
+      if (role === 'admin') {
+        router.push('/admin/dashboard')
+        return
+      }
+
+      router.push('/select-role')
     } catch (err: any) {
       setLoading(false)
       setError(handleAuthError(err))

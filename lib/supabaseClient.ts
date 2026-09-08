@@ -42,6 +42,25 @@ if (!isConfigValid) {
 }
 
 export const supabase = createClient(
-  isConfigValid ? supabaseUrl : 'https://invalid-supabase-config.supabase.co',
-  isConfigValid ? supabaseAnonKey : 'invalid-key'
+  isConfigValid ? supabaseUrl : 'https://dummy-placeholder-project.supabase.co',
+  isConfigValid ? supabaseAnonKey : 'dummy-anon-key',
+  {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: isConfigValid,
+      detectSessionInUrl: isConfigValid,
+    },
+    global: {
+      fetch: async (url, options) => {
+        try {
+          return await fetch(url, options)
+        } catch (error) {
+          if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+            console.warn('[Supabase Client] Network fetch failed (offline or unreachable endpoint):', (error as Error).message)
+          }
+          throw error
+        }
+      },
+    },
+  }
 )

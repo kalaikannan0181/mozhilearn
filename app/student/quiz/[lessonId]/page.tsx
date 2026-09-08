@@ -89,7 +89,7 @@ export default function StudentQuiz({ params: paramsPromise }: { params: Promise
         } else if (lessonId === 'd1111111-1111-1111-1111-111111111111') {
           lesson = {
             title_en: 'Photosynthesis',
-            title_ta: 'ஒளிச்சேர்க்கை (Photosynthesis)',
+            title_ta: 'ᱨᱚᱥᱚᱫ ᱠᱚᱢᱤ (Photosynthesis — Santhali Demo)',
             status: 'published',
             created_by: null
           }

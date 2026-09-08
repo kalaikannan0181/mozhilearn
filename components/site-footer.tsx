@@ -57,7 +57,7 @@ export function SiteFooter() {
             <ul className="mt-6 flex flex-col gap-3 text-sm text-background/70">
               <li className="flex items-center gap-2.5">
                 <MapPin className="size-4 shrink-0" aria-hidden="true" />
-                Nandha Engineering College, Erode, Tamil Nadu
+                Nandha Engineering College, Erode — Team MozhiTech
               </li>
             </ul>
           </div>

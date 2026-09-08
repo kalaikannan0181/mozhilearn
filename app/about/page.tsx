@@ -136,34 +136,66 @@ export default function AboutPage() {
           </div>
         </div>
 
-        {/* Feature 9: Future AI Features (Planned) */}
+        {/* Section 14: Future Roadmap Section */}
         <section className="rounded-3xl border border-border bg-card p-6 sm:p-10 shadow-sm space-y-6">
           <div className="space-y-1">
             <div className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-purple-600">
-              <Cpu className="h-4 w-4" /> Feature 9
+              <Cpu className="h-4 w-4" /> Future Roadmap
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-              Future AI Features (Planned)
+              MozhiLearn Development Roadmap
             </h2>
+            <p className="text-sm text-muted-foreground font-medium">
+              Our planned trajectory for building accessible, offline-first mother tongue education.
+            </p>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              'Real-time voice translation (when technically feasible)',
-              'On-device speech and translation models for full offline support',
-              'Pronunciation assessment for speaking practice',
-              'Teacher analytics dashboard',
-              'Expansion to additional languages (e.g., Ho, Mundari, and other Indian languages)'
-            ].map((item, idx) => (
-              <div key={idx} className="rounded-2xl border border-purple-500/20 bg-purple-500/5 p-4 text-sm font-semibold text-foreground flex items-start gap-3">
-                <Sparkles className="h-4 w-4 text-purple-600 shrink-0 mt-0.5" />
-                <span>{item}</span>
-              </div>
-            ))}
+          <div className="grid gap-6 md:grid-cols-3">
+            {/* Phase 1 */}
+            <div className="rounded-3xl border border-primary/20 bg-primary/5 p-6 space-y-3">
+              <span className="rounded-full bg-primary px-3 py-1 text-xs font-extrabold text-primary-foreground">
+                Phase 1 — Prototype
+              </span>
+              <h3 className="text-lg font-bold text-foreground">Core Pedagogy & Workflow</h3>
+              <ul className="space-y-2 text-xs text-muted-foreground font-medium leading-relaxed">
+                <li>• Lesson adaptation workflow & teacher/student roles</li>
+                <li>• Stories, flashcards, worksheets, and quizzes</li>
+                <li>• Language-pair demo: Hindi (source) → Santhali / Ho / Mundari (mother tongue)</li>
+                <li>• Teacher review & educational validation workflow</li>
+              </ul>
+            </div>
+
+            {/* Phase 2 */}
+            <div className="rounded-3xl border border-emerald-500/20 bg-emerald-500/5 p-6 space-y-3">
+              <span className="rounded-full bg-emerald-600 px-3 py-1 text-xs font-extrabold text-white">
+                Phase 2 — Offline Learning
+              </span>
+              <h3 className="text-lg font-bold text-foreground">PWA & Local Storage</h3>
+              <ul className="space-y-2 text-xs text-muted-foreground font-medium leading-relaxed">
+                <li>• Progressive Web App (PWA) installation support</li>
+                <li>• Downloadable offline lesson packs & local audio library</li>
+                <li>• IndexedDB storage for offline student progress</li>
+                <li>• Automatic background sync when connection returns</li>
+              </ul>
+            </div>
+
+            {/* Phase 3 */}
+            <div className="rounded-3xl border border-purple-500/20 bg-purple-500/5 p-6 space-y-3">
+              <span className="rounded-full bg-purple-600 px-3 py-1 text-xs font-extrabold text-white">
+                Phase 3 — Advanced AI
+              </span>
+              <h3 className="text-lg font-bold text-foreground">Voice Pipeline & Research</h3>
+              <ul className="space-y-2 text-xs text-muted-foreground font-medium leading-relaxed">
+                <li>• Real-time voice-to-voice translation pipeline</li>
+                <li>• Native-language validation portal for expert contributors</li>
+                <li>• Expanded regional & tribal language pairs (Ho, Mundari, Gondi)</li>
+                <li>• On-device AI model research for offline voice support</li>
+              </ul>
+            </div>
           </div>
 
           <p className="text-xs text-muted-foreground bg-secondary/60 p-4 rounded-2xl border border-border font-medium">
-            These features are planned for future development and depend on validated resources and technical feasibility.
+            Development timeline is iterative and prioritizes classroom validation with native language experts.
           </p>
         </section>
 

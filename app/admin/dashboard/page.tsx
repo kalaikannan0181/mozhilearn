@@ -103,6 +103,77 @@ export default function AdminDashboard() {
         ))}
       </div>
 
+      {/* Section 12: Verified Reference Dataset Module */}
+      <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-6 sm:p-8 space-y-6">
+        <div className="space-y-1">
+          <span className="inline-block px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 font-extrabold text-xs">
+            Language Resource & Validation
+          </span>
+          <h3 className="text-xl font-bold text-gray-900">
+            Verified Educational Reference Dataset
+          </h3>
+          <p className="text-sm text-gray-600 font-medium leading-relaxed">
+            Language resources are built from approved educational materials, public language resources, dictionaries, research datasets, and native-speaker validation.
+          </p>
+        </div>
+
+        {/* Data Lifecycle */}
+        <div className="space-y-3">
+          <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+            Dataset Lifecycle Pipeline
+          </h4>
+          <div className="flex flex-wrap items-center gap-2 text-xs font-bold">
+            <span className="bg-gray-100 px-3 py-2 rounded-xl text-gray-700">Source Materials</span>
+            <span className="text-gray-400">→</span>
+            <span className="bg-blue-50 px-3 py-2 rounded-xl text-blue-700">Initial Language Resource</span>
+            <span className="text-gray-400">→</span>
+            <span className="bg-purple-50 px-3 py-2 rounded-xl text-purple-700">AI-Assisted Draft</span>
+            <span className="text-gray-400">→</span>
+            <span className="bg-amber-50 px-3 py-2 rounded-xl text-amber-800">Native/Expert Validation</span>
+            <span className="text-gray-400">→</span>
+            <span className="bg-emerald-50 px-3 py-2 rounded-xl text-emerald-700">Approved Learning Content</span>
+            <span className="text-gray-400">→</span>
+            <span className="bg-emerald-100 px-3 py-2 rounded-xl text-emerald-800">Reusable Reference Dataset</span>
+          </div>
+        </div>
+
+        {/* Source Labels Grid */}
+        <div className="space-y-3">
+          <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider">
+            Primary Resource Sources
+          </h4>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-semibold">
+            {[
+              'Government Textbooks',
+              'NIPUN Bharat Materials',
+              'State Curriculum Content',
+              'Tribal & Regional Textbooks',
+              'Dictionaries & Lexical Resources',
+              'Public Research Datasets',
+              'Verified Community Contributions',
+              'Language Expert Review'
+            ].map((source, idx) => (
+              <div key={idx} className="bg-gray-50 border border-gray-100 rounded-2xl p-3 text-gray-800">
+                • {source}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Section 13: PWA & Sync Status Note */}
+      <div className="rounded-3xl border border-indigo-100 bg-indigo-50/50 p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h4 className="text-sm font-bold text-indigo-950">PWA & Progressive Offline Sync (Prototype Status)</h4>
+          <p className="text-xs text-indigo-700 mt-1">
+            Service Worker caches shell, IndexedDB stores downloaded lessons, sync uploads local progress when internet returns.
+          </p>
+        </div>
+        <span className="rounded-full bg-indigo-100 px-3 py-1 text-xs font-extrabold text-indigo-800 shrink-0">
+          PWA offline sync is planned for the production version.
+        </span>
+      </div>
+
       {/* Users table */}
       <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-6 overflow-hidden">
         <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2 mb-5">

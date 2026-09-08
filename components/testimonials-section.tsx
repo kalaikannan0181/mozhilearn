@@ -11,26 +11,26 @@ type Testimonial = {
 const testimonials: Testimonial[] = [
   {
     quote:
-      'My students actually ask for more Tamil practice now. The games make learning feel like play.',
-    name: 'Priya Ramesh',
-    role: 'Grade 3 Teacher, Madurai',
-    initials: 'PR',
+      'My students now follow lessons much more confidently when they hear explanations in Santhali. The audio support is a game changer for tribal classrooms.',
+    name: 'Savitri Hembram',
+    role: 'Grade 2 Teacher, Dumka, Jharkhand',
+    initials: 'SH',
     avatarClass: 'bg-primary text-primary-foreground',
   },
   {
     quote:
-      'I love collecting stars when I read stories out loud. Tamil is my favorite class!',
-    name: 'Arjun',
-    role: 'Student, Age 8',
-    initials: 'A',
+      'I love listening to the lesson in my own language! The pictures and the stars make it fun to learn every day.',
+    name: 'Sonu Soren',
+    role: 'Student, Age 7, Class 2',
+    initials: 'SS',
     avatarClass: 'bg-sky text-sky-foreground',
   },
   {
     quote:
-      'The progress dashboard helps me see exactly who needs a little extra help each week.',
-    name: 'Lakshmi Nair',
-    role: 'Primary Coordinator, Chennai',
-    initials: 'LN',
+      'The teacher review dashboard helps us track which students need more support. The mother-tongue audio lessons improve comprehension significantly.',
+    name: 'Prakash Murmu',
+    role: 'Primary Coordinator, Ranchi, Jharkhand',
+    initials: 'PM',
     avatarClass: 'bg-leaf text-leaf-foreground',
   },
 ]

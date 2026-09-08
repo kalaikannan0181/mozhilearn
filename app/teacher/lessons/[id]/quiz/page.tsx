@@ -145,7 +145,7 @@ export default function TeacherQuizEditor({ params: paramsPromise }: { params: P
       const q = questions[i]
       const num = i + 1
       if (!q.question_ta.trim()) {
-        return setError(`Question #${num} requires a Tamil question text.`)
+        return setError(`Question #${num} requires a question in the selected mother tongue language.`)
       }
       if (q.options.some(opt => !opt.trim())) {
         return setError(`Question #${num} requires all four option fields to be filled out.`)
@@ -270,13 +270,13 @@ export default function TeacherQuizEditor({ params: paramsPromise }: { params: P
 
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div>
-                      <label className="block text-xs font-semibold text-gray-500 uppercase">Question in Tamil</label>
+                      <label className="block text-xs font-semibold text-gray-500 uppercase">Question in Mother Tongue Language</label>
                       <input
                         type="text"
                         required
                         value={q.question_ta}
                         onChange={(e) => handleQuestionChange(qIndex, 'question_ta', e.target.value)}
-                        placeholder="தாவரங்கள் வளர என்ன தேவை?"
+                        placeholder="e.g. ᱵᱟᱹᱰᱤᱡ ᱠᱟᱹᱢᱤ ᱫᱚ ᱠᱷᱮᱱ? (Santhali) / पेड़ को क्या चाहिए? (Hindi)"
                         className="mt-1 block w-full rounded-2xl border border-gray-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary font-tamil"
                       />
                     </div>
@@ -336,19 +336,19 @@ export default function TeacherQuizEditor({ params: paramsPromise }: { params: P
                         required
                         className="mt-1 block w-full rounded-xl border border-gray-200 px-3 py-2 text-xs focus:outline-none"
                       >
-                        <option value="easy">Easy (எளிது)</option>
-                        <option value="medium">Medium (சராசரி)</option>
-                        <option value="hard">Hard (கடினம்)</option>
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
                       </select>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-semibold text-gray-500 uppercase">Explanation (Tamil)</label>
+                      <label className="block text-xs font-semibold text-gray-500 uppercase">Explanation (Mother Tongue)</label>
                       <input
                         type="text"
                         value={q.explanation_ta}
                         onChange={(e) => handleQuestionChange(qIndex, 'explanation_ta', e.target.value)}
-                        placeholder="சூரிய ஒளி தாவரங்களுக்கு உணவு தயாரிக்க உதவுகிறது."
+                        placeholder="Brief explanation in the mother tongue language (e.g. Santhali or Hindi)"
                         className="mt-1 block w-full rounded-xl border border-gray-200 px-3.5 py-2 text-xs focus:outline-none font-tamil"
                       />
                     </div>

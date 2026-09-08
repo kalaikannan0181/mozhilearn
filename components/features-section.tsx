@@ -19,7 +19,7 @@ const features: Feature[] = [
     iconClass: 'bg-primary text-primary-foreground',
   },
   {
-    title: 'Learn in Tamil',
+    title: 'Learn in Your Mother Tongue',
     description:
       'Students read, listen, and speak in their mother tongue with gentle AI guidance at every step.',
     icon: BookOpen,

@@ -147,3 +147,174 @@ VALUES
 -- JOIN quiz_results qr ON qr.lesson_id = l.id
 -- WHERE l.teacher_id = '11111111-1111-1111-1111-111111111111'
 -- GROUP BY l.id, l.title_en, l.title_ta;
+
+-- ============================================================
+-- 5. MOTHER TONGUE INTERACTIVE LEARNING EXTENSIONS
+-- ============================================================
+
+-- 5.1 Languages Configuration
+CREATE TABLE IF NOT EXISTS languages (
+    id                      UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    code                    VARCHAR(20) UNIQUE NOT NULL,
+    display_name            VARCHAR(100) NOT NULL,
+    native_name             VARCHAR(100),
+    script                  VARCHAR(50),
+    status                  VARCHAR(30) NOT NULL CHECK (status IN ('AVAILABLE', 'LIMITED', 'PLANNED', 'DISABLED')),
+    translation_supported   BOOLEAN DEFAULT FALSE,
+    audio_supported         BOOLEAN DEFAULT FALSE,
+    offline_pack_supported  BOOLEAN DEFAULT FALSE,
+    is_active               BOOLEAN DEFAULT TRUE,
+    created_at              TIMESTAMP NOT NULL DEFAULT NOW(),
+    updated_at              TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+-- 5.2 Reference Language Sources
+CREATE TABLE IF NOT EXISTS language_sources (
+    id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    title               VARCHAR(255) NOT NULL,
+    source_type         VARCHAR(50) NOT NULL,
+    organization        VARCHAR(200),
+    url_or_reference    TEXT,
+    publication_year    INTEGER,
+    license_notes       TEXT,
+    language_id         UUID REFERENCES languages(id) ON DELETE SET NULL,
+    imported_by         UUID REFERENCES users(id) ON DELETE SET NULL,
+    created_at          TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+-- 5.3 Language Dictionary
+CREATE TABLE IF NOT EXISTS language_dictionary (
+    id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    language_id         UUID REFERENCES languages(id) ON DELETE CASCADE,
+    source_word         VARCHAR(255) NOT NULL,
+    target_word         VARCHAR(255) NOT NULL,
+    english_meaning     TEXT,
+    transliteration     VARCHAR(255),
+    part_of_speech      VARCHAR(50),
+    grade               INTEGER CHECK (grade BETWEEN 1 AND 5),
+    subject             VARCHAR(100),
+    topic               VARCHAR(100),
+    source_id           UUID REFERENCES language_sources(id) ON DELETE SET NULL,
+    verification_status VARCHAR(50) DEFAULT 'DRAFT',
+    verified_by         UUID REFERENCES users(id) ON DELETE SET NULL,
+    verified_at         TIMESTAMP,
+    created_at          TIMESTAMP NOT NULL DEFAULT NOW(),
+    updated_at          TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+-- 5.4 Translation Memory
+CREATE TABLE IF NOT EXISTS translation_memory (
+    id                      UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    source_language_id      UUID REFERENCES languages(id),
+    target_language_id      UUID REFERENCES languages(id),
+    source_text_normalized  TEXT NOT NULL,
+    translated_text         TEXT NOT NULL,
+    context_grade           INTEGER CHECK (context_grade BETWEEN 1 AND 5),
+    context_subject         VARCHAR(100),
+    context_topic           VARCHAR(100),
+    source_type             VARCHAR(50),
+    verification_status     VARCHAR(50) DEFAULT 'DRAFT',
+    approved_by             UUID REFERENCES users(id) ON DELETE SET NULL,
+    approved_at             TIMESTAMP,
+    usage_count             INTEGER DEFAULT 0,
+    created_at              TIMESTAMP NOT NULL DEFAULT NOW(),
+    updated_at              TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+-- 5.5 Validation Records
+CREATE TABLE IF NOT EXISTS validation_records (
+    id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    entity_type         VARCHAR(50) NOT NULL,
+    entity_id           UUID NOT NULL,
+    validation_type     VARCHAR(50) NOT NULL,
+    status              VARCHAR(50) NOT NULL,
+    reviewer_user_id    UUID REFERENCES users(id) ON DELETE SET NULL,
+    reviewer_role       VARCHAR(50),
+    notes               TEXT,
+    created_at          TIMESTAMP NOT NULL DEFAULT NOW(),
+    updated_at          TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+-- 5.6 Learning Stories & Story Pages
+CREATE TABLE IF NOT EXISTS learning_stories (
+    id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    lesson_id           UUID REFERENCES lessons(id) ON DELETE CASCADE,
+    language_id         UUID REFERENCES languages(id),
+    title               VARCHAR(255) NOT NULL,
+    learning_objective  TEXT,
+    grade               INTEGER CHECK (grade BETWEEN 1 AND 5),
+    verification_status VARCHAR(50) DEFAULT 'DRAFT',
+    created_by          UUID REFERENCES users(id) ON DELETE SET NULL,
+    approved_at         TIMESTAMP,
+    created_at          TIMESTAMP NOT NULL DEFAULT NOW(),
+    updated_at          TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS story_pages (
+    id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    story_id            UUID REFERENCES learning_stories(id) ON DELETE CASCADE,
+    page_order          INTEGER NOT NULL,
+    text_content        TEXT NOT NULL,
+    image_key_or_url    VARCHAR(500),
+    audio_id            UUID,
+    verification_status VARCHAR(50) DEFAULT 'DRAFT'
+);
+
+-- 5.7 Flashcards & Activities
+CREATE TABLE IF NOT EXISTS learning_flashcards (
+    id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    lesson_id           UUID REFERENCES lessons(id) ON DELETE CASCADE,
+    language_id         UUID REFERENCES languages(id),
+    concept_key         VARCHAR(100) NOT NULL,
+    image_key_or_url    VARCHAR(500),
+    source_term         VARCHAR(255) NOT NULL,
+    target_term         VARCHAR(255) NOT NULL,
+    transliteration     VARCHAR(255),
+    audio_id            UUID,
+    grade               INTEGER CHECK (grade BETWEEN 1 AND 5),
+    subject             VARCHAR(100),
+    topic               VARCHAR(100),
+    verification_status VARCHAR(50) DEFAULT 'DRAFT',
+    created_at          TIMESTAMP NOT NULL DEFAULT NOW(),
+    updated_at          TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS learning_activities (
+    id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    lesson_id           UUID REFERENCES lessons(id) ON DELETE CASCADE,
+    language_id         UUID REFERENCES languages(id),
+    activity_type       VARCHAR(50) NOT NULL,
+    title               VARCHAR(255) NOT NULL,
+    instructions        TEXT,
+    activity_data_json  JSONB,
+    grade               INTEGER CHECK (grade BETWEEN 1 AND 5),
+    verification_status VARCHAR(50) DEFAULT 'DRAFT',
+    is_active           BOOLEAN DEFAULT TRUE,
+    created_at          TIMESTAMP NOT NULL DEFAULT NOW(),
+    updated_at          TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+-- 5.8 Offline Language Packs
+CREATE TABLE IF NOT EXISTS offline_language_packs (
+    id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    language_id         UUID REFERENCES languages(id),
+    grade               INTEGER CHECK (grade BETWEEN 1 AND 5),
+    subject             VARCHAR(100),
+    topic               VARCHAR(100),
+    version             VARCHAR(20) NOT NULL,
+    manifest_json       JSONB NOT NULL,
+    size_bytes          BIGINT DEFAULT 0,
+    verification_status VARCHAR(50) DEFAULT 'DRAFT',
+    created_by          UUID REFERENCES users(id) ON DELETE SET NULL,
+    published_at        TIMESTAMP,
+    created_at          TIMESTAMP NOT NULL DEFAULT NOW(),
+    updated_at          TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+-- Indexing for performance
+CREATE INDEX IF NOT EXISTS idx_lang_dict_lookup ON language_dictionary(language_id, source_word);
+CREATE INDEX IF NOT EXISTS idx_trans_memory_lookup ON translation_memory(source_language_id, target_language_id, source_text_normalized);
+CREATE INDEX IF NOT EXISTS idx_validation_entity ON validation_records(entity_type, entity_id);
+CREATE INDEX IF NOT EXISTS idx_activities_lesson_lang ON learning_activities(lesson_id, language_id);
+CREATE INDEX IF NOT EXISTS idx_offline_packs_grade_lang ON offline_language_packs(language_id, grade);
+

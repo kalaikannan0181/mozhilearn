@@ -317,6 +317,70 @@ export default function TeacherDashboard() {
         </div>
       </div>
 
+      {/* Section 2: Teacher Workspace Options */}
+      <div className="rounded-3xl border border-border bg-card p-6 sm:p-8 shadow-sm space-y-6">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+          <div>
+            <span className="text-xs font-extrabold uppercase tracking-wider text-primary">
+              Vernacular Pedagogy Workspace
+            </span>
+            <h2 className="text-2xl font-extrabold text-foreground mt-0.5">
+              Teacher Workspace Modules
+            </h2>
+            <p className="text-xs text-muted-foreground font-medium">
+              Create, adapt, review, and download mother tongue-based learning materials for your classroom.
+            </p>
+          </div>
+          <span className="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-bold text-emerald-600 border border-emerald-500/20">
+            Teacher-Guided Review Active
+          </span>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          {[
+            { label: 'Create Multilingual Lesson', icon: BookOpen, href: '/teacher/lessons/create', badge: 'Step 1-4' },
+            { label: 'Select Source Language', icon: Languages, href: '#control-bar', badge: 'Hindi / English' },
+            { label: 'Select Student Language', icon: Languages, href: '#control-bar', badge: activeLangConfig.name },
+            { label: 'Create Simple Explanation', icon: FileText, href: '/teacher/lessons/create', badge: 'Primary' },
+            { label: 'Create Story Activity', icon: Sparkles, href: '/teacher/lessons/create', badge: 'Story Mode' },
+            { label: 'Create Picture Flashcards', icon: Layers, href: '/teacher/lessons/create', badge: 'Visual Vocab' },
+            { label: 'Add Audio Support', icon: Volume2, href: '/teacher/lessons/create', badge: 'Audio-First' },
+            { label: 'Create Worksheet', icon: FileSpreadsheet, href: '/teacher/lessons/create', badge: 'Printable' },
+            { label: 'Create Quiz', icon: CheckSquare, href: '/teacher/lessons/create', badge: 'Assessment' },
+            { label: 'Review Generated Content', icon: BookmarkCheck, href: '/teacher/reviews', badge: 'Human Review' },
+            { label: 'Download Offline Pack', icon: Download, href: '/teacher/lessons', badge: 'Offline Ready' },
+            { label: 'View Student Progress', icon: Users, href: '/teacher/analytics', badge: 'Analytics' },
+          ].map((item, idx) => {
+            const Icon = item.icon
+            return (
+              <Link
+                key={idx}
+                href={item.href}
+                className="group flex flex-col justify-between rounded-2xl border border-border bg-secondary/20 p-4 transition-all hover:bg-secondary/60 hover:border-primary/30 shadow-xs"
+              >
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="p-2 rounded-xl bg-card text-primary shadow-xs group-hover:scale-110 transition-transform">
+                      <Icon className="h-4 w-4" />
+                    </span>
+                    <span className="rounded-full bg-card px-2 py-0.5 text-[10px] font-extrabold text-muted-foreground border border-border">
+                      {item.badge}
+                    </span>
+                  </div>
+                  <h4 className="text-xs font-bold text-foreground leading-snug group-hover:text-primary transition-colors">
+                    {item.label}
+                  </h4>
+                </div>
+                <div className="mt-3 text-[11px] font-extrabold text-primary flex items-center gap-1">
+                  <span>Open</span>
+                  <ArrowRight className="h-3 w-3" />
+                </div>
+              </Link>
+            )
+          })}
+        </div>
+      </div>
+
       {/* 6 Quick Action Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {quickActionCards.map((card) => {

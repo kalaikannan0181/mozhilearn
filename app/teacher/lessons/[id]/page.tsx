@@ -165,8 +165,8 @@ export default function EditLesson({ params: paramsPromise }: { params: Promise<
     setSuccessMsg(null)
 
     if (status === 'published') {
-      if (!titleTa.trim()) return setError('Tamil Lesson Title is required when publishing.')
-      if (!translatedContent.trim()) return setError('Tamil Lesson Content is required when publishing.')
+      if (!titleTa.trim()) return setError('Mother Tongue Lesson Title is required when publishing.')
+      if (!translatedContent.trim()) return setError('Mother Tongue Lesson Content is required when publishing.')
       if (!simplifiedContentTa.trim()) return setError('Simplified Explanation for Kids is required when publishing.')
     }
 
@@ -294,7 +294,7 @@ export default function EditLesson({ params: paramsPromise }: { params: Promise<
     if (!simplifiedContentTa) return
     window.speechSynthesis.cancel()
     const utterance = new SpeechSynthesisUtterance(simplifiedContentTa)
-    utterance.lang = 'ta-IN'
+    utterance.lang = 'hi-IN' // Using Hindi TTS as prototype — Santhali TTS requires additional language resources
     window.speechSynthesis.speak(utterance)
   }
 

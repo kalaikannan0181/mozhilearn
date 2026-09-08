@@ -24,7 +24,7 @@ export interface LanguageCapabilities {
   offlinePack: boolean;
   status: 'active' | 'beta' | 'coming_soon';
   primaryProvider: 'bhashini' | 'indictrans2' | 'glossary_fallback';
-  fallbackProvider?: 'indictrans2' | 'glossary_fallback';
+  fallbackProvider?: 'bhashini' | 'indictrans2' | 'glossary_fallback';
 }
 
 export const LANGUAGE_CAPABILITIES: Record<SupportedLanguageCode, LanguageCapabilities> = {

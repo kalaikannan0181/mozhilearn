@@ -37,12 +37,16 @@ export default function NewLesson() {
   const [titleTa, setTitleTa] = useState('')
   const [subject, setSubject] = useState('')
   const [gradeLevel, setGradeLevel] = useState<number>(3)
+  const [sourceLanguage, setSourceLanguage] = useState<string>('Hindi')
+  const [studentLanguage, setStudentLanguage] = useState<string>('Santhali')
+  const [classroomInstructions, setClassroomInstructions] = useState('')
   const [originalContent, setOriginalContent] = useState('')
   const [translatedContent, setTranslatedContent] = useState('')
   const [simplifiedContentTa, setSimplifiedContentTa] = useState('')
   const [learningObjectives, setLearningObjectives] = useState<string[]>([''])
   const [vocabulary, setVocabulary] = useState<{ en: string; ta: string }[]>([{ en: '', ta: '' }])
   const [status, setStatus] = useState<'draft' | 'published'>('draft')
+  const [validationStatus, setValidationStatus] = useState<string>('Draft')
   
   // Feature 1: Offline-First Learning state
   const [offlineDownloadable, setOfflineDownloadable] = useState(true)
@@ -142,20 +146,20 @@ export default function NewLesson() {
       }
     }
     
-    // Default fallback
+    // Default fallback — SIH26042 aligned Santhali placeholder
     return {
-      title_ta: `${title} - தமிழ்`,
-      translated: `[DEMO MOCK] இது ஒரு தமிழ் மொழிபெயர்ப்பு மாதிரி ஆகும். உங்களின் பாட உள்ளடக்கத்தின் தலைப்பு: ${title}.`,
-      simplified: `[DEMO MOCK] இது எளிய வடிவில் விளக்கப்பட்ட பாட உள்ளடக்கம் ஆகும்.`,
+      title_ta: `${title} — Santhali (ᱥᱟᱱᱛᱟᱲᱤ)`,
+      translated: `[DEMO PROTOTYPE] This is a structured demo placeholder for Santhali adaptation of "${title}". In the full system, the AI Vernacular Pedagogy Engine will translate and simplify this Hindi lesson into Santhali for primary school children in Jharkhand. Teacher review is required before publishing.`,
+      simplified: `[DEMO PROTOTYPE] This is a child-friendly, simplified explanation of "${title}" intended for Grade 1–5 tribal primary students. The AI will adapt the language for primary-level comprehension in the selected mother tongue.`,
       objectives: ['Learn core concepts about ' + title],
-      vocab: [{ en: 'Term 1', ta: 'சொல் 1' }],
+      vocab: [{ en: 'Key Term', ta: 'ᱮᱴᱟᱜ ᱥᱚᱵᱚᱫ (Santhali)' }],
       quizzes: [
         {
-          question_en: `What is the main topic of ${title}?`,
-          question_ta: `${title}-ன் முக்கிய தலைப்பு என்ன?`,
+          question_en: `What is the main topic of the lesson: ${title}?`,
+          question_ta: `ᱵᱟᱹᱰᱤᱡ ᱠᱟᱹᱢᱤ ᱫᱚ ᱠᱷᱮᱱ? (Main question about ${title})`,
           options: [title, 'Something else', 'None of these', 'All of these'],
           correct_answer: title,
-          explanation_ta: `இந்த பாடத்தின் முக்கிய தலைப்பு ${title} ஆகும்.`,
+          explanation_ta: `ᱱᱚᱶᱟ ᱵᱟᱹᱰᱤᱡ ᱞᱮᱠᱟ ${title} ᱢᱮᱱᱫ ᱠᱟᱱᱟ — Demo Santhali explanation placeholder.`,
           difficulty: 'easy' as const,
           question_order: 1
         }
@@ -274,8 +278,8 @@ export default function NewLesson() {
     setError(null)
 
     if (status === 'published') {
-      if (!titleTa.trim()) return setError('Tamil Lesson Title is required when publishing.')
-      if (!translatedContent.trim()) return setError('Tamil Lesson Content is required when publishing.')
+      if (!titleTa.trim()) return setError('Mother Tongue Lesson Title is required when publishing.')
+      if (!translatedContent.trim()) return setError('Mother Tongue Lesson Content is required when publishing.')
       if (!simplifiedContentTa.trim()) return setError('Simplified Explanation for Kids is required when publishing.')
     }
 
@@ -381,17 +385,20 @@ export default function NewLesson() {
       )}
 
       <form onSubmit={handleSaveLesson} className="space-y-6">
-        {/* Step 1: English Content */}
+        {/* Step 1: Lesson Details */}
         <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 space-y-6">
-          <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-            <BookOpen className="size-5 text-gray-400" />
-            1. English Lesson Details
-          </h3>
+          <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+            <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+              <span className="flex size-7 items-center justify-center rounded-xl bg-primary text-primary-foreground text-xs font-black">1</span>
+              Step 1: Lesson Details
+            </h3>
+            <span className="text-xs font-semibold text-gray-400">Core Metadata</span>
+          </div>
 
           <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
             <div className="md:col-span-2">
               <label htmlFor="title" className="block text-sm font-semibold text-gray-700">
-                Lesson Title (English)
+                Lesson Title
               </label>
               <input
                 id="title"
@@ -399,7 +406,7 @@ export default function NewLesson() {
                 required
                 value={titleEn}
                 onChange={(e) => setTitleEn(e.target.value)}
-                placeholder="e.g. Photosynthesis"
+                placeholder="e.g. Plant Growth & Photosynthesis"
                 className="mt-1 block w-full rounded-2xl border border-gray-200 px-4 py-2.5 text-sm focus:border-primary focus:ring-primary focus:outline-none"
               />
             </div>
@@ -411,13 +418,13 @@ export default function NewLesson() {
                 id="grade"
                 value={gradeLevel}
                 onChange={(e) => setGradeLevel(parseInt(e.target.value))}
-                className="mt-1 block w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm focus:border-primary focus:ring-primary focus:outline-none"
+                className="mt-1 block w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm focus:border-primary focus:ring-primary focus:outline-none font-semibold"
               >
-                <option value={1}>Grade 1</option>
-                <option value={2}>Grade 2</option>
-                <option value={3}>Grade 3</option>
-                <option value={4}>Grade 4</option>
-                <option value={5}>Grade 5</option>
+                <option value={1}>Grade 1 (Class 1)</option>
+                <option value={2}>Grade 2 (Class 2)</option>
+                <option value={3}>Grade 3 (Class 3)</option>
+                <option value={4}>Grade 4 (Class 4)</option>
+                <option value={5}>Grade 5 (Class 5)</option>
               </select>
             </div>
           </div>
@@ -433,24 +440,79 @@ export default function NewLesson() {
                 required
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
-                placeholder="e.g. Science"
+                placeholder="e.g. Science / EVS / Mathematics"
                 className="mt-1 block w-full rounded-2xl border border-gray-200 px-4 py-2.5 text-sm focus:border-primary focus:ring-primary focus:outline-none"
               />
             </div>
+            <div>
+              <label htmlFor="source_lang" className="block text-sm font-semibold text-gray-700">
+                Select Source Language
+              </label>
+              <select
+                id="source_lang"
+                value={sourceLanguage}
+                onChange={(e) => setSourceLanguage(e.target.value)}
+                className="mt-1 block w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm focus:border-primary focus:ring-primary focus:outline-none font-semibold text-gray-800"
+              >
+                <option value="Hindi">Hindi (हिन्दी)</option>
+                <option value="English">English</option>
+                <option value="Bengali">Bengali (বাংলা)</option>
+              </select>
+            </div>
+            <div>
+              <label htmlFor="student_lang" className="block text-sm font-semibold text-gray-700">
+                Select Student Learning Language
+              </label>
+              <select
+                id="student_lang"
+                value={studentLanguage}
+                onChange={(e) => setStudentLanguage(e.target.value)}
+                className="mt-1 block w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm focus:border-primary focus:ring-primary focus:outline-none font-semibold text-primary"
+              >
+                <option value="Santhali">Santhali (ᱥᱟᱱᱛᱟᱲᱤ) — Active</option>
+                <option value="Ho">Ho — Beta (Architecture Ready)</option>
+                <option value="Mundari">Mundari — Beta (Architecture Ready)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Step 2: Original Content */}
+        <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 space-y-6">
+          <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+            <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+              <span className="flex size-7 items-center justify-center rounded-xl bg-primary text-primary-foreground text-xs font-black">2</span>
+              Step 2: Original Content & Teacher Input
+            </h3>
+            <span className="text-xs font-semibold text-gray-400">Content Source</span>
           </div>
 
           <div>
             <label htmlFor="content" className="block text-sm font-semibold text-gray-700">
-              Original English Content
+              Teacher Lesson Text ({sourceLanguage})
             </label>
             <textarea
               id="content"
               required
-              rows={6}
+              rows={5}
               value={originalContent}
               onChange={(e) => setOriginalContent(e.target.value)}
-              placeholder="Paste or write the original English lesson content here..."
+              placeholder={`Paste or write the original ${sourceLanguage} lesson text here...`}
               className="mt-1 block w-full rounded-2xl border border-gray-200 px-4 py-3 text-sm focus:border-primary focus:ring-primary focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="instructions" className="block text-sm font-semibold text-gray-700">
+              Classroom Instructions for Students
+            </label>
+            <input
+              id="instructions"
+              type="text"
+              value={classroomInstructions}
+              onChange={(e) => setClassroomInstructions(e.target.value)}
+              placeholder="e.g. Read the story carefully, listen to the audio, and try the matching game."
+              className="mt-1 block w-full rounded-2xl border border-gray-200 px-4 py-2.5 text-sm focus:border-primary focus:ring-primary focus:outline-none"
             />
           </div>
 
@@ -597,16 +659,19 @@ export default function NewLesson() {
           </span>
         </div>
 
-        {/* Step 2: Tamil Adaptation */}
+        {/* Step 3: Learning Adaptation */}
         <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 space-y-6">
-          <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-            <Sparkles className="size-5 text-accent" />
-            2. Tamil Pedagogy Adaptation (மொழிபெயர்ப்பு & எளிமைப்படுத்துதல்)
-          </h3>
+          <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+            <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+              <span className="flex size-7 items-center justify-center rounded-xl bg-accent text-accent-foreground text-xs font-black">3</span>
+              Step 3: Learning Adaptation ({studentLanguage} & Vernacular Pedagogy)
+            </h3>
+            <span className="text-xs font-semibold text-gray-400">Mother Tongue Adaptation</span>
+          </div>
 
           <div>
             <label htmlFor="title_ta" className="block text-sm font-semibold text-gray-700">
-              Lesson Title (Tamil)
+              Mother Tongue Lesson Title ({studentLanguage})
             </label>
             <input
               id="title_ta"
@@ -614,45 +679,45 @@ export default function NewLesson() {
               required
               value={titleTa}
               onChange={(e) => setTitleTa(e.target.value)}
-              placeholder="பாடத்தின் தமிழ் தலைப்பு"
-              className="mt-1 block w-full rounded-2xl border border-gray-200 px-4 py-2.5 text-sm focus:border-primary focus:ring-primary focus:outline-none font-tamil"
+              placeholder={`Lesson title in ${studentLanguage}`}
+              className="mt-1 block w-full rounded-2xl border border-gray-200 px-4 py-2.5 text-sm focus:border-primary focus:ring-primary focus:outline-none"
             />
           </div>
 
           <div>
             <label htmlFor="translated" className="block text-sm font-semibold text-gray-700">
-              Translated Content (Tamil)
+              Mother Tongue Learning Version ({studentLanguage})
             </label>
             <textarea
               id="translated"
               required
-              rows={5}
+              rows={4}
               value={translatedContent}
               onChange={(e) => setTranslatedContent(e.target.value)}
-              placeholder="மொழிபெயர்க்கப்பட்ட பாட உள்ளடக்கம்..."
-              className="mt-1 block w-full rounded-2xl border border-gray-200 px-4 py-3 text-sm focus:border-primary focus:ring-primary focus:outline-none font-tamil"
+              placeholder={`Lesson content translated & adapted into ${studentLanguage}...`}
+              className="mt-1 block w-full rounded-2xl border border-gray-200 px-4 py-3 text-sm focus:border-primary focus:ring-primary focus:outline-none"
             />
           </div>
 
           <div>
             <label htmlFor="simplified" className="block text-sm font-semibold text-gray-700">
-              Simplified Explanation for Kids (தமிழ் எளிய விளக்கம்)
+              Simple Grade-Level Explanation for Primary Learners ({studentLanguage})
             </label>
             <textarea
               id="simplified"
               required
-              rows={5}
+              rows={4}
               value={simplifiedContentTa}
               onChange={(e) => setSimplifiedContentTa(e.target.value)}
-              placeholder="குழந்தைகளுக்குப் புரியும் வகையில் எளிமைப்படுத்தப்பட்ட விளக்கம்..."
-              className="mt-1 block w-full rounded-2xl border border-gray-200 px-4 py-3 text-sm focus:border-primary focus:ring-primary focus:outline-none font-tamil"
+              placeholder="Bite-sized, simple explanation suitable for primary-school children..."
+              className="mt-1 block w-full rounded-2xl border border-gray-200 px-4 py-3 text-sm focus:border-primary focus:ring-primary focus:outline-none"
             />
           </div>
 
           {/* Learning Objectives */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Learning Objectives (கற்றல் நோக்கங்கள்)
+              Learning Objectives
             </label>
             <div className="space-y-3">
               {learningObjectives.map((obj, idx) => (
@@ -684,10 +749,10 @@ export default function NewLesson() {
             </button>
           </div>
 
-          {/* Vocabulary Builder */}
+          {/* Picture Flashcards & Vocabulary Builder */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Vocabulary (அறிமுகச் சொற்கள்)
+              Picture Flashcards & Vocabulary ({sourceLanguage} ↔ {studentLanguage})
             </label>
             <div className="space-y-3">
               {vocabulary.map((vocab, idx) => (
@@ -696,15 +761,15 @@ export default function NewLesson() {
                     type="text"
                     value={vocab.en}
                     onChange={(e) => handleVocabChange(idx, 'en', e.target.value)}
-                    placeholder="English word"
+                    placeholder={`Word in ${sourceLanguage}`}
                     className="flex-1 rounded-2xl border border-gray-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
                   />
                   <input
                     type="text"
                     value={vocab.ta}
                     onChange={(e) => handleVocabChange(idx, 'ta', e.target.value)}
-                    placeholder="தமிழ் சொல்"
-                    className="flex-1 rounded-2xl border border-gray-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary font-tamil"
+                    placeholder={`Word in ${studentLanguage}`}
+                    className="flex-1 rounded-2xl border border-gray-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-primary font-semibold text-primary"
                   />
                   <button
                     type="button"
@@ -725,131 +790,177 @@ export default function NewLesson() {
               Add Vocabulary Word
             </button>
           </div>
-        </div>
 
-        {/* Step 3: Quiz Builder */}
-        <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 space-y-6">
-          <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-            <HelpCircle className="size-5 text-gray-400" />
-            3. Quiz Questions Editor (வினாடி வினா எடிட்டர்)
-          </h3>
+          {/* Interactive Quiz Builder */}
+          <div className="pt-4 border-t border-gray-100 space-y-4">
+            <h4 className="font-bold text-gray-900 flex items-center gap-2">
+              <HelpCircle className="size-4 text-gray-400" />
+              Worksheet & Quiz Questions Editor
+            </h4>
 
-          <div className="space-y-8 divider-y divide-gray-100">
-            {questions.map((q, qIndex) => (
-              <div key={qIndex} className="space-y-4 pt-6 first:pt-0">
-                <div className="flex items-center justify-between">
-                  <h4 className="font-bold text-gray-900">Question #{qIndex + 1}</h4>
-                  {questions.length > 1 && (
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveQuestion(qIndex)}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-red-100 text-red-600 text-xs font-semibold hover:bg-red-50"
-                    >
-                      <Trash className="size-3.5" />
-                      Remove
-                    </button>
-                  )}
-                </div>
-
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                  <div>
-                    <label className="block text-xs font-semibold text-gray-500 uppercase">Question in English</label>
-                    <input
-                      type="text"
-                      value={q.question_en}
-                      onChange={(e) => handleQuestionChange(qIndex, 'question_en', e.target.value)}
-                      placeholder="Question text in English"
-                      className="mt-1 block w-full rounded-xl border border-gray-200 px-3.5 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
-                    />
+            <div className="space-y-6 divider-y divide-gray-100">
+              {questions.map((q, qIndex) => (
+                <div key={qIndex} className="space-y-4 pt-4 first:pt-0">
+                  <div className="flex items-center justify-between">
+                    <h5 className="font-bold text-sm text-gray-800">Question #{qIndex + 1}</h5>
+                    {questions.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveQuestion(qIndex)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-red-100 text-red-600 text-xs font-semibold hover:bg-red-50"
+                      >
+                        <Trash className="size-3.5" />
+                        Remove
+                      </button>
+                    )}
                   </div>
-                  <div>
-                    <label className="block text-xs font-semibold text-gray-500 uppercase">Question in Tamil</label>
-                    <input
-                      type="text"
-                      required
-                      value={q.question_ta}
-                      onChange={(e) => handleQuestionChange(qIndex, 'question_ta', e.target.value)}
-                      placeholder="கேள்வி உரை"
-                      className="mt-1 block w-full rounded-xl border border-gray-200 px-3.5 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary font-tamil"
-                    />
-                  </div>
-                </div>
 
-                {/* Options Grid */}
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  {q.options.map((opt, oIndex) => (
-                    <div key={oIndex}>
-                      <label className="block text-xs font-semibold text-gray-400">Option {oIndex + 1}</label>
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-500 uppercase">Question in {sourceLanguage}</label>
+                      <input
+                        type="text"
+                        value={q.question_en}
+                        onChange={(e) => handleQuestionChange(qIndex, 'question_en', e.target.value)}
+                        placeholder={`Question in ${sourceLanguage}`}
+                        className="mt-1 block w-full rounded-xl border border-gray-200 px-3.5 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-500 uppercase">Question in {studentLanguage}</label>
                       <input
                         type="text"
                         required
-                        value={opt}
-                        onChange={(e) => handleOptionChange(qIndex, oIndex, e.target.value)}
-                        placeholder={`Option ${oIndex + 1} text`}
-                        className="mt-1 block w-full rounded-xl border border-gray-200 px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-primary"
+                        value={q.question_ta}
+                        onChange={(e) => handleQuestionChange(qIndex, 'question_ta', e.target.value)}
+                        placeholder={`Question in ${studentLanguage}`}
+                        className="mt-1 block w-full rounded-xl border border-gray-200 px-3.5 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary font-semibold text-primary"
                       />
                     </div>
-                  ))}
-                </div>
+                  </div>
 
-                {/* Correct Answer & Explanation */}
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                  <div>
-                    <label className="block text-xs font-semibold text-gray-500 uppercase">Correct Option Text</label>
-                    <select
-                      value={q.correct_answer}
-                      onChange={(e) => handleQuestionChange(qIndex, 'correct_answer', e.target.value)}
-                      required
-                      className="mt-1 block w-full rounded-xl border border-gray-200 px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-primary"
-                    >
-                      <option value="">Select correct option</option>
-                      {q.options.filter(Boolean).map((opt) => (
-                        <option key={opt} value={opt}>
-                          {opt}
-                        </option>
-                      ))}
-                    </select>
+                  {/* Options Grid */}
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                    {q.options.map((opt, oIndex) => (
+                      <div key={oIndex}>
+                        <label className="block text-xs font-semibold text-gray-400">Option {oIndex + 1}</label>
+                        <input
+                          type="text"
+                          required
+                          value={opt}
+                          onChange={(e) => handleOptionChange(qIndex, oIndex, e.target.value)}
+                          placeholder={`Option ${oIndex + 1} text`}
+                          className="mt-1 block w-full rounded-xl border border-gray-200 px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-primary"
+                        />
+                      </div>
+                    ))}
                   </div>
-                  <div className="md:col-span-2">
-                    <label className="block text-xs font-semibold text-gray-500 uppercase">Explanation in Tamil</label>
-                    <input
-                      type="text"
-                      value={q.explanation_ta}
-                      onChange={(e) => handleQuestionChange(qIndex, 'explanation_ta', e.target.value)}
-                      placeholder="சரியான விடைக்கான தமிழ் விளக்கம்"
-                      className="mt-1 block w-full rounded-xl border border-gray-200 px-3.5 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary font-tamil"
-                    />
+
+                  {/* Correct Answer & Explanation */}
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-500 uppercase">Correct Option Text</label>
+                      <select
+                        value={q.correct_answer}
+                        onChange={(e) => handleQuestionChange(qIndex, 'correct_answer', e.target.value)}
+                        required
+                        className="mt-1 block w-full rounded-xl border border-gray-200 px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-primary font-semibold"
+                      >
+                        <option value="">Select correct option</option>
+                        {q.options.filter(Boolean).map((opt) => (
+                          <option key={opt} value={opt}>
+                            {opt}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="md:col-span-2">
+                      <label className="block text-xs font-semibold text-gray-500 uppercase">Explanation ({studentLanguage})</label>
+                      <input
+                        type="text"
+                        value={q.explanation_ta}
+                        onChange={(e) => handleQuestionChange(qIndex, 'explanation_ta', e.target.value)}
+                        placeholder={`Explanation in ${studentLanguage}`}
+                        className="mt-1 block w-full rounded-xl border border-gray-200 px-3.5 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-primary font-semibold text-primary"
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            <button
+              type="button"
+              onClick={handleAddQuestion}
+              className="mt-4 w-full inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-2xl border-2 border-dashed border-gray-200 text-gray-500 font-semibold hover:border-primary hover:text-primary transition-colors text-sm"
+            >
+              <Plus className="size-4" />
+              Add Quiz Question
+            </button>
+          </div>
+        </div>
+
+        {/* Step 4: Review & Publish */}
+        <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 space-y-6">
+          <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+            <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+              <span className="flex size-7 items-center justify-center rounded-xl bg-emerald-600 text-white text-xs font-black">4</span>
+              Step 4: Review & Publish
+            </h3>
+            <span className="text-xs font-semibold text-gray-400">Quality Assurance</span>
           </div>
 
-          <button
-            type="button"
-            onClick={handleAddQuestion}
-            className="w-full inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-2xl border-2 border-dashed border-gray-200 text-gray-500 font-semibold hover:border-primary hover:text-primary transition-colors text-sm"
-          >
-            <Plus className="size-4" />
-            Add Quiz Question
-          </button>
+          {/* Mandatory Teacher Review Note */}
+          <div className="rounded-2xl border border-amber-500/30 bg-amber-500/10 p-4 text-xs sm:text-sm font-semibold text-amber-900 space-y-1">
+            <p className="font-extrabold flex items-center gap-2 text-amber-950">
+              <AlertTriangle className="size-4 text-amber-600 shrink-0" />
+              Educational Review & Validation Requirement
+            </p>
+            <p className="text-amber-800 leading-relaxed">
+              AI-assisted content must be reviewed by the teacher. Language accuracy requires validation through approved language resources or native-language experts.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+            <div>
+              <label htmlFor="validation_status" className="block text-sm font-semibold text-gray-700">
+                Language Validation Status
+              </label>
+              <select
+                id="validation_status"
+                value={validationStatus}
+                onChange={(e) => setValidationStatus(e.target.value)}
+                className="mt-1 block w-full rounded-2xl border border-gray-200 px-3.5 py-2.5 text-sm focus:border-primary focus:ring-primary focus:outline-none font-semibold text-gray-800"
+              >
+                <option value="Draft">Draft</option>
+                <option value="AI-Assisted Draft">AI-Assisted Draft</option>
+                <option value="Teacher Educational Review">Teacher Educational Review</option>
+                <option value="Language Validation Pending">Language Validation Pending</option>
+                <option value="Language Validated">Language Validated</option>
+                <option value="Approved for Student Use">Approved for Student Use</option>
+                <option value="Published">Published</option>
+              </select>
+            </div>
+
+            <div>
+              <label htmlFor="status" className="block text-sm font-semibold text-gray-700">
+                Publishing State
+              </label>
+              <select
+                id="status"
+                value={status}
+                onChange={(e) => setStatus(e.target.value as 'draft' | 'published')}
+                className="mt-1 block w-full rounded-2xl border border-gray-200 px-3.5 py-2.5 text-sm focus:border-primary focus:ring-primary focus:outline-none font-semibold text-gray-800"
+              >
+                <option value="draft">Save as Draft</option>
+                <option value="published">Publish for Students</option>
+              </select>
+            </div>
+          </div>
         </div>
 
         {/* Submit Controls */}
         <div className="flex flex-col sm:flex-row sm:justify-end gap-3 bg-white p-4 rounded-3xl border border-gray-100 shadow-sm">
-          <div className="flex items-center gap-2 mr-auto px-2">
-            <label htmlFor="status" className="text-sm font-semibold text-gray-700">Status:</label>
-            <select
-              id="status"
-              value={status}
-              onChange={(e) => setStatus(e.target.value as 'draft' | 'published')}
-              className="rounded-xl border border-gray-200 px-3 py-1.5 text-xs focus:outline-none focus:ring-1 focus:ring-primary"
-            >
-              <option value="draft">Draft (வடிவம்)</option>
-              <option value="published">Publish (வெளியிடு)</option>
-            </select>
-          </div>
-
           <Link
             href="/teacher/lessons"
             className="inline-flex min-h-11 items-center justify-center rounded-2xl border border-border px-5 text-sm font-semibold text-foreground hover:bg-secondary transition-colors"
@@ -866,7 +977,7 @@ export default function NewLesson() {
             ) : (
               <>
                 <Save className="size-4" />
-                Save Lesson
+                Save Lesson Pack
               </>
             )}
           </button>

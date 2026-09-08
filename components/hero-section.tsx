@@ -51,7 +51,7 @@ export function HeroSection() {
           </div>
 
           <p className="mt-5 text-sm font-semibold text-muted-foreground">
-            Trusted by 500+ classrooms across Tamil Nadu 🎒
+            Pilot scope: Jharkhand tribal primary schools — Hindi → Santhali / Ho / Mundari 🎒
           </p>
         </div>
 
@@ -59,7 +59,7 @@ export function HeroSection() {
           <div className="rounded-[2rem] border-4 border-card bg-card p-3 shadow-xl">
             <Image
               src="/hero-kids.png"
-              alt="Primary students learning Tamil with a friendly AI robot tutor"
+              alt="Primary students learning in their mother tongue with an AI-powered educational platform"
               width={720}
               height={720}
               priority

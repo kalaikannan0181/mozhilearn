@@ -19,7 +19,7 @@ export interface Profile {
 interface AuthContextType {
   user: User | null
   session: Session | null
-  profile: Pick<Profile, 'full_name' | 'role' | 'school_name' | 'grade_level'> | null
+  profile: Pick<Profile, 'full_name' | 'role' | 'school_name' | 'grade_level' | 'preferred_language'> | null
   loading: boolean
   signUp: typeof supabase.auth.signUp
   signIn: typeof supabase.auth.signInWithPassword
@@ -58,7 +58,7 @@ async function fetchUserProfile(userId: string, retries = 3, delay = 500): Promi
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [session, setSession] = useState<Session | null>(null)
-  const [profile, setProfile] = useState<Pick<Profile, 'full_name' | 'role' | 'school_name' | 'grade_level'> | null>(null)
+  const [profile, setProfile] = useState<Pick<Profile, 'full_name' | 'role' | 'school_name' | 'grade_level' | 'preferred_language'> | null>(null)
   const [loading, setLoading] = useState(true)
 
   const syncAuthState = async (nextSession: Session | null) => {
@@ -78,6 +78,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       role: nextProfile.role,
       school_name: nextProfile.school_name,
       grade_level: nextProfile.grade_level,
+      preferred_language: nextProfile.preferred_language ?? 'ta',
     } : null)
     setLoading(false)
   }
@@ -90,15 +91,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   useEffect(() => {
+    let isMounted = true
+
     const checkSession = async () => {
       try {
-        const { data: { session: currentSession } } = await supabase.auth.getSession()
-        await syncAuthState(currentSession)
-      } catch {
-        setSession(null)
-        setUser(null)
-        setProfile(null)
-        setLoading(false)
+        const { data, error } = await supabase.auth.getSession()
+        if (error) {
+          console.warn('[AuthContext] Session fetch notice:', error.message)
+        }
+        if (isMounted) {
+          await syncAuthState(data?.session ?? null)
+        }
+      } catch (err) {
+        if (isMounted) {
+          setSession(null)
+          setUser(null)
+          setProfile(null)
+          setLoading(false)
+        }
       }
     }
 
@@ -106,11 +116,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, nextSession) => {
-        void syncAuthState(nextSession)
+        if (isMounted) {
+          void syncAuthState(nextSession)
+        }
       }
     )
 
     return () => {
+      isMounted = false
       subscription.unsubscribe()
     }
   }, [])

@@ -7,6 +7,7 @@ import { Problem } from '@/components/problem'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteNav } from '@/components/site-nav'
 import { Solution } from '@/components/solution'
+import { VernacularPedagogySection } from '@/components/vernacular-pedagogy-section'
 import { PrototypeNote } from '@/components/testimonials'
 
 export default function HomePage() {
@@ -29,6 +30,7 @@ export default function HomePage() {
         <Hero />
         <Problem />
         <Solution />
+        <VernacularPedagogySection />
         <HowItWorks />
         <DemoSection />
         <PrototypeNote />
